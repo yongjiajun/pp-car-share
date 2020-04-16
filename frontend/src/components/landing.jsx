@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/landing.css'
 
 class LandingPage extends Component {
     constructor(props) {
@@ -7,8 +8,8 @@ class LandingPage extends Component {
 
     render() {
         return(
-            <div>
-                <h1>Hello</h1>
+            <div id="landing-page">
+                <h1>Welcome to Car Share</h1>
             </div>
         )
     }
