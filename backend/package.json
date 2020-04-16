@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app_server.js"
+    "start": "nodemon app_server.js",
+    "start-node": "node app_server.js"
   },
   "author": "Jia Jun Yong",
   "license": "ISC",
