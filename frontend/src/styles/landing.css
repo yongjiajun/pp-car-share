@@ -1,0 +1,17 @@
+body, html {
+    height: 100vh;
+}
+
+#landing-page {
+    background-image: url("../assets/landing-image.jfif");
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    padding-top: 40vh;
+}
