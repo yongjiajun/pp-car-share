@@ -8,7 +8,7 @@ class Header extends Component {
 
         return (
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">Car Share</Navbar.Brand>
+                <Navbar.Brand href="/">Car Share</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -22,8 +22,8 @@ class Header extends Component {
                     }
                     {isUserLoggedIn &&
                         <Form inline>
-                            <Nav.Link href="/">Dashboard</Nav.Link>
-                            <Nav.Link href="/logout" onClick={UserServiceApi.logout}>Logout</Nav.Link>
+                            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                            <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
                         </Form>
                     }
                 </Navbar.Collapse>

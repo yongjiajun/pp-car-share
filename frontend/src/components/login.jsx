@@ -19,27 +19,23 @@ class LoginPage extends Component {
         this.setState({[event.target.name] : event.target.value})
     }
 
-    handleSubmit = event => {
+    handleSubmit() {
         let creds = {
             email: this.state.email,
             password: this.state.password
         }
-        UserServiceApi.loginUser(creds)
-            .then(res => {
-                console.log(res)
-                UserServiceApi.registerSuccessfulLoginForJwt(res.data.id, res.data.token)
-                window.location.href = `/`;
-            }).catch(() => {
-                // this.setState({ showSuccessMessage: false })
-                // this.setState({ hasLoginFailed: true })
-                alert("LOGIN FAILED")
-            })
+        UserServiceApi.loginUser(creds).then(res => {
+            UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
+            window.location.href = `/dashboard`;
+        }).catch(res => {
+            console.log(res)
+        })
     }
 
     render() {
         return (
             <div className="container">
-                <Form onSubmit={this.handleSubmit}>
+                <Form>
                     <Form.Group as={Row} controlId="formHorizontalEmail">
                         <Form.Label column sm={2}>
                             Email
@@ -60,7 +56,7 @@ class LoginPage extends Component {
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button type="submit">Login</Button>
+                            <Button onClick={this.handleSubmit}>Login</Button>
                         </Col>
                     </Form.Group>
                 </Form>

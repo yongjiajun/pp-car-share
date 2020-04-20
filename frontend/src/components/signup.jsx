@@ -30,16 +30,22 @@ class SignUpPage extends Component {
             password: this.state.password,
             usertype: "customer"
         }
-        UserServiceApi.createNewUser(newUser)
-            .then((res) => {
-                console.log(res.data)
+        UserServiceApi.createNewUser(newUser).then(() => { 
+            UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
+                UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
+                window.location.href = `/dashboard`;
+            }).catch(res => {
+                console.log(res)
             })
+        }).catch(res => {
+            console.log(res)
+        })
     }
 
     render() {
         return (
             <div className="container">
-                <Form onSubmit={this.handleSubmit}>
+                <Form>
                     <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>
                             First Name
@@ -78,7 +84,7 @@ class SignUpPage extends Component {
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button type="submit">Create Account</Button>
+                            <Button onClick={this.handleSubmit}>Create Account</Button>
                         </Col>
                     </Form.Group>
                 </Form>
