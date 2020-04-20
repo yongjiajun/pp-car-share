@@ -1,6 +1,9 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
-const selectFields = '_id name';
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
+const selectFields = '_id firstname lastname email password usertype';
 
 exports.get_all_users = (req, res, next) => {
     User.find()
@@ -11,7 +14,11 @@ exports.get_all_users = (req, res, next) => {
                 user: users.map(user => {
                     return {
                         id: user._id,
-                        name: user.name,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        email: user.email,
+                        password: user.password,
+                        usertype: user.usertype
                     }
                 })
             }
@@ -38,18 +45,83 @@ exports.get_user = (req, res, next) => {
 
 
 exports.create_user = (req, res, next) => {
-    const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-    });
-    user.save().then(user => {
-        const response = {
-            message: `Created user of id '${user._id}' successfully`,
-            user: user
+    User.findOne({ email: req.body.email }).then(user => {
+        if (user) {
+            return res.status(400).json({ email: "Email already exists" });
+        } else {
+            const user = new User({
+                _id: new mongoose.Types.ObjectId(),
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                password: req.body.password,
+                usertype: req.body.usertype
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(user.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    user.password = hash;
+                    user.save().then(user => {
+                        const response = {
+                            message: `Created user of id '${user._id}' successfully`,
+                            user: user
+                        }
+                        return res.status(201).json({ response });
+                    }).catch(error => {
+                        return res.status(500).json({ message: `Unable to get CREATE user of id '${id}'`, error: error })
+                    })
+                }
+                )
+            }
+            )
         }
-        res.status(201).json({ response });
-    })
-        .catch(error => { res.status(500).json({ message: `Unable to get CREATE user of id '${id}'`, error: error }) })
+    }
+    )
+}
+
+exports.login_user = (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    // Find user by email
+    User.findOne({ email }).then(user => {
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ emailnotfound: "Email not found" });
+        }
+        // Check password
+        bcrypt.compare(password, user.password).then(isMatch => {
+            if (isMatch) {
+                // User matched
+                // Create JWT Payload
+                const payload = {
+                    id: user._id,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    password: user.password,
+                    usertype: user.usertype
+                };
+                // Sign token
+                jwt.sign(
+                    payload,
+                    keys.secretOrKey,
+                    {
+                        expiresIn: 31556926 // 1 year in seconds
+                    },
+                    (err, token) => {
+                        res.json({
+                            id: user._id,
+                            token: "Bearer " + token
+                        });
+                    }
+                );
+            } else {
+                return res
+                    .status(400)
+                    .json({ message: "Password incorrect" });
+            }
+        });
+    });
 }
 
 exports.delete_user = (req, res, next) => {
@@ -73,7 +145,7 @@ exports.update_user = (req, res, next) => {
     for (const ops of Object.entries(req.body)) {
         updateOps[ops[0]] = ops[1];
     }
-    User.update({ _id: id }, {$set: updateOps})
+    User.update({ _id: id }, { $set: updateOps })
         .select(selectFields)
         .exec()
         .then(user => {

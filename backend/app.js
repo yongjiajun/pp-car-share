@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const logger = require('morgan');
 const parser = require('body-parser');
 const dotenv = require('dotenv');
+const passport = require("passport");
+const users_routes = require('./api/routes/users');
 dotenv.config();
 
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017"
@@ -20,8 +22,9 @@ mongoose.Promise = global.Promise;
 app.use(logger('dev'));
 
 // Parser
-app.use(parser.urlencoded({ extended: false }));
+app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
+app.use(parser.raw());
 
 // CORS Handling
 app.use((req, res, next) => {
@@ -36,9 +39,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
-const users_routes = require('./api/routes/users');
 app.use('/api/users', users_routes);
 
+// Passport Middleware
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 // Error Handling
 app.use((req, res, next) => {
