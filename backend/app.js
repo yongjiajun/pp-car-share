@@ -9,7 +9,7 @@ dotenv.config();
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected!'))
     .catch(err => {
-        console.log('DB Connection Error: ${ err.message }');
+        console.log('DB Connection Error: ' + err.message);
     });
 mongoose.Promise = global.Promise;
 
