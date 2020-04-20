@@ -24,7 +24,6 @@ app.use(logger('dev'));
 // Parser
 app.use(parser.urlencoded({ extended: true }));
 app.use(parser.json());
-app.use(parser.raw());
 
 // CORS Handling
 app.use((req, res, next) => {
@@ -38,12 +37,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routes
-app.use('/api/users', users_routes);
-
 // Passport Middleware
 app.use(passport.initialize());
 require("./config/passport")(passport);
+
+// Routes
+app.use('/api/users', users_routes);
 
 // Error Handling
 app.use((req, res, next) => {

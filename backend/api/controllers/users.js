@@ -5,45 +5,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const selectFields = '_id firstname lastname email password usertype';
 
-exports.get_all_users = (req, res, next) => {
-    User.find()
-        .select(selectFields)
-        .exec()
-        .then(users => {
-            const response = {
-                user: users.map(user => {
-                    return {
-                        id: user._id,
-                        firstname: user.firstname,
-                        lastname: user.lastname,
-                        email: user.email,
-                        password: user.password,
-                        usertype: user.usertype
-                    }
-                })
-            }
-            res.status(200).json(response);
-        })
-        .catch(error => {
-            res.status(500).json({ message: `Unable to GET all users`, error: error })
-        });
-}
-
-exports.get_user = (req, res, next) => {
-    const id = req.params.userId;
-    User.findOne({ _id: id })
-        .select(selectFields)
-        .exec()
-        .then(user => {
-            const response = {
-                user: user
-            }
-            res.status(200).json(response);
-        })
-        .catch(error => { res.status(500).json({ message: `Unable to GET user of id '${id}'`, error: error }) })
-}
-
-
+/* CONTROLLERS WITH NO JWT GUARDING */
 exports.create_user = (req, res, next) => {
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
@@ -86,7 +48,7 @@ exports.login_user = (req, res) => {
     User.findOne({ email }).then(user => {
         // Check if user exists
         if (!user) {
-            return res.status(404).json({ emailnotfound: "Email not found" });
+            return res.status(404).json({ message: "Email not found" });
         }
         // Check password
         bcrypt.compare(password, user.password).then(isMatch => {
@@ -98,7 +60,6 @@ exports.login_user = (req, res) => {
                     firstname: user.firstname,
                     lastname: user.lastname,
                     email: user.email,
-                    password: user.password,
                     usertype: user.usertype
                 };
                 // Sign token
@@ -124,36 +85,106 @@ exports.login_user = (req, res) => {
     });
 }
 
+/* CONTROLLERS WITH JWT GUARDING */ 
+exports.get_all_users = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        User.find()
+            .select(selectFields)
+            .exec()
+            .then(users => {
+                const response = {
+                    user: users.map(user => {
+                        return {
+                            id: user._id,
+                            firstname: user.firstname,
+                            lastname: user.lastname,
+                            email: user.email,
+                            password: user.password,
+                            usertype: user.usertype
+                        }
+                    })
+                }
+                res.status(200).json(response);
+            })
+            .catch(error => {
+                res.status(500).json({ message: `Unable to GET all users`, error: error })
+            });
+    })
+}
+
+exports.get_user = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+
+        const id = req.params.userId;
+        User.findOne({ _id: id })
+            .select(selectFields)
+            .exec()
+            .then(user => {
+                const response = {
+                    user: user
+                }
+                res.status(200).json(response);
+            })
+            .catch(error => { res.status(500).json({ message: `Unable to GET user of id '${id}'`, error: error }) })
+    });
+}
+
 exports.delete_user = (req, res, next) => {
-    const id = req.params.userId;
-    User.findOneAndDelete({ _id: id })
-        .select(selectFields)
-        .exec()
-        .then(user => {
-            const response = {
-                message: `Deleted user of id '${user._id}' successfully`
-            }
-            res.status(200).json({ response });
-        })
-        .catch(error => { res.status(500).json({ message: `Unable to DELETE user of id '${id}'`, error: error }) })
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+
+        const id = req.params.userId;
+        User.findOneAndDelete({ _id: id })
+            .select(selectFields)
+            .exec()
+            .then(user => {
+                const response = {
+                    message: `Deleted user of id '${user._id}' successfully`
+                }
+                res.status(200).json({ response });
+            })
+            .catch(error => { res.status(500).json({ message: `Unable to DELETE user of id '${id}'`, error: error }) })
+    })
 }
 
 exports.update_user = (req, res, next) => {
-    const id = req.params.userId;
-    const updateOps = {};
-    console.log(Object.entries(req.body))
-    for (const ops of Object.entries(req.body)) {
-        updateOps[ops[0]] = ops[1];
-    }
-    User.update({ _id: id }, { $set: updateOps })
-        .select(selectFields)
-        .exec()
-        .then(user => {
-            const response = {
-                message: `Updated user of id '${user._id}' successfully`,
-                user: user
-            }
-            res.status(200).json({ response });
-        })
-        .catch(error => { res.status(500).json({ message: `Unable to UPDATE user of id '${id}'`, error: error }) })
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+
+        const id = req.params.userId;
+        const updateOps = {};
+        console.log(Object.entries(req.body))
+        for (const ops of Object.entries(req.body)) {
+            updateOps[ops[0]] = ops[1];
+        }
+        User.update({ _id: id }, { $set: updateOps })
+            .select(selectFields)
+            .exec()
+            .then(user => {
+                const response = {
+                    message: `Updated user of id '${user._id}' successfully`,
+                    user: user
+                }
+                res.status(200).json({ response });
+            })
+            .catch(error => { res.status(500).json({ message: `Unable to UPDATE user of id '${id}'`, error: error }) })
+    })
 }
