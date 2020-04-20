@@ -1,21 +1,51 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row } from 'react-bootstrap';
+import UserServiceApi from '../api/UserServiceApi.js'
 
 class SignUpPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: ''
+
+        }
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    /* Set react state for each input when user inputs something on signup form */
+    handleChange = event => {
+        this.setState({[event.target.name] : event.target.value})
+    }
+
+    handleSubmit = event => {
+        /* May need to change / edit this */
+        let newUser = {
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
+            email: this.state.email,
+            password: this.state.password
+        }
+        UserServiceApi.createNewUser(newUser)
+            .then(res => {
+                console.log(res.data)
+                console.log(this.state.firstname)
+            })
     }
 
     render() {
         return (
-            <div class="container">
-                <Form>
+            <div className="container">
+                <Form onSubmit={this.handleSubmit}>
                     <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>
                             First Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="firstname" placeholder="First Name" />
+                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} />
                         </Col>
                     </Form.Group>
 
@@ -24,7 +54,7 @@ class SignUpPage extends Component {
                             Last Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="lastname" placeholder="Last Name" />
+                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange}/>
                         </Col>
                     </Form.Group>
 
@@ -33,7 +63,7 @@ class SignUpPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="email" placeholder="Email" />
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange}/>
                         </Col>
                     </Form.Group>
 
@@ -42,36 +72,9 @@ class SignUpPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
                         </Col>
                     </Form.Group>
-                    <fieldset>
-                        <Form.Group as={Row}>
-                            <Form.Label as="legend" column sm={2}>
-                                Gender
-                            </Form.Label>
-                            <Col sm={10}>
-                                <Form.Check
-                                    type="radio"
-                                    label="Male"
-                                    name="formHorizontalRadios"
-                                    id="formHorizontalRadios1"
-                                />
-                                <Form.Check
-                                    type="radio"
-                                    label="Female"
-                                    name="formHorizontalRadios"
-                                    id="formHorizontalRadios2"
-                                />
-                                <Form.Check
-                                    type="radio"
-                                    label="Other"
-                                    name="formHorizontalRadios"
-                                    id="formHorizontalRadios3"
-                                />
-                            </Col>
-                        </Form.Group>
-                    </fieldset>
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
