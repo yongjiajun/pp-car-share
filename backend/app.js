@@ -6,10 +6,13 @@ const parser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const uri = process.env.MONGO_URI || "mongodb://localhost:27017"
+
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected!'))
+mongoose.connect(uri + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected!'))
     .catch(err => {
-        console.log('DB Connection Error: ${ err.message }');
+        console.log(process.env.MONGO_URI)
+        console.log('DB Connection Error: ' + err.message);
     });
 mongoose.Promise = global.Promise;
 
