@@ -6,8 +6,19 @@
 
 #landing-body-nav {
     background-color: rgba(0,0,0,.5);
+    margin-bottom: 8vh;
 }
 
 .nav-link {
     color: white;
+}
+
+.nav-item {
+    margin: 0 10px;
+}
+
+/* Section related css */
+
+.section-item{
+    margin-bottom: 3vh;
 }
