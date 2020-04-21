@@ -1,0 +1,13 @@
+#landing-body {
+    padding: 0 10vh;
+}
+
+/* Nav related css */
+
+#landing-body-nav {
+    background-color: rgba(0,0,0,.5);
+}
+
+.nav-link {
+    color: white;
+}
