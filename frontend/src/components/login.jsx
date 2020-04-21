@@ -29,6 +29,8 @@ class LoginPage extends Component {
             window.location.href = `/dashboard`;
         }).catch(res => {
             console.log(res)
+        }, err => {
+            console.log(err)
         })
     }
 

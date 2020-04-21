@@ -39,6 +39,8 @@ class SignUpPage extends Component {
             })
         }).catch(res => {
             console.log(res)
+        },err => {
+            console.log(err)
         })
     }
 
