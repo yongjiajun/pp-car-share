@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { Nav } from 'react-bootstrap';
 
 import '../styles/landingBody.css'
+import Overview from './landingBodyComponents/overview'
+import Pricing from './landingBodyComponents/pricing'
+import CarsAndVans from './landingBodyComponents/carsAndVans'
+import Faqs from './landingBodyComponents/faqs'
 
 const navWhenSelectedStyle = {
     borderBottom: "4px solid #009bde"
@@ -64,44 +68,4 @@ function RenderCorrectComponents(props) {
         default:
             return(<Overview />);
     }
-}
-
-function Overview(props) {
-    return (
-        <section className="section-item">
-            <div>
-                <h2>Overview</h2>
-            </div>
-        </section>
-    );
-}
-
-function Pricing(props) {
-    return (
-        <section className="section-item">
-            <div>
-                <h2>Pricing</h2>
-            </div>
-        </section >
-    );
-}
-
-function CarsAndVans() {
-    return (
-        <section className="section-item">
-            <div>
-                <h2>Cars and Vans</h2>
-            </div>
-        </section>
-    );
-}
-
-function Faqs(){
-    return(
-        <section className="section-item">
-            <div>
-                <h2>FAQs</h2>
-            </div>
-        </section>
-    );
 }
