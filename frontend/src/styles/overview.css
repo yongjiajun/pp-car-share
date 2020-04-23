@@ -1,0 +1,35 @@
+.how-it-works {
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.how-it-works h3 {
+    margin-bottom: 3vh;
+}
+
+.benefits-div {
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+.benefits-div h2 {
+    margin-top: 3vh;
+}
+
+.benefits-white-cards {
+    background-color: white;
+    padding: 4vh;
+    margin-top: 4vh;
+}
+
+.benefits-white-cards p {
+    margin-top: 3vh;
+}
+
+.benefits-white-cards h3 {
+    margin-top: 3vh;
+}
+
+.find-nearest-car-div {
+    margin-top: 3vh;
+}

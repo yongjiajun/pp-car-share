@@ -16,11 +16,16 @@ h1 {
     padding-top: 30vh;
 }
 
+h1, h4 {
+    font-size: 5vh;
+}
+
 #catchphrase {
     padding: 0 10vh;
 }
 
 #landing-main {
     background-color: #d3d3d361;
-    height: 100vh;
+    height: auto;
+    padding: 0;
 }

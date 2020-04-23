@@ -1,5 +1,6 @@
 #landing-body {
     padding: 0 10vh;
+    padding-bottom: 10vh;
 }
 
 /* Nav related css */
@@ -15,10 +16,4 @@
 
 .nav-item {
     margin: 0 10px;
-}
-
-/* Section related css */
-
-.section-item{
-    margin-bottom: 3vh;
 }
