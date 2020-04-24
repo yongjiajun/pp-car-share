@@ -9,6 +9,7 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import DashboardPage from './components/dashboard';
+import Footer from './components/footer'
 
 class App extends Component {
   componentDidMount() {
@@ -27,6 +28,7 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
         </Switch>
+        <Footer />
       </Router>
     );
   }

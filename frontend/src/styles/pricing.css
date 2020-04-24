@@ -1,0 +1,11 @@
+.table-div-white {
+    background-color: white;
+    padding: 3vh;
+    margin-bottom: 7vh;
+    margin-top: 7vh;
+}
+
+th {
+    background-color: #009bde;
+    color: white;
+}
