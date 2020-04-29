@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from './components/header';
 import LandingPage from './components/landing';
 import SignUpPage from './components/signup'
-import LoginPage from './components/login'
+import LoginPage from './components/login';
+import MapContainer from './components/map';
 import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
@@ -26,6 +27,7 @@ class App extends Component {
           <Route path="/" exact component={LandingPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
+          <Route path="/map" component={MapContainer} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
         </Switch>
         <Footer />
