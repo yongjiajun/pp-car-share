@@ -6,6 +6,7 @@ const parser = require('body-parser');
 const dotenv = require('dotenv');
 const passport = require("passport");
 const users_routes = require('./api/routes/users');
+const locations_routes = require('./api/routes/locations');
 dotenv.config();
 
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017"
@@ -43,6 +44,7 @@ require("./config/passport")(passport);
 
 // Routes
 app.use('/api/users', users_routes);
+app.use('/api/locations', locations_routes);
 
 // Error Handling
 app.use((req, res, next) => {
