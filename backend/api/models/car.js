@@ -14,4 +14,4 @@ const carSchema = mongoose.Schema({
     // currentBooking: {type: Schema.Types.ObjectId, ref: "Booking"},
 });
 
-module.exports = mongoose.model('Car', userSchema);
+module.exports = mongoose.model('Car', carSchema);
