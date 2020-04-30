@@ -4,7 +4,7 @@ const bookingSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     user: {type: Schema.Types.ObjectId, ref: "User"},
     car: {type: Schema.Types.ObjectId, ref: "Car"},
-    bookeddatetime: { type : Date, default: Date.now },
+    bookeddatetime: Date,
     pickupdatetime: Date,
     returndatetime: Date,
     cost: Number,
