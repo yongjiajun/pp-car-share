@@ -5,13 +5,13 @@ const carSchema = mongoose.Schema({
     make: String,
     seats: String,
     bodytype: String,
-    numberPlate: String,
+    numberplate: String,
     colour: String,
-    costPerHour: Number,
-    fuelType: String,
-    totalDistance: Number,
-    // location: {type: Schema.Types.ObjectId, ref: "Location"},
-    // currentBooking: {type: Schema.Types.ObjectId, ref: "Booking"},
+    costperhour: Number,
+    fueltype: String,
+    totaldistance: Number,
+    location: {type: Schema.Types.ObjectId, ref: "Location"},
+    currentbooking: {type: Schema.Types.ObjectId, ref: "Booking"},
 });
 
 module.exports = mongoose.model('Car', carSchema);
