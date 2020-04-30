@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const carSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     make: String,
-    seats: String,
+    seats: Number,
     bodytype: String,
     numberplate: String,
     colour: String,
