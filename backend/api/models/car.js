@@ -8,6 +8,8 @@ const carSchema = mongoose.Schema({
     numberplate: String,
     colour: String,
     costperhour: Number,
+    freekmperhour: Number,
+    extracostperkm: Number,
     fueltype: String,
     totaldistance: Number,
     location: {type: Schema.Types.ObjectId, ref: "Location"},
