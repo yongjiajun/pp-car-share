@@ -4,14 +4,28 @@ body, html {
 
 #landing-page {
     background-image: url("../assets/landing-image.jfif");
-    height: 100vh;
+    height: 70vh;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     color: white;
-    text-align: center;
+    text-align: left;
 }
 
 h1 {
-    padding-top: 40vh;
+    padding-top: 30vh;
+}
+
+h1, h4 {
+    font-size: 5vh;
+}
+
+#catchphrase {
+    padding: 0 10vh;
+}
+
+#landing-main {
+    background-color: #d3d3d361;
+    height: auto;
+    padding: 0;
 }

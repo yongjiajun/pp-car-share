@@ -1,0 +1,10 @@
+.cars-div-white {
+    background-color: white;
+    text-align: center;
+    padding: 3vh;
+    margin-top: 7vh;
+}
+
+.cars-div-white h3 {
+    margin-bottom: 3vh;
+}
