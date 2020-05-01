@@ -34,7 +34,7 @@ function CarDescriptionComponent(props) {
     return (
         <Col sm={4}>
             <div className="cars-div-white">
-                <img src={imgSrc}/>
+                <img src={imgSrc} alt="car" />
                 <h3 style={{marginTop: '3vh'}}>{name}</h3>
                 <h5>{header}</h5>
                 <p>{description}</p>

@@ -66,6 +66,22 @@ class UserServiceApi {
         return true
     }
 
+    isUserStaff() {
+        let user = this.getLoggedInUserDetails()
+        if(user.usertype === "admin" || user.usertype === "staff") {
+            return true
+        }
+        return false
+    }
+
+    isUserAdmin() {
+        let user = this.getLoggedInUserDetails()
+        if(user.usertype === "admin") {
+            return true
+        }
+        return false
+    }
+
     logout() {
         sessionStorage.removeItem(TOKEN_SESSION_ATTRIBUTE_NAME);
         window.location.href = `/`;

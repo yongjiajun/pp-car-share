@@ -21,7 +21,7 @@ exports.create_user = (req, res, next) => {
             });
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(user.password, salt, (err, hash) => {
-                    if (err) throw err;
+                    if (err) return res.status(500).json({ message: err.message });
                     user.password = hash;
                     user.save().then(user => {
                         const response = {

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import UserServiceApi from '../api/UserServiceApi';
 
 class Header extends Component {
     render() {
         const isUserLoggedIn = UserServiceApi.isUserLoggedIn();
+        const isUserStaff = UserServiceApi.isUserStaff();
         return (
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="/">Car Share</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
+                    <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
                     {!isUserLoggedIn &&
                         <>
@@ -21,8 +22,13 @@ class Header extends Component {
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-                            <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
+                            {isUserStaff && <Nav.Link href="/staff">Staff Dashboard</Nav.Link>}
                         </>
+                    }
+                    {isUserLoggedIn &&
+                        <NavItem className="ml-auto">
+                            <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
+                        </NavItem>
                     }
                     </Nav>
                 </Navbar.Collapse>

@@ -8,7 +8,9 @@ import LoginPage from './components/login'
 import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
+import StaffRoute from './StaffRoute.jsx'
 import DashboardPage from './components/dashboard';
+import StaffDashboard from './components/staffComponents/staffDashboard'
 import Footer from './components/footer'
 
 class App extends Component {
@@ -23,10 +25,11 @@ class App extends Component {
       <Router>
         <Header />
         <Switch>
-          <Route path="/" exact component={LandingPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
+          <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
+          <Route path="/"  component={LandingPage} />
         </Switch>
         <Footer />
       </Router>
