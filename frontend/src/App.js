@@ -25,11 +25,11 @@ class App extends Component {
       <Router>
         <Header />
         <Switch>
+          <Route exact path="/"  component={LandingPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
-          <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
-          <Route path="/"  component={LandingPage} />
+          <StaffRoute path="/staff" component={StaffDashboard} />
         </Switch>
         <Footer />
       </Router>
