@@ -15,6 +15,13 @@ class LocationServiceApi {
         return axios.post(api_url, newLocation)
     }
 
+    getGeocodeFromAddress(address) {
+        const url = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+        const api_key = "&key=AIzaSyCw4AB0ysQbI33KWKGEuLCuORtcgoFT8U4"
+        const formatted_address = address.replace(/ /g, "+");
+        return axios.get(`${url + formatted_address + api_key}`);
+    }
+
 }
 
 export default new LocationServiceApi()
