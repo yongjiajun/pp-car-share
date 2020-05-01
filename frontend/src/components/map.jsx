@@ -1,12 +1,16 @@
 import React from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../api/LocationServiceApi.js';
+import "../styles/map.css"
 
 export class MapContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      locations: []
+      locations: [],
+      activeMarker: {},
+      showingInfoWindow: false,
+      selectedPlace: {}
     }
   }
 
@@ -36,6 +40,22 @@ export class MapContainer extends React.Component {
     
   }
 
+  onMarkerClick = (props, marker) =>
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true,
+    })
+
+  onMapClick= () =>
+    this.setState({
+      showingInfoWindow: false,
+      selectedPlace: {},
+      activeMarker: {}
+    })
+  
+
+
   render() {
     return (
       <Map google={this.props.google} 
@@ -43,17 +63,24 @@ export class MapContainer extends React.Component {
              lat:-37.815198,
              lng:144.957045
            }}
-           zoom={14}>
+           zoom={14}
+           onClick={this.onMapClick}>
         
         {this.state.locations.map(marker => {
           return (
-            <Marker name={'Current'}
-                    position = {{lat: marker.lat, lng: marker.lng}}
+            <Marker 
+              name={marker.address}
+              onClick= {this.onMarkerClick}   
+              position = {{lat: marker.lat, lng: marker.lng}}
             />)
         })}
  
-        <InfoWindow onClose={this.onInfoWindowClose}>
-            <div>
+        <InfoWindow 
+          onClose={this.onInfoWindowClose}
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}>
+            <div id="info-window">
+              <p>{this.state.selectedPlace.name}</p>
             </div>
         </InfoWindow>
       </Map>
@@ -62,5 +89,5 @@ export class MapContainer extends React.Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyCw4AB0ysQbI33KWKGEuLCuORtcgoFT8U4"
+  apiKey: process.env.REACT_APP_API_KEY
 })(MapContainer)

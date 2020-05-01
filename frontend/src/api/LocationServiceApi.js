@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+require('dotenv').config();
 const api_url = process.env.server_url || "http://localhost:3001/api/locations"
 
 class LocationServiceApi {
@@ -17,9 +17,10 @@ class LocationServiceApi {
 
     getGeocodeFromAddress(address) {
         const url = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-        const api_key = "&key=AIzaSyCw4AB0ysQbI33KWKGEuLCuORtcgoFT8U4"
+        const api_key = process.env.REACT_APP_API_KEY;
         const formatted_address = address.replace(/ /g, "+");
-        return axios.get(`${url + formatted_address + api_key}`);
+        const key_input = "&key="
+        return axios.get(`${url + formatted_address + key_input + api_key}`);
     }
 
 }
