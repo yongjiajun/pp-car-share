@@ -2,6 +2,7 @@ import React from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../api/LocationServiceApi.js';
 import "../styles/map.css"
+import UserServiceApi from '../api/UserServiceApi.js';
 
 export class MapContainer extends React.Component {
   constructor(props) {
@@ -16,6 +17,8 @@ export class MapContainer extends React.Component {
 
   componentDidMount() {
     let location_array = this.state.locations;
+    // temporarily detach auth header from Axios when calling third party API
+    UserServiceApi.detachAxiosAuthHeader();
     // Get all locations from backend
     LocationServiceApi.getAllLocations().then(res => {
       const data = res.data;
@@ -37,7 +40,8 @@ export class MapContainer extends React.Component {
           }); 
       });
     });
-    
+    // reattach auth header for Axios
+    UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
   }
 
   onMarkerClick = (props, marker) =>
