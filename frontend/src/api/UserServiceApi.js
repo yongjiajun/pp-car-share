@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode'
 const api_url = process.env.server_url || "http://localhost:3001/api/users"
 
 export const TOKEN_SESSION_ATTRIBUTE_NAME = 'token'
+export const DETACH_TOKEN_SESSION_ATTRIBUTE_NAME = 'detachToken'
 export const TOKEN_HEADER_LENGTH = 7
 
 class UserServiceApi {
@@ -49,9 +50,8 @@ class UserServiceApi {
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             (config) => {
-                if (this.isUserLoggedIn()) {
+                if (this.isUserLoggedIn() && !this.getDetachTokenAxiosAuthHeader()) {
                     config.headers.authorization = token
-                    console.log(token);
                 }
                 return config
             }
@@ -64,6 +64,18 @@ class UserServiceApi {
             return false
         } 
         return true
+    }
+
+    detachAxiosAuthHeader() {
+        sessionStorage.setItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME, true)
+    }
+
+    reattachAxiosAuthHeader() {
+        sessionStorage.setItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME, false)
+    }
+
+    getDetachTokenAxiosAuthHeader() {
+        return sessionStorage.getItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME)
     }
 
     isUserStaff() {
@@ -84,6 +96,7 @@ class UserServiceApi {
 
     logout() {
         sessionStorage.removeItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        sessionStorage.removeItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME);
         window.location.href = `/`;
     }
 }

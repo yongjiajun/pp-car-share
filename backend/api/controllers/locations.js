@@ -22,7 +22,8 @@ exports.create_location = loc = (req, res) => {
         } else {
             const location = new Location({
                 _id: new mongoose.Types.ObjectId(),
-                address: req.body.address
+                address: req.body.address,
+                cars: req.body.cars
             });
             location.save().then(location => {
                 res.json('New location added')
