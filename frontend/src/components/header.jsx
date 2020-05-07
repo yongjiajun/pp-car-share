@@ -13,12 +13,8 @@ class Header extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
-                    {!isUserLoggedIn &&
-                        <>
-                            <Nav.Link href="/signup">Sign Up</Nav.Link>
-                            <Nav.Link href="/login">Log in</Nav.Link>
-                        </>
-                    }
+                        <Nav.Link href="/map">Locations</Nav.Link>
+                    
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
@@ -31,7 +27,20 @@ class Header extends Component {
                         </NavItem>
                     }
                     </Nav>
-                </Navbar.Collapse>
+                    <Nav>
+                        {!isUserLoggedIn &&
+                            <>
+                                <Nav.Link href="/signup">Sign Up</Nav.Link>
+                                <Nav.Link href="/login">Log in</Nav.Link>
+                            </>
+                        }
+                        {isUserLoggedIn && 
+                            <>
+                                <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
+                            </>
+                        }
+                    </Nav>
+               </Navbar.Collapse>
             </Navbar>
         )
     }
