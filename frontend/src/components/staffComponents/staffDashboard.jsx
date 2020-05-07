@@ -32,12 +32,12 @@ export default class staffDashboard extends Component {
         const isAdmin = UserServiceApi.isUserAdmin
         return (
             <Container style={{margin: "0", padding: "0", maxWidth: "100%"}}>
-                <Row>
+                <Row style={{margin: "0"}}>
                     <Col className="sidenav" md={2}>
                         <h3>{isAdmin ? "Admin" : "Staff" } Functions</h3>
-                        <a href="#" onClick={this.handleClick.bind(this)} style={(component === "Overview") ? FunctionSelectedStyle : {} }>Overview</a>
-                        { isAdmin && <a href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Staff") ? FunctionSelectedStyle : {} }>Create Staff</a> }
-                        <a href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Car") ? FunctionSelectedStyle : {} }>Create Car</a>
+                        <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Overview") ? FunctionSelectedStyle : {} }>Overview</p>
+                        { isAdmin && <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Staff") ? FunctionSelectedStyle : {} }>Create Staff</p> }
+                        <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Car") ? FunctionSelectedStyle : {} }>Create Car</p>
                     </Col>
 
                     <Col className="main" md={10}>

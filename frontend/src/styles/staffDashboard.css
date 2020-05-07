@@ -6,7 +6,7 @@
 }
 
 /* The navigation menu links */
-.sidenav a {
+.sidenav p {
     margin: 10px;
     display: block;
     text-decoration: none;
@@ -15,7 +15,7 @@
 }
 
 /* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
+.sidenav p:hover {
     color: #f1f1f1;
     cursor: pointer;
 }
