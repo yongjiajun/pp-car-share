@@ -12,8 +12,8 @@ const carSchema = mongoose.Schema({
     extracostperkm: Number,
     fueltype: String,
     totaldistance: Number,
-    location: {type: Schema.Types.ObjectId, ref: "Location"},
-    currentbooking: {type: Schema.Types.ObjectId, ref: "Booking"},
+    location: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
+    currentbooking: {type: mongoose.Schema.Types.ObjectId, ref: "Booking"},
 });
 
 module.exports = mongoose.model('Car', carSchema);
