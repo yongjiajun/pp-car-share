@@ -34,11 +34,6 @@ class Header extends Component {
                                 <Nav.Link href="/login">Log in</Nav.Link>
                             </>
                         }
-                        {isUserLoggedIn && 
-                            <>
-                                <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
-                            </>
-                        }
                     </Nav>
                </Navbar.Collapse>
             </Navbar>
