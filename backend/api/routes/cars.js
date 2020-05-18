@@ -9,5 +9,6 @@ router.get('/:carId', CarsController.get_car);
 router.post('/', CarsController.create_car);
 router.delete('/:carId', CarsController.delete_car);
 router.patch('/:carId', CarsController.update_car);
+router.post('/search', CarsController.search_available_cars);
 
 module.exports = router;

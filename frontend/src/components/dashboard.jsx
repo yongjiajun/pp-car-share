@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
+import BookingServiceApi from '../api/BookingServiceApi';
 
 class DashboardPage extends Component {
     constructor(props) {
@@ -8,7 +9,6 @@ class DashboardPage extends Component {
             pickupTime: '',
             returnTime: '',
             errorMessage: ''
-
         }
         // this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -22,6 +22,15 @@ class DashboardPage extends Component {
     handleSubmit = event => {
         event.preventDefault();
         // check for available cars and redirect
+        let newSearch = {
+            pickupTime: this.state.pickupTime,
+            returnTime: this.state.returnTime,
+        }
+        BookingServiceApi.searchAvailableCars(newSearch).then(res => {
+            console.log(res)
+        }).catch((error) => {
+            this.setState({ errorMessage: error.response.data.message });
+        })
     }
 
     render() {

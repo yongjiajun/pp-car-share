@@ -1,5 +1,7 @@
 const Booking = require('../models/booking');
 const mongoose = require('mongoose');
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
 const selectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost pickuplocation dropofflocation distance status';
 
 /* CONTROLLERS WITH JWT GUARDING */ 

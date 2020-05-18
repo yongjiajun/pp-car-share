@@ -1,5 +1,7 @@
 const Car = require('../models/car');
 const mongoose = require('mongoose');
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
 const selectFields = '_id make seats bodytype numberplate colour costperhour freekmperhour extracostperkm fueltype totaldistance location currentbooking';
 
 /* CONTROLLERS WITH JWT GUARDING */ 
@@ -145,5 +147,37 @@ exports.update_car = (req, res, next) => {
                 res.status(200).json({ response });
             })
             .catch(error => { res.status(500).json({ message: `Unable to UPDATE car of id '${id}'`, error: error }) })
+    })
+}
+
+exports.search_available_cars = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+
+        const pickupTime = req.params.pickupTime;
+        const returnTime = req.params.returnTime;
+
+        console.log(pickupTime)
+        console.log(returnTime)
+        
+        const response = {
+            message: `ok`
+        }
+        res.status(200).json({ response });
+
+        // Car.findOne({ _id: id })
+        //     .select(selectFields)
+        //     .exec()
+        //     .then(car => {
+        //         const response = {
+        //             car: car
+        //         }
+        //         res.status(200).json(response);
+        //     })
+        //     .catch(error => { res.status(500).json({ message: `Unable to GET car of id '${id}'`, error: error }) })
     })
 }
