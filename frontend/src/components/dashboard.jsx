@@ -19,25 +19,10 @@ class DashboardPage extends Component {
         this.setState({[event.target.name] : event.target.value})
     }
 
-    // handleSubmit = event => {
-        
-    //     /* May need to change / edit this */
-    //     let newUser = {
-    //         firstname: this.state.firstname,
-    //         lastname: this.state.lastname,
-    //         email: this.state.email,
-    //         password: this.state.password,
-    //         usertype: "customer"
-    //     }
-    //     UserServiceApi.createNewUser(newUser).then(() => { 
-    //         UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
-    //             UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
-    //             window.location.href = `/dashboard`;
-    //         })
-    //     }).catch((error) => {
-    //         this.setState({ errorMessage: error.response.data.message });
-    //     })
-    // }
+    handleSubmit = event => {
+        event.preventDefault();
+        // check for available cars and redirect
+    }
 
     render() {
         return(
