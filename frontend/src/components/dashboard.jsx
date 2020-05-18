@@ -5,8 +5,8 @@ class DashboardPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pickup_time: '',
-            return_time: '',
+            pickupTime: '',
+            returnTime: '',
             errorMessage: ''
 
         }
@@ -40,7 +40,7 @@ class DashboardPage extends Component {
                             Pickup Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="pickup_time" type="datetime-local" onChange={this.handleChange} />
+                            <Form.Control name="pickupTime" type="datetime-local" onChange={this.handleChange} />
                         </Col>
                     </Form.Group>
 
@@ -49,7 +49,7 @@ class DashboardPage extends Component {
                             Return Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="return_time" type="datetime-local" onChange={this.handleChange}/>
+                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange}/>
                         </Col>
                     </Form.Group>
 
