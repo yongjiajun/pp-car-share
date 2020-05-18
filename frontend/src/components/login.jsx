@@ -19,7 +19,8 @@ class LoginPage extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    handleSubmit() {
+    handleSubmit = event => {
+        event.preventDefault();
         let creds = {
             email: this.state.email,
             password: this.state.password
@@ -41,7 +42,7 @@ class LoginPage extends Component {
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                <Form>
+                <Form onSubmit={this.handleSubmit} id="login_form">
                     <Form.Group as={Row} controlId="formHorizontalEmail">
                         <Form.Label column sm={2}>
                             Email
@@ -62,7 +63,7 @@ class LoginPage extends Component {
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button onClick={this.handleSubmit}>Login</Button>
+                            <Button type="submit">Login</Button>
                         </Col>
                     </Form.Group>
                 </Form>
