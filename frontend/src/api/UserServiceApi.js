@@ -50,7 +50,7 @@ class UserServiceApi {
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             (config) => {
-                if (this.isUserLoggedIn() && !this.getDetachTokenAxiosAuthHeader()) {
+                if (this.isUserLoggedIn()) {
                     config.headers.authorization = token
                 }
                 return config
@@ -64,18 +64,6 @@ class UserServiceApi {
             return false
         } 
         return true
-    }
-
-    detachAxiosAuthHeader() {
-        sessionStorage.setItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME, true)
-    }
-
-    reattachAxiosAuthHeader() {
-        sessionStorage.setItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME, false)
-    }
-
-    getDetachTokenAxiosAuthHeader() {
-        return sessionStorage.getItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME)
     }
 
     isUserStaff() {
