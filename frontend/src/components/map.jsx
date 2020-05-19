@@ -43,7 +43,7 @@ export class MapContainer extends React.Component {
       });
     });
     // reattach auth header for Axios
-    UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
+    UserServiceApi.reattachAxiosAuthHeader();
   }
 
   onMarkerClick = (props, marker) =>

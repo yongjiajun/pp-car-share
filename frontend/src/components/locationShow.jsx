@@ -23,10 +23,8 @@ class LocationShowPage extends Component {
                 location: res.data
             })
         })
-
-        
         // reattach auth header for Axios
-        UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
+        UserServiceApi.reattachAxiosAuthHeader();
       }
 
     render() {

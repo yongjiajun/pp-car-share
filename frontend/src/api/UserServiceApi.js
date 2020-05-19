@@ -75,7 +75,7 @@ class UserServiceApi {
     }
 
     getDetachTokenAxiosAuthHeader() {
-        return sessionStorage.getItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME)
+        return sessionStorage.getItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME) === 'true'
     }
 
     isUserStaff() {
