@@ -20,7 +20,9 @@ class LocationServiceApi {
         const api_key = process.env.REACT_APP_API_KEY;
         const formatted_address = address.replace(/ /g, "+");
         const key_input = "&key="
-        return axios.get(`${url + formatted_address + key_input + api_key}`);
+        // create new axios instance without auth token for third party API
+        const axiosThirdParty = axios.create();
+        return axiosThirdParty.get(`${url + formatted_address + key_input + api_key}`);
     }
 
 }
