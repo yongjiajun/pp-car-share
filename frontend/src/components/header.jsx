@@ -13,7 +13,7 @@ class Header extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/map">Locations</Nav.Link>
+                        <Nav.Link href="/locations">Locations</Nav.Link>
                     
                     {isUserLoggedIn &&
                         <>
