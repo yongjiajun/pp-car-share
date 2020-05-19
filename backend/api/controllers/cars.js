@@ -153,6 +153,11 @@ exports.update_car = (req, res, next) => {
 }
 
 exports.search_available_cars = (req, res, next) => {
+    /* REQUIRED PARAMETERS: 
+        req.body.pickupTime
+        req.body.returnTime
+    */
+
     // search_available_cars returns all available cars in specified time range
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -185,6 +190,17 @@ exports.search_available_cars = (req, res, next) => {
 }
 
 exports.filter_cars = (req, res, next) => {
+    /* REQUIRED PARAMETERS: 
+        req.body.make
+        req.body.seats
+        req.body.fueltype
+        req.body.colour
+        req.body.location (LOCATION OBJECT ID)
+        req.body.bodytype
+        req.body.pickupTime
+        req.body.returnTime
+    */
+   
     // filter_cars allows the filtering of car attributes
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
