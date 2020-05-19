@@ -13,6 +13,10 @@ exports.create_booking = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
+        /* TODO:
+            CALCULATE BASE COST OF BOOKING BY GETTING CAR'S COST PER HOUR AND TIME DELTA OF BOOKING TIME RANGE
+            SET CAR'S BOOKING STATUS TO CONFIRMED
+        */
         const booking = new Booking({
             _id: new mongoose.Types.ObjectId(),
             user: req.body.user,
