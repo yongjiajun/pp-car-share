@@ -98,7 +98,7 @@ exports.get_all_users = (req, res, next) => {
             .exec()
             .then(users => {
                 const response = {
-                    user: users.map(user => {
+                    users: users.map(user => {
                         return {
                             id: user._id,
                             firstname: user.firstname,

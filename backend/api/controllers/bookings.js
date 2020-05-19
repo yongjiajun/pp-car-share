@@ -50,7 +50,7 @@ exports.get_all_bookings = (req, res, next) => {
             .exec()
             .then(bookings => {
                 const response = {
-                    booking: bookings.map(booking => {
+                    bookings: bookings.map(booking => {
                         return {
                             id: booking._id,
                             user: booking.user,
