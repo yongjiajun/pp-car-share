@@ -17,8 +17,6 @@ export class MapContainer extends React.Component {
 
   componentDidMount() {
     let location_array = this.state.locations;
-    // temporarily detach auth header from Axios when calling third party API
-    UserServiceApi.detachAxiosAuthHeader();
     // Get all locations from backend
     LocationServiceApi.getAllLocations().then(res => {
       const data = res.data;
@@ -42,8 +40,6 @@ export class MapContainer extends React.Component {
           }); 
       });
     });
-    // reattach auth header for Axios
-    UserServiceApi.reattachAxiosAuthHeader();
   }
 
   onMarkerClick = (props, marker) =>

@@ -15,16 +15,12 @@ class LocationShowPage extends Component {
         let location_array = this.state.locations;
         let url = this.props.match.url
         let location_id = url.split("/")[2]
-        // temporarily detach auth header from Axios when calling third party API
-        UserServiceApi.detachAxiosAuthHeader();
         // Get location from id
         LocationServiceApi.getLocationFromId(location_id).then(res => {
             this.setState({
                 location: res.data
             })
         })
-        // reattach auth header for Axios
-        UserServiceApi.reattachAxiosAuthHeader();
       }
 
     render() {
