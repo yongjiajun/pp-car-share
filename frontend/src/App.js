@@ -18,7 +18,7 @@ import Footer from './components/footer';
 class App extends Component {
   componentDidMount() {
     if (UserServiceApi.isUserLoggedIn()) {
-      UserServiceApi.setupAxiosInterceptors(sessionStorage.getItem('token'));
+      UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
   }
 
