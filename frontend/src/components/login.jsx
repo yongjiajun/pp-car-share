@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Row } from 'react-bootstrap';
+import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import UserServiceApi from '../api/UserServiceApi.js'
 
 class LoginPage extends Component {
@@ -7,8 +7,8 @@ class LoginPage extends Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
-
+            password: '',
+            errorMessage: ''
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -16,7 +16,7 @@ class LoginPage extends Component {
 
     /* Set react state for each input when user inputs something on login form */
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value})
+        this.setState({ [event.target.name]: event.target.value })
     }
 
     handleSubmit() {
@@ -27,23 +27,27 @@ class LoginPage extends Component {
         UserServiceApi.loginUser(creds).then(res => {
             UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
             window.location.href = `/dashboard`;
-        }).catch(res => {
-            console.log(res)
-        }, err => {
-            console.log(err)
+        }).catch((error) => {
+            this.setState({ errorMessage: error.response.data.message });
         })
     }
 
     render() {
         return (
             <div className="container">
+                {this.state.errorMessage && <Alert variant="danger">
+                    <Alert.Heading>Login failed!</Alert.Heading>
+                    <p>
+                        {this.state.errorMessage}
+                    </p>
+                </Alert>}
                 <Form>
                     <Form.Group as={Row} controlId="formHorizontalEmail">
                         <Form.Label column sm={2}>
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange}/>
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} />
                         </Col>
                     </Form.Group>
 
@@ -52,7 +56,7 @@ class LoginPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
+                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
                         </Col>
                     </Form.Group>
 
@@ -62,7 +66,6 @@ class LoginPage extends Component {
                         </Col>
                     </Form.Group>
                 </Form>
-
             </div>
         )
     }

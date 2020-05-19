@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Row } from 'react-bootstrap';
+import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import UserServiceApi from '../api/UserServiceApi.js'
 
 class SignUpPage extends Component {
@@ -9,7 +9,8 @@ class SignUpPage extends Component {
             firstname: '',
             lastname: '',
             email: '',
-            password: ''
+            password: '',
+            errorMessage: ''
 
         }
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -34,19 +35,21 @@ class SignUpPage extends Component {
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
                 UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
                 window.location.href = `/dashboard`;
-            }).catch(res => {
-                console.log(res)
             })
-        }).catch(res => {
-            console.log(res)
-        },err => {
-            console.log(err)
+        }).catch((error) => {
+            this.setState({ errorMessage: error.response.data.message });
         })
     }
 
     render() {
         return (
             <div className="container">
+                {this.state.errorMessage && <Alert variant="danger">
+                    <Alert.Heading>Sign up failed!</Alert.Heading>
+                    <p>
+                        {this.state.errorMessage}
+                    </p>
+                </Alert>}
                 <Form>
                     <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>

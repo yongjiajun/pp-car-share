@@ -9,7 +9,7 @@ const selectFields = '_id firstname lastname email password usertype';
 exports.create_user = (req, res, next) => {
     User.findOne({ email: req.body.email }).then(user => {
         if (user) {
-            return res.status(400).json({ email: "Email already exists" });
+            return res.status(400).json({ message: "Email already exists" });
         } else {
             const user = new User({
                 _id: new mongoose.Types.ObjectId(),
