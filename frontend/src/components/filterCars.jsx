@@ -21,6 +21,7 @@ class FilterCarsPage extends Component {
         }
         this.handleSubmitFilter = this.handleSubmitFilter.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmitBook = this.handleSubmitBook.bind(this)
     }
 
     handleChange = event => {
@@ -51,11 +52,29 @@ class FilterCarsPage extends Component {
         })
     }
 
+    handleSubmitBook(carId) {
+        // cost calculation
+        const pickupTimeHours = new Date(this.state.pickupTime);
+        const returnTimeHours = new Date(this.state.returnTime);
+        const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
+        
+        // TODO: make a popup menu that shows the booking details when 1 car is selected: cost and stuff
+        // user will be given the option to book or checkout other cars
+        // DONT REDIRECT to another page for displaying the above details because availableCars will be lost if customers regret
+        // and go back to the previous page to pick other cars
+        this.state.availableCars.map(car => {
+            if (car._id === carId) {
+                const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
+                alert('BOOKING COST FOR TIME RANGE: $' + cost);
+            }
+        })
+    }
+
     componentDidMount() {
         const { availableCars, pickupTime, returnTime } = this.props;
-        // if (availableCars.length == 0) {
-        //     this.props.history.push('/');
-        // }
+        if (availableCars.length == 0) {
+            this.props.history.push('/');
+        }
 
         this.setState({ availableCars: availableCars, pickupTime: pickupTime, returnTime: returnTime });
 
@@ -69,7 +88,6 @@ class FilterCarsPage extends Component {
                 locationArray.push(locationObject);
                 this.setState({ locations: locationArray });
             })
-            console.log(locationArray);
         });
     }
 
@@ -159,7 +177,7 @@ class FilterCarsPage extends Component {
                     </Form.Group>
                 </Form>
 
-                <h2>Available Cars</h2>
+                <h2>Available Cars from {this.state.pickupTime} till {this.state.returnTime}</h2>
                 <table>
                     <thead>
                         <tr>
@@ -195,6 +213,9 @@ class FilterCarsPage extends Component {
                                             }
                                         </>
                                     )}
+                                </td>
+                                <td>
+                                    <Button onClick={() => this.handleSubmitBook(car._id)}>Book</Button>
                                 </td>
                             </tr>
                         )}
