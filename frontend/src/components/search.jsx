@@ -49,7 +49,7 @@ class SearchComponent extends Component {
                             Pickup Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="pickupTime" type="datetime-local" onChange={this.handleChange} />
+                            <Form.Control name="pickupTime" type="datetime-local" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -58,7 +58,7 @@ class SearchComponent extends Component {
                             Return Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange} />
+                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 

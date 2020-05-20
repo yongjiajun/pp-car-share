@@ -72,7 +72,7 @@ class FilterCarsPage extends Component {
 
     componentDidMount() {
         const { availableCars, pickupTime, returnTime } = this.props;
-        if (availableCars.length == 0) {
+        if (availableCars.length === 0 || pickupTime === '' || returnTime === '') {
             this.props.history.push('/');
         }
 
