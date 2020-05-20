@@ -15,7 +15,7 @@ class SearchComponent extends Component {
     }
 
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value})
+        this.setState({ [event.target.name]: event.target.value })
     }
 
     handleSubmit = event => {
@@ -34,7 +34,7 @@ class SearchComponent extends Component {
     }
 
     render() {
-        return(
+        return (
             <div className="container">
                 <h2>Let's find you a car!</h2>
                 {this.state.errorMessage && <Alert variant="danger">
@@ -58,7 +58,7 @@ class SearchComponent extends Component {
                             Return Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange}/>
+                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange} />
                         </Col>
                     </Form.Group>
 
