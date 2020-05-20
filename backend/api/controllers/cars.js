@@ -241,7 +241,7 @@ exports.filter_cars = (req, res, next) => {
         carQuery.select(selectFields).exec().then(cars => {
             availableCars = searchForAvailableCars(pickupTime, returnTime, cars)
                 if (availableCars.length == 0) {
-                    return res.status(400).json({ message: "No cars are available at the moment." })
+                    return res.status(400).json({ message: "No cars are available with selected attributes." })
                 }
         
                 return res.status(200).json({ availableCars: availableCars });
