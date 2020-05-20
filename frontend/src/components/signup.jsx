@@ -92,6 +92,9 @@ class SignUpPage extends Component {
                         <Col sm={{ span: 10, offset: 2 }}>
                             <Button type="submit">Create Account</Button>
                         </Col>
+                        <Col sm={{ span: 10, offset: 2 }}>
+                            <a href="/login">Have an account?</a>
+                        </Col>
                     </Form.Group>
                 </Form>
 
