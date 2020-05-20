@@ -27,7 +27,7 @@ class LoginPage extends Component {
         }
         UserServiceApi.loginUser(creds).then(res => {
             UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
-            window.location.href = `/dashboard`;
+            window.location.href = `/`;
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
         })

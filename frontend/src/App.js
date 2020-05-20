@@ -10,7 +10,7 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
-import DashboardPage from './components/dashboard';
+import SearchComponent from './components/search';
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
@@ -53,9 +53,8 @@ class App extends Component {
                                                   availableCars={availableCars} 
                                                   pickupTime={pickupTime} 
                                                   returnTime={returnTime} />} />
-          <AuthenticatedRoute path="/dashboard" component={(props) => <DashboardPage {...props} updateCars={this.updateCars.bind(this)}/>} />
           <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
-          <Route path="/"  component={LandingPage} />
+          <Route path="/"  component={(props) => <LandingPage {...props} updateCars={this.updateCars.bind(this)}/>} />
         </Switch>
         <Footer />
       </Router>

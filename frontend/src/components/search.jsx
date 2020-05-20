@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import BookingServiceApi from '../api/BookingServiceApi';
 
-class DashboardPage extends Component {
+class SearchComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -68,13 +68,9 @@ class DashboardPage extends Component {
                         </Col>
                     </Form.Group>
                 </Form>
-                <div>
-                    Our cars:
-                    # a list of cars
-                </div>
             </div>
         )
     }
 }
 
-export default DashboardPage;
+export default SearchComponent;
