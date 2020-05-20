@@ -53,9 +53,9 @@ class FilterCarsPage extends Component {
 
     componentDidMount() {
         const { availableCars, pickupTime, returnTime } = this.props;
-        // if (availableCars.length == 0) {
-        //     this.props.history.push('/dashboard');
-        // }
+        if (availableCars.length == 0) {
+            this.props.history.push('/dashboard');
+        }
         
         this.setState({ availableCars: availableCars, pickupTime: pickupTime, returnTime: returnTime });
 
