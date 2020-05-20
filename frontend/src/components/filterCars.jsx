@@ -79,7 +79,7 @@ class FilterCarsPage extends Component {
             <div className="container">
                 <h2>Search for a car</h2>
                 {this.state.errorMessage && <Alert variant="danger">
-                    <Alert.Heading>Error checking availability!</Alert.Heading>
+                    <Alert.Heading>Error filtering cars!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
                     </p>
