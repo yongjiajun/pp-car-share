@@ -10,11 +10,10 @@ class DashboardPage extends Component {
             returnTime: '',
             errorMessage: ''
         }
-        // this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
-    /* Set react state for each input when user inputs something on signup form */
     handleChange = event => {
         this.setState({[event.target.name] : event.target.value})
     }
@@ -27,7 +26,8 @@ class DashboardPage extends Component {
             returnTime: this.state.returnTime,
         }
         BookingServiceApi.searchAvailableCars(newSearch).then(res => {
-            console.log(res)
+            this.props.updateCars(res.data.availableCars, this.state.pickupTime, this.state.returnTime);
+            this.props.history.push('/filter')
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
         })

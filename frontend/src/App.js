@@ -14,8 +14,24 @@ import DashboardPage from './components/dashboard';
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
+import FilterCarsPage from './components/filterCars';
 
 class App extends Component {
+
+  state = {
+    availableCars: [],
+    pickupTime: "",
+    returnTime: ""
+  }
+
+  updateCars(availableCars, pickupTime, returnTime) {
+    this.setState({
+      availableCars: availableCars,
+      pickupTime: pickupTime,
+      returnTime: returnTime
+    })
+  }
+
   componentDidMount() {
     if (UserServiceApi.isUserLoggedIn()) {
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
@@ -23,6 +39,8 @@ class App extends Component {
   }
 
   render() {
+    const {availableCars, pickupTime, returnTime} = this.state;
+
     return (
       <Router>
         <Header />
@@ -31,7 +49,11 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
           <Route path="/locations" component= {MapContainer} />
-          <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
+          <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
+                                                  availableCars={availableCars} 
+                                                  pickupTime={pickupTime} 
+                                                  returnTime={returnTime} />} />
+          <AuthenticatedRoute path="/dashboard" component={(props) => <DashboardPage {...props} updateCars={this.updateCars.bind(this)}/>} />
           <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
           <Route path="/"  component={LandingPage} />
         </Switch>
