@@ -19,6 +19,7 @@ class Header extends Component {
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                             {isUserStaff && <Nav.Link href="/staff">Staff Dashboard</Nav.Link>}
+                            <Nav.Link href="/admin/signup">Admin sign-up</Nav.Link>
                         </>
                     }
                     {isUserLoggedIn &&
