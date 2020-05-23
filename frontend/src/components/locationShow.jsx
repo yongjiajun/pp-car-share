@@ -17,8 +17,6 @@ class LocationShowPage extends Component {
         let location_array = this.state.locations;
         let url = this.props.match.url
         let location_id = url.split("/")[2]
-        // temporarily detach auth header from Axios when calling third party API
-        UserServiceApi.detachAxiosAuthHeader();
         // Get location from id
         LocationServiceApi.getLocationFromId(location_id).then(res => {
             this.setState({
@@ -26,10 +24,6 @@ class LocationShowPage extends Component {
                 cars: res.data.cars
             })
         })
-
-        
-        // reattach auth header for Axios
-        UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
       }
 
     render() {
