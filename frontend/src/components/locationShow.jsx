@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
 import UserServiceApi from '../api/UserServiceApi.js';
 import LocationServiceApi from '../api/LocationServiceApi.js';
+import MapContainer from './map';
 
 class LocationShowPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            location: {}
+            location: {},
+            cars: []
         }
     }
 
@@ -20,7 +22,8 @@ class LocationShowPage extends Component {
         // Get location from id
         LocationServiceApi.getLocationFromId(location_id).then(res => {
             this.setState({
-                location: res.data
+                location: res.data,
+                cars: res.data.cars
             })
         })
 
@@ -31,12 +34,17 @@ class LocationShowPage extends Component {
 
     render() {
         return (
-            <Jumbotron>
-                <h2>{this.state.location.address}</h2>
-                <p>
+            <>
+                <Jumbotron>
+                    <h2>Welcome to one of our locations</h2>
                     <Button href="/locations" variant="primary">Back to the map</Button>
-                </p>
-            </Jumbotron>
+                </Jumbotron>
+                <h3>{this.state.location.address}</h3>
+                <h3>Cars at this location:</h3>
+                {this.state.cars.map(car => 
+                    <p>car</p>
+                )}
+            </>
         )
     }
 }
