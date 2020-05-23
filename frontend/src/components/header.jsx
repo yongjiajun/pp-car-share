@@ -14,12 +14,16 @@ class Header extends Component {
                     <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/locations">Locations</Nav.Link>
+                    {UserServiceApi.isUserAdmin() &&
+                        <>
+                            <Nav.Link href="/admin/signup">Admin sign-up</Nav.Link>
+                        </>
                     
+                    } 
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                             {isUserStaff && <Nav.Link href="/staff">Staff Dashboard</Nav.Link>}
-                            <Nav.Link href="/admin/signup">Admin sign-up</Nav.Link>
                         </>
                     }
                     {isUserLoggedIn &&

@@ -10,6 +10,7 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
+import AdminRoute from './AdminRoute.jsx'
 import DashboardPage from './components/dashboard';
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
@@ -32,7 +33,7 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
           <Route path="/locations" component= {MapContainer} />
-          <Route path="/admin/signup" component= {AdminSignUpPage} />
+          <AdminRoute path="/admin/signup" component= {AdminSignUpPage} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
           <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
           <Route path="/"  component={LandingPage} />

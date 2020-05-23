@@ -7,6 +7,7 @@ class AdminRoute extends Component {
     //This class authenticates and verifies the user, otherwise redirects the web to the login page.
     render() {
         if (UserServiceApi.isUserLoggedIn() && UserServiceApi.isUserAdmin()) {
+            console.log(UserServiceApi.isUserAdmin())
             return <Route {...this.props} />
         } else {
             return <Redirect to="/" />
