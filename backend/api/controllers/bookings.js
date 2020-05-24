@@ -1,6 +1,6 @@
 const Booking = require('../models/booking');
 const mongoose = require('mongoose');
-const selectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost pickuplocation dropofflocation distance status';
+const selectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost location status';
 
 /* CONTROLLERS WITH JWT GUARDING */ 
 exports.create_booking = (req, res, next) => {
