@@ -116,3 +116,5 @@ dist
 
 # macOS system files
 .DS_Store
+
+alex.txt

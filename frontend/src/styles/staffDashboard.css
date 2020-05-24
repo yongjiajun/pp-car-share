@@ -1,0 +1,36 @@
+/* The sidebar menu */
+.sidenav {
+    height: 100vh; /* Full-height: remove this if you want "auto" height */
+    background-color: rgb(57, 57, 136); /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+/* The navigation menu links */
+.sidenav p {
+    margin: 10px;
+    display: block;
+    text-decoration: none;
+    color: white;
+    margin-top: 2vh;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav p:hover {
+    color: #f1f1f1;
+    cursor: pointer;
+}
+
+.sidenav h3 {
+    color: white;
+    margin: 5vh;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+.main {
+    background-color: lightgrey;
+}

@@ -3,10 +3,10 @@ import { Route, Redirect } from 'react-router-dom'
 import UserServiceApi from './api/UserServiceApi'
 
 
-class StaffRoute extends Component {
+class AdminRoute extends Component {
     //This class authenticates and verifies the user, otherwise redirects the web to the login page.
     render() {
-        if (UserServiceApi.isUserLoggedIn() && (UserServiceApi.isUserStaff() || UserServiceApi.isUserAdmin())) {
+        if (UserServiceApi.isUserLoggedIn() && UserServiceApi.isUserAdmin()) {
             return <Route {...this.props} />
         } else {
             return <Redirect to="/" />
@@ -15,4 +15,4 @@ class StaffRoute extends Component {
     }
 }
 
-export default StaffRoute
+export default AdminRoute

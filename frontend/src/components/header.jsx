@@ -14,7 +14,6 @@ class Header extends Component {
                     <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/locations">Locations</Nav.Link>
-                    
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>

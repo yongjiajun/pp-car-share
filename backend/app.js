@@ -11,10 +11,10 @@ const bookings_routes = require('./api/routes/bookings');
 const cars_routes= require('./api/routes/cars');
 dotenv.config();
 
-const uri = process.env.MONGO_URI || "mongodb://localhost:27017"
+const db_uri = process.env.MONGO_URI || "mongodb://localhost:27017"
 
 // MongoDB Connection
-mongoose.connect(uri + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected!'))
+mongoose.connect(db_uri + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected:' + db_uri))
     .catch(err => {
         console.log(process.env.MONGO_URI)
         console.log('DB Connection Error: ' + err.message);

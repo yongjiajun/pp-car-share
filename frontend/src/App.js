@@ -10,8 +10,14 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
+<<<<<<< HEAD
+=======
+import AdminRoute from './AdminRoute.jsx'
+import DashboardPage from './components/dashboard';
+>>>>>>> d9b579fb293ab475b668d76dc8a41f94a7cb27d7
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
+import AdminSignUpPage from './components/adminComponents/adminSignup';
 import Footer from './components/footer';
 import FilterCarsPage from './components/filterCars';
 import BookingDashboard from './components/bookingDashboard';
@@ -45,6 +51,7 @@ class App extends Component {
       <Router>
         <Header />
         <Switch>
+          <Route exact path="/"  component={LandingPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
@@ -53,10 +60,10 @@ class App extends Component {
             availableCars={availableCars}
             pickupTime={pickupTime}
             returnTime={returnTime} />} />
+          <AdminRoute path="/admin/signup" component= {AdminSignUpPage} />
           <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
             updateCars={this.updateCars.bind(this)} />} />
-          <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
-          <Route path="/" component={LandingPage} />
+          <StaffRoute path="/staff" component={StaffDashboard} />
         </Switch>
         <Footer />
       </Router>
