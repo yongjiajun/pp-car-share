@@ -1,6 +1,6 @@
 const Booking = require('../models/booking');
 const mongoose = require('mongoose');
-const selectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost pickuplocation dropofflocation distance status';
+const selectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost location status';
 
 /* CONTROLLERS WITH JWT GUARDING */ 
 exports.create_booking = (req, res, next) => {
@@ -19,9 +19,7 @@ exports.create_booking = (req, res, next) => {
             pickupdatetime: req.body.pickupdatetime,
             returndatetime: req.body.returndatetime,
             cost: req.body.cost,
-            pickuplocation: req.body.pickuplocation,
-            dropofflocation: req.body.dropofflocation,
-            distance: req.body.distance,
+            location: req.body.location,
             status: req.body.status
         });
         booking.save().then(booking => {
@@ -57,9 +55,7 @@ exports.get_all_bookings = (req, res, next) => {
                             pickupdatetime: booking.pickupdatetime,
                             returndatetime: booking.returndatetime,
                             cost: booking.cost,
-                            pickuplocation: booking.pickuplocation,
-                            dropofflocation: booking.dropofflocation,
-                            distance: booking.distance,
+                            location: booking.location,
                             status: booking.status
                         }
                     })
