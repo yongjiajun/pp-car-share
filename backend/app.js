@@ -14,7 +14,7 @@ dotenv.config();
 const uri = process.env.MONGO_URI || "mongodb://localhost:27017"
 
 // MongoDB Connection
-mongoose.connect(uri + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected!'))
+mongoose.connect(uri + '/ppcarshare', { useUnifiedTopology: true, useNewUrlParser: true }).then(() => console.log('DB Connected:' + process.env.MONGO_URI))
     .catch(err => {
         console.log(process.env.MONGO_URI)
         console.log('DB Connection Error: ' + err.message);

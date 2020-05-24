@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import UserServiceApi from '../api/UserServiceApi.js'
+import UserServiceApi from '../../api/UserServiceApi.js'
 
-class SignUpPage extends Component {
+class AdminSignUpPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,6 +10,7 @@ class SignUpPage extends Component {
             lastname: '',
             email: '',
             password: '',
+            usertype: 'customer',
             errorMessage: ''
 
         }
@@ -29,7 +30,7 @@ class SignUpPage extends Component {
             lastname: this.state.lastname,
             email: this.state.email,
             password: this.state.password,
-            usertype: "customer"
+            usertype: this.state.usertype
         }
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
@@ -87,12 +88,20 @@ class SignUpPage extends Component {
                         </Col>
                     </Form.Group>
 
+                    <Form.Group as={Row} controlId="formHorizontalUserType">
+                        <Form.Label column sm={2}>Account Type</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control name="usertype" as="select" onChange={this.handleChange}>
+                                <option>customer</option>
+                                <option>staff</option>
+                                <option>admin</option>
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
+
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
                             <Button onClick={this.handleSubmit}>Create Account</Button>
-                        </Col>
-                        <Col sm={{ span: 10, offset: 2 }}>
-                            <a href="/login">Have an account?</a>
                         </Col>
                     </Form.Group>
                 </Form>
@@ -102,4 +111,4 @@ class SignUpPage extends Component {
     }
 }
 
-export default SignUpPage;
+export default AdminSignUpPage;

@@ -13,8 +13,13 @@ class Header extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="container-fluid">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/map">Locations</Nav.Link>
+                        <Nav.Link href="/locations">Locations</Nav.Link>
+                    {UserServiceApi.isUserAdmin() &&
+                        <>
+                            <Nav.Link href="/admin/signup">Admin sign-up</Nav.Link>
+                        </>
                     
+                    } 
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
@@ -32,11 +37,6 @@ class Header extends Component {
                             <>
                                 <Nav.Link href="/signup">Sign Up</Nav.Link>
                                 <Nav.Link href="/login">Log in</Nav.Link>
-                            </>
-                        }
-                        {isUserLoggedIn && 
-                            <>
-                                <Nav.Link onClick={UserServiceApi.logout}>Logout</Nav.Link>
                             </>
                         }
                     </Nav>

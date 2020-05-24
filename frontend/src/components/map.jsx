@@ -17,8 +17,6 @@ export class MapContainer extends React.Component {
 
   componentDidMount() {
     let location_array = this.state.locations;
-    // temporarily detach auth header from Axios when calling third party API
-    UserServiceApi.detachAxiosAuthHeader();
     // Get all locations from backend
     LocationServiceApi.getAllLocations().then(res => {
       const data = res.data;
@@ -28,9 +26,11 @@ export class MapContainer extends React.Component {
           .then(res => {
             // Create object with address, latitude and longitude
             let object = {
+              id: element._id,
               address: element.address,
               lat: res.data.results[0].geometry.location.lat,
-              lng: res.data.results[0].geometry.location.lng
+              lng: res.data.results[0].geometry.location.lng,
+              cars: element.cars
             }
             // Push address, lat, long as object to react state array
             location_array.push(object);
@@ -40,8 +40,6 @@ export class MapContainer extends React.Component {
           }); 
       });
     });
-    // reattach auth header for Axios
-    UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
   }
 
   onMarkerClick = (props, marker) =>
@@ -73,6 +71,7 @@ export class MapContainer extends React.Component {
         {this.state.locations.map(marker => {
           return (
             <Marker 
+              id={marker.id}
               name={marker.address}
               onClick= {this.onMarkerClick}   
               position = {{lat: marker.lat, lng: marker.lng}}
@@ -85,6 +84,7 @@ export class MapContainer extends React.Component {
           visible={this.state.showingInfoWindow}>
             <div id="info-window">
               <p>{this.state.selectedPlace.name}</p>
+              <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
             </div>
         </InfoWindow>
       </Map>
