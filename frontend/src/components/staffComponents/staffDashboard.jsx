@@ -8,7 +8,12 @@ import AdminSignup from '../adminComponents/adminSignup'
 import '../../styles/staffDashboard.css'
 
 const FunctionSelectedStyle = {
-    borderBottom: "4px solid #009bde"
+    borderBottom: "4px solid #009bde",
+    color: "white"
+}
+
+const FunctionNotSelectedStyle = {
+    color: "white"
 }
 
 export default class StaffDashboard extends Component {
@@ -17,37 +22,37 @@ export default class StaffDashboard extends Component {
         super(props);
 
         this.state = {
-            component: 'Overview'
+            
         }
     }
-
-    handleClick(event) {
-        this.setState({
-            component: event.target.innerHTML
-        })
+    
+    componentDidMount() {
+        
     }
 
     render() {
-        const { component } = this.state
+        const currentLocation = window.location.pathname
         const isAdmin = UserServiceApi.isUserAdmin
         return (
             <Container style={{margin: "0", padding: "0", maxWidth: "100%"}}>
                 <Row style={{margin: "0"}}>
                     <Col className="sidenav" md={2}>
                         <h3>{isAdmin ? "Admin" : "Staff" } Functions</h3>
-                        <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Overview") ? FunctionSelectedStyle : {} }>Overview</p>
+                        <p href="/staff" style={(currentLocation === "/staff") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Overview</p>
                         { 
                             isAdmin && 
                             <>
-                                <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Account") ? FunctionSelectedStyle : {} }>Create Account</p>
+                                <p><a href="/admin/signup" style={(currentLocation === "/admin/signup") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Create Account</a></p>
+                                <p><a href="/admin/addcars" style={(currentLocation === "/admin/addcars") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Create Car</a></p>
+                                <p><a href="/admin/addlocation" style={(currentLocation === "/admin/addlocation") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Add Location</a></p>
                             </> 
                         }
-                        <p href="#" onClick={this.handleClick.bind(this)} style={(component === "Create Car") ? FunctionSelectedStyle : {} }>Create Car</p>
+                        
                         
                     </Col>
 
                     <Col className="main" md={10} style={{paddingTop: '5vh'}}>
-                        <NavigateDashboard component={this.state.component}/>
+                        {this.props.children}
                     </Col>
                 </Row>
             </Container>
@@ -55,15 +60,3 @@ export default class StaffDashboard extends Component {
     }
 }
 
-/* Navigate dashboard */
-function NavigateDashboard(props) {
-    const { component, style } = props
-    switch(component) {
-        case "Create Car":
-            return(<CreateCar/>);
-        case "Create Account":
-            return(<AdminSignup/>);
-        default:
-            return(<Overview/>);
-    }
-}

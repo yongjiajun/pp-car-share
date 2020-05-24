@@ -7,7 +7,7 @@ class DashboardPage extends Component {
         const userDetails = UserServiceApi.getLoggedInUserDetails();
 
         return(
-            <body>
+            <div>
                 <h1>Hey {userDetails.firstname}, welcome back to Car Share!</h1>
                 <p>First name: {userDetails.firstname}</p>
                 <p>Last name: {userDetails.lastname}</p>
@@ -15,7 +15,7 @@ class DashboardPage extends Component {
                 <p>User ID: {userDetails.id}</p>
                 <p>User type: {userDetails.usertype}</p>
                 <p>JWT Token: {UserServiceApi.getUserToken()}</p>
-            </body>
+            </div>
         )
     }
 }
