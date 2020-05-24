@@ -3,8 +3,8 @@ const Booking = require('../models/booking');
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-const bookingSelectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost pickuplocation dropofflocation distance status';
-const selectFields = '_id make seats bodytype numberplate colour costperhour freekmperhour extracostperkm fueltype totaldistance location currentbooking';
+const bookingSelectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost location status';
+const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking';
 
 /* CONTROLLERS WITH JWT GUARDING */ 
 exports.create_car = (req, res, next) => {
@@ -23,10 +23,7 @@ exports.create_car = (req, res, next) => {
             numberplate: req.body.numberplate,
             colour: req.body.colour,
             costperhour: req.body.costperhour,
-            freekmperhour: req.body.freekmperhour,
-            extracostperkm: req.body.extracostperkm,
             fueltype: req.body.fueltype,
-            totaldistance: req.body.totaldistance,
             location: req.body.location,
             currentbooking: null
         });
@@ -63,10 +60,7 @@ exports.get_all_cars = (req, res, next) => {
                             numberplate: car.numberplate,
                             colour: car.colour,
                             costperhour: car.costperhour,
-                            freekmperhour: car.freekmperhour,
-                            extracostperkm: car.extracostperkm,
                             fueltype: car.fueltype,
-                            totaldistance: car.totaldistance,
                             location: car.location,
                             currentbooking: car.currentbooking
                         }

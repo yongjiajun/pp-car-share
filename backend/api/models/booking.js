@@ -8,9 +8,7 @@ const bookingSchema = mongoose.Schema({
     pickupdatetime: Date,
     returndatetime: Date,
     cost: Number,
-    pickuplocation: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
-    dropofflocation: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
-    distance: Number,
+    location: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
     status: String
 });
 
