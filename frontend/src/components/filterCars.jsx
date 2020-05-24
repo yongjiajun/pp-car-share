@@ -164,7 +164,7 @@ class FilterCarsPage extends Component {
                             <option>Any</option>
                             {this.state.locations.map(location =>
                                 <>
-                                    <option value={location.id}>{location.address}</option>
+                                    <option value={location.id}>{location.name + " @ " + location.address}</option>
                                 </>
                             )}
                         </Form.Control>
