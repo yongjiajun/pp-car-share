@@ -1,5 +1,7 @@
 const Car = require('../models/car');
 const mongoose = require('mongoose');
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
 const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking';
 
 /* CONTROLLERS WITH JWT GUARDING */ 
