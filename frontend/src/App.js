@@ -10,11 +10,11 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
-import SearchComponent from './components/search';
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
 import FilterCarsPage from './components/filterCars';
+import BookingDashboard from './components/bookingDashboard';
 
 class App extends Component {
 
@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   render() {
-    const {availableCars, pickupTime, returnTime} = this.state;
+    const { availableCars, pickupTime, returnTime } = this.state;
 
     return (
       <Router>
@@ -48,13 +48,15 @@ class App extends Component {
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
-          <Route path="/locations" component= {MapContainer} />
+          <Route path="/locations" component={MapContainer} />
           <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
-                                                  availableCars={availableCars} 
-                                                  pickupTime={pickupTime} 
-                                                  returnTime={returnTime} />} />
+            availableCars={availableCars}
+            pickupTime={pickupTime}
+            returnTime={returnTime} />} />
+          <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
+            updateCars={this.updateCars.bind(this)} />} />
           <StaffRoute path="/staff" component={StaffDashboard} isAdmin={UserServiceApi.isUserAdmin} />
-          <Route path="/"  component={(props) => <LandingPage {...props} updateCars={this.updateCars.bind(this)}/>} />
+          <Route path="/" component={LandingPage} />
         </Switch>
         <Footer />
       </Router>

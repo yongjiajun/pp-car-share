@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import '../styles/landing.css'
 import LandingBody from './landingBody'
 import UserServiceApi from '../api/UserServiceApi';
-import SearchComponent from './search';
 
 class LandingPage extends Component {
 
@@ -19,7 +18,9 @@ class LandingPage extends Component {
 
                         {isUserLoggedIn &&
                         <>
-                            <SearchComponent {...this.props} updateCars={this.props.updateCars.bind(this)}></SearchComponent>
+                            <Link to="/dashboard">
+                                <Button variant="warning" style={{fontSize: '2vh'}}>Book Now</Button>
+                            </Link>
                         </>
                         }
                         {!isUserLoggedIn &&

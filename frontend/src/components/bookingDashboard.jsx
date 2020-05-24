@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import BookingServiceApi from '../api/BookingServiceApi';
 
-class SearchComponent extends Component {
+class BookingDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -73,4 +73,4 @@ class SearchComponent extends Component {
     }
 }
 
-export default SearchComponent;
+export default BookingDashboard;
