@@ -23,6 +23,7 @@ class SignUpPage extends Component {
     }
 
     handleSubmit = event => {
+        event.preventDefault();
         /* May need to change / edit this */
         let newUser = {
             firstname: this.state.firstname,
@@ -50,7 +51,7 @@ class SignUpPage extends Component {
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                <Form>
+                <Form onSubmit={this.handleSubmit} id="signup_form">
                     <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>
                             First Name
@@ -89,7 +90,7 @@ class SignUpPage extends Component {
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button onClick={this.handleSubmit}>Create Account</Button>
+                            <Button type="submit">Create Account</Button>
                         </Col>
                         <Col sm={{ span: 10, offset: 2 }}>
                             <a href="/login">Have an account?</a>
