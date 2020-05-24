@@ -28,6 +28,7 @@ export class MapContainer extends React.Component {
             let object = {
               id: element._id,
               address: element.address,
+              name: element.name,
               lat: res.data.results[0].geometry.location.lat,
               lng: res.data.results[0].geometry.location.lng,
               cars: element.cars
@@ -72,8 +73,9 @@ export class MapContainer extends React.Component {
           return (
             <Marker 
               id={marker.id}
-              name={marker.address}
-              onClick= {this.onMarkerClick}   
+              title={marker.name}
+              name={marker.name + " @ " + marker.address}
+              onClick= {this.onMarkerClick}
               position = {{lat: marker.lat, lng: marker.lng}}
             />)
         })}
