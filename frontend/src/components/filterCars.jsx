@@ -73,7 +73,7 @@ class FilterCarsPage extends Component {
     componentDidMount() {
         const { availableCars, pickupTime, returnTime } = this.props;
         if (availableCars.length === 0 || pickupTime === '' || returnTime === '') {
-            this.props.history.push('/');
+            this.props.history.push('/dashboard');
         }
 
         this.setState({ availableCars: availableCars, pickupTime: pickupTime, returnTime: returnTime });
@@ -83,7 +83,8 @@ class FilterCarsPage extends Component {
             res.data.map(location => {
                 let locationObject = {
                     id: location._id,
-                    address: location.address
+                    address: location.address,
+                    name: location.name
                 }
                 locationArray.push(locationObject);
                 this.setState({ locations: locationArray });
