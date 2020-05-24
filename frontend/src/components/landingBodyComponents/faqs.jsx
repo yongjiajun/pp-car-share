@@ -1,22 +1,24 @@
-import React from 'react'
+import React, {Component} from 'react'
 
 import '../../styles/faqs.css'
 
 import { Accordion, Card, Button } from 'react-bootstrap'
 
-function Faqs() {
-    return (
-        <section className="section-item">
-            <div>
-                <h2>FAQs</h2>
-                <Accordion style={{marginTop: '7vh'}}>
-                    <AccordionCustom eventKey="1" question="Question" answer="Answer"/>
-                    <AccordionCustom eventKey="2" question="Question" answer="Answer"/>
-                    <AccordionCustom eventKey="3" question="Question" answer="Answer"/>
-                </Accordion>
-            </div>
-        </section>
-    );
+export default class Faqs extends Component {
+    render() {
+        return (
+            <section className="section-item">
+                <div>
+                    <h2>FAQs</h2>
+                    <Accordion style={{marginTop: '7vh'}}>
+                        <AccordionCustom eventKey="1" question="Question" answer="Answer"/>
+                        <AccordionCustom eventKey="2" question="Question" answer="Answer"/>
+                        <AccordionCustom eventKey="3" question="Question" answer="Answer"/>
+                    </Accordion>
+                </div>
+            </section>
+        );   
+    }
 }
 
 function AccordionCustom(props) {
@@ -34,5 +36,3 @@ function AccordionCustom(props) {
         </Card>
     );
 }
-
-export default Faqs;

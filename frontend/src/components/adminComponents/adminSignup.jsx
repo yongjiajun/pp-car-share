@@ -45,6 +45,7 @@ class AdminSignUpPage extends Component {
     render() {
         return (
             <div className="container">
+                <h2>Create Account</h2>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Sign up failed!</Alert.Heading>
                     <p>

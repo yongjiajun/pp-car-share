@@ -1,32 +1,35 @@
-import React from 'react'
+import React, {Component} from 'react'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
 import '../../styles/carsAndVans.css'
 
-function CarsAndVans() {
-    return (
-        <section className="section-item">
-            <div>
-                <h2>Cars and Vans</h2>
-                <Container fluid>
-                    <Row>
-                        <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                        <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                        <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                        <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                    </Row>
-                </Container>
-            </div>
-            <div className="find-nearest-car-div">
-                <h2>Find your nearest COOL Car Share</h2>
-                <p>There are cars and vans spread all over Australia. There's probably one near you</p>
+export default class CarsAndVans extends Component {
+
+    render () {
+        return (
+            <section className="section-item">
                 <div>
-                    This div contains a map
+                    <h2>Cars and Vans</h2>
+                    <Container fluid>
+                        <Row>
+                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
+                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
+                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
+                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
+                        </Row>
+                    </Container>
                 </div>
-            </div>
-        </section>
-    );
+                <div className="find-nearest-car-div">
+                    <h2>Find your nearest COOL Car Share</h2>
+                    <p>There are cars and vans spread all over Australia. There's probably one near you</p>
+                    <div>
+                        This div contains a map
+                    </div>
+                </div>
+            </section>
+        );
+    }
 }
 
 function CarDescriptionComponent(props) {
@@ -42,5 +45,3 @@ function CarDescriptionComponent(props) {
         </Col>
     );
 }
-
-export default CarsAndVans;
