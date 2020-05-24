@@ -1,5 +1,7 @@
 const Location = require('../models/location');
 const mongoose = require('mongoose');
+const jwt = require("jsonwebtoken");
+const keys = require("../../config/keys");
 
 exports.get_all_locations = (req, res) => {
     Location.find()
