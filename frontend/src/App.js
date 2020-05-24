@@ -10,11 +10,7 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
-<<<<<<< HEAD
-=======
 import AdminRoute from './AdminRoute.jsx'
-import DashboardPage from './components/dashboard';
->>>>>>> d9b579fb293ab475b668d76dc8a41f94a7cb27d7
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import AdminSignUpPage from './components/adminComponents/adminSignup';
