@@ -15,8 +15,8 @@ import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import AdminSignUpPage from './components/adminComponents/adminSignup';
 import Footer from './components/footer';
-import FilterCarsPage from './components/filterCars';
-import BookingDashboard from './components/bookingDashboard';
+import FilterCarsPage from './components/bookingComponents/filterCars';
+import BookingDashboard from './components/bookingComponents/bookingDashboard';
 
 class App extends Component {
 

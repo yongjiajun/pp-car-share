@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import BookingServiceApi from '../api/BookingServiceApi';
-import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from './../Constants.js'
-import LocationServiceApi from '../api/LocationServiceApi';
+import BookingServiceApi from '../../api/BookingServiceApi';
+import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js'
+import LocationServiceApi from '../../api/LocationServiceApi';
 class FilterCarsPage extends Component {
     constructor(props) {
         super(props);
@@ -187,10 +187,9 @@ class FilterCarsPage extends Component {
                             <th>Body Type</th>
                             <th>Colour</th>
                             <th>Cost per hour</th>
-                            <th>Free KMs per hour</th>
-                            <th>Extra Cost per KM</th>
                             <th>Fuel Type</th>
                             <th>Location</th>
+                            <th>Address</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -201,9 +200,18 @@ class FilterCarsPage extends Component {
                                 <td>{car.bodytype}</td>
                                 <td>{car.colour}</td>
                                 <td>${car.costperhour}</td>
-                                <td>{car.freekmperhour}km</td>
-                                <td>${car.extracostperkm}</td>
                                 <td>{car.fueltype}</td>
+                                <td>
+                                    {this.state.locations.map(location =>
+                                        <>
+                                            {location.id === car.location &&
+                                                <>
+                                                    {location.name}
+                                                </>
+                                            }
+                                        </>
+                                    )}
+                                </td>
                                 <td>
                                     {this.state.locations.map(location =>
                                         <>

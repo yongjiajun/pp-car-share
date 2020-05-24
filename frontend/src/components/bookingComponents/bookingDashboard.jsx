@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import BookingServiceApi from '../api/BookingServiceApi';
+import BookingServiceApi from '../../api/BookingServiceApi';
 
 class BookingDashboard extends Component {
     constructor(props) {
