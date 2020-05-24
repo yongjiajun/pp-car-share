@@ -33,7 +33,8 @@ class LocationShowPage extends Component {
                     <h2>Welcome to one of our locations</h2>
                     <Button href="/locations" variant="primary">Back to the map</Button>
                 </Jumbotron>
-                <h3>{this.state.location.address}</h3>
+                <h3>{this.state.location.name}</h3>
+                <h3>Address: </h3>{this.state.location.address}
                 <h3>Cars at this location:</h3>
                 {this.state.cars.map(car => 
                     <p>car</p>
