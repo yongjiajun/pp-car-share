@@ -99,67 +99,69 @@ export default class CreateLocation extends Component {
                         </p>
                     </Alert>
                 }
-                <Form.Group as={Row} controlId="formHorizontalName">
-                    <Form.Label column sm={2}>
-                        First Name
-                    </Form.Label>
-                    <Col sm={10}>
-                        <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} controlId="formHorizontalName">
-                    <Form.Label column sm={2}>
-                        Enter Address
-                    </Form.Label>
-                    <Col sm={10}>
-                    { this.state.gmapsLoaded &&
-                        <PlacesAutocomplete
-                            value={this.state.address}
-                            onChange={this.handleAutocomplete}
-                            onSelect={this.handleSelect}
-                        >
-                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                            <div>
-                                <Form.Control
-                                {...getInputProps({
-                                    placeholder: 'Search Places ...',
-                                    className: 'location-search-input',
-                                    required: true
-                                })}
-                                />
-                                <div className="autocomplete-dropdown-container">
-                                {loading && <div>Loading...</div>}
-                                {suggestions.map(suggestion => {
-                                    const className = suggestion.active
-                                    ? 'suggestion-item--active'
-                                    : 'suggestion-item';
-                                    // inline style for demonstration purpose
-                                    const style = suggestion.active
-                                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                    return (
-                                    <div
-                                        {...getSuggestionItemProps(suggestion, {
-                                        className,
-                                        style,
-                                        })}
-                                    >
-                                        <span>{suggestion.description}</span>
+                <Form>
+                    <Form.Group as={Row} controlId="formHorizontalName">
+                        <Form.Label column sm={2}>
+                            First Name
+                        </Form.Label>
+                        <Col sm={10}>
+                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="formHorizontalName">
+                        <Form.Label column sm={2}>
+                            Enter Address
+                        </Form.Label>
+                        <Col sm={10}>
+                        { this.state.gmapsLoaded &&
+                            <PlacesAutocomplete
+                                value={this.state.address}
+                                onChange={this.handleAutocomplete}
+                                onSelect={this.handleSelect}
+                            >
+                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                <div>
+                                    <Form.Control
+                                    {...getInputProps({
+                                        placeholder: 'Search Places ...',
+                                        className: 'location-search-input',
+                                        required: true
+                                    })}
+                                    />
+                                    <div className="autocomplete-dropdown-container">
+                                    {loading && <div>Loading...</div>}
+                                    {suggestions.map(suggestion => {
+                                        const className = suggestion.active
+                                        ? 'suggestion-item--active'
+                                        : 'suggestion-item';
+                                        // inline style for demonstration purpose
+                                        const style = suggestion.active
+                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                        return (
+                                        <div
+                                            {...getSuggestionItemProps(suggestion, {
+                                            className,
+                                            style,
+                                            })}
+                                        >
+                                            <span>{suggestion.description}</span>
+                                        </div>
+                                        );
+                                    })}
                                     </div>
-                                    );
-                                })}
                                 </div>
-                            </div>
-                            )}
-                        </PlacesAutocomplete>
-                    }
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row}>
-                    <Col sm={{ span: 10, offset: 2 }}>
-                        <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Create Location</Button>
-                    </Col>
-                </Form.Group>
+                                )}
+                            </PlacesAutocomplete>
+                        }
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Col sm={{ span: 10, offset: 2 }}>
+                            <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Create Location</Button>
+                        </Col>
+                    </Form.Group>
+                </Form>
             </div>
         )
     }

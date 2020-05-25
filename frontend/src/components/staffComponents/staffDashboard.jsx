@@ -38,7 +38,7 @@ export default class StaffDashboard extends Component {
                 <Row style={{margin: "0"}}>
                     <Col className="sidenav" md={2}>
                         <h3>{isAdmin ? "Admin" : "Staff" } Functions</h3>
-                        <p href="/staff" style={(currentLocation === "/staff") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Overview</p>
+                        <p><a href="/staff" style={(currentLocation === "/staff") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Overview</a></p>
                         { 
                             isAdmin && 
                             <>
