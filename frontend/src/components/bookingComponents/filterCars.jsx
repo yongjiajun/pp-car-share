@@ -3,6 +3,8 @@ import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js'
 import LocationServiceApi from '../../api/LocationServiceApi';
+import BookingConfirmDetailsPopUp from './bookingConfirmDetails'
+
 class FilterCarsPage extends Component {
     constructor(props) {
         super(props);
@@ -17,11 +19,13 @@ class FilterCarsPage extends Component {
             location: 'Any',
             bodytype: 'Any',
             locations: [],
-            errorMessage: ''
+            errorMessage: '',
+            popUp: false,
+            selectedCar: ''
         }
         this.handleSubmitFilter = this.handleSubmitFilter.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmitBook = this.handleSubmitBook.bind(this)
+        this.togglePopUp = this.togglePopUp.bind(this)
     }
 
     handleChange = event => {
@@ -52,22 +56,13 @@ class FilterCarsPage extends Component {
         })
     }
 
-    handleSubmitBook(carId) {
-        // cost calculation
-        const pickupTimeHours = new Date(this.state.pickupTime);
-        const returnTimeHours = new Date(this.state.returnTime);
-        const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
-        
-        // TODO: make a popup menu that shows the booking details when 1 car is selected: cost and stuff
-        // user will be given the option to book or checkout other cars
-        // DONT REDIRECT to another page for displaying the above details because availableCars will be lost if customers regret
-        // and go back to the previous page to pick other cars
-        this.state.availableCars.map(car => {
-            if (car._id === carId) {
-                const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
-                alert('BOOKING COST FOR TIME RANGE: $' + cost);
-            }
-        })
+    togglePopUp(car) {
+        if (this.state.popUp)
+            car = null;
+        this.setState({
+            popUp: !this.state.popUp,
+            selectedCar: car
+        });
     }
 
     componentDidMount() {
@@ -96,6 +91,7 @@ class FilterCarsPage extends Component {
 
         return (
             <div className="container">
+                {this.state.popUp && <BookingConfirmDetailsPopUp car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} />}
                 <h2>Search for a car</h2>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error filtering cars!</Alert.Heading>
@@ -224,7 +220,7 @@ class FilterCarsPage extends Component {
                                     )}
                                 </td>
                                 <td>
-                                    <Button onClick={() => this.handleSubmitBook(car._id)}>Book</Button>
+                                    <Button onClick={() => this.togglePopUp(car)}>Book</Button>
                                 </td>
                             </tr>
                         )}
