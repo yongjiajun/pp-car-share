@@ -172,6 +172,7 @@ exports.search_available_cars = (req, res, next) => {
                 if (availableCars.length == 0) {
                     return res.status(400).json({ message: "No cars are available at the moment." })
                 } else {
+                    console.log(availableCars)
                     return res.status(200).json({ availableCars: availableCars });
                 }
             });
@@ -247,14 +248,15 @@ function searchForAvailableCars(pickupTime, returnTime, cars) {
     return new Promise(async (resolve, reject) => {
         var availableCars = []
         // loop through all bookings of all cars and check each booking time range
-        for (i in cars) {
-            await checkCarAvailable(pickupTime, returnTime, cars[i]._id).then(available => {
+        cars.forEach(async function(car, i) {
+            var available = await checkCarAvailable(pickupTime, returnTime, car._id);
                 if (available) {
-                    availableCars.push(cars[i]);
+                    availableCars.push(car);
                 }
-            })
-        }
-        resolve(availableCars);
+                if (i === cars.length - 1) {
+                    resolve(availableCars);
+                }
+        })
     })
 }
 

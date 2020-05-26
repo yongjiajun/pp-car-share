@@ -150,16 +150,3 @@ exports.update_booking = (req, res, next) => {
             .catch(error => { res.status(500).json({ message: `Unable to UPDATE booking of id '${id}'`, error: error }) })
     })
 }
-
-function calculateBookingCost(pickupTime, returnTime, carId) {
-    // cost calculation
-    const pickupTimeHours = new Date(pickupTime);
-    const returnTimeHours = new Date(returnTime);
-    const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
-
-    Car.findById(carId)
-        .then(car => {
-            const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
-            return cost;
-    })
-}
