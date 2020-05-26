@@ -23,7 +23,11 @@ class BookingConfirmDetailsPopUp extends Component {
             location: this.props.car.location,
         }
         BookingServiceApi.createBooking(newBooking)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res);
+                alert("Booking craeated");
+                window.location.href = `/`;
+            })
             .catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
@@ -31,7 +35,7 @@ class BookingConfirmDetailsPopUp extends Component {
 
     handleCancelButton = event => {
         event.preventDefault();
-        // closes pop up and returns to filter car page
+        this.props.togglePopUp();
     }
 
     calculateBookingCost() {
