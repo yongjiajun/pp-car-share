@@ -3,10 +3,10 @@ const Booking = require('../models/booking');
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-const bookingSelectFields = '_id user car bookeddatetime pickupdatetime returndatetime cost location status';
+const bookingSelectFields = '_id user car bookedtime pickuptime returntime cost location status';
 const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking';
 
-/* CONTROLLERS WITH JWT GUARDING */ 
+/* CONTROLLERS WITH JWT GUARDING */
 exports.create_car = (req, res, next) => {
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -147,11 +147,6 @@ exports.update_car = (req, res, next) => {
 }
 
 exports.search_available_cars = (req, res, next) => {
-    /* REQUIRED PARAMETERS: 
-        req.body.pickupTime
-        req.body.returnTime
-    */
-
     // search_available_cars returns all available cars in specified time range
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -172,14 +167,15 @@ exports.search_available_cars = (req, res, next) => {
         }
 
         // get all available cars within the period
-        Car.find().select(selectFields).exec().then(cars => {
-            availableCars = searchForAvailableCars(pickupTime, returnTime, cars)
+        Car.find().select(selectFields).exec().then((cars) => {
+            searchForAvailableCars(pickupTime, returnTime, cars).then(availableCars => {
                 if (availableCars.length == 0) {
                     return res.status(400).json({ message: "No cars are available at the moment." })
+                } else {
+                    return res.status(200).json({ availableCars: availableCars });
                 }
-        
-                return res.status(200).json({ availableCars: availableCars });
-        })
+            });
+        });
     })
 }
 
@@ -194,7 +190,7 @@ exports.filter_cars = (req, res, next) => {
         req.body.pickupTime
         req.body.returnTime
     */
-   
+
     // filter_cars allows the filtering of car attributes
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -233,39 +229,51 @@ exports.filter_cars = (req, res, next) => {
         const returnTime = new Date(req.body.returnTime);
 
         carQuery.select(selectFields).exec().then(cars => {
-            availableCars = searchForAvailableCars(pickupTime, returnTime, cars)
-                if (availableCars.length == 0) {
-                    return res.status(400).json({ message: "No cars are available with selected attributes." })
-                }
-        
-                return res.status(200).json({ availableCars: availableCars });
+            searchForAvailableCars(pickupTime, returnTime, cars)
+                .then(availableCars => {
+                    if (availableCars.length == 0) {
+                        return res.status(400).json({ message: "No cars are available with selected attributes." })
+                    }
+                    else {
+                        return res.status(200).json({ availableCars: availableCars });
+                    }
+                })
         })
     });
 }
 
 function searchForAvailableCars(pickupTime, returnTime, cars) {
     // searchForAvailableCars returns all available cars specified within time range
-    var availableCars = []
-    
-    // loop through all bookings of all cars and check each booking time range
-    for (var i = 0; i < cars.length; i++) {
-        var available = true;
-        Booking.find({ car: cars[i]._id }).select(bookingSelectFields).exec().then(carBookings => {
+    return new Promise(async (resolve, reject) => {
+        var availableCars = []
+        // loop through all bookings of all cars and check each booking time range
+        for (i in cars) {
+            await checkCarAvailable(pickupTime, returnTime, cars[i]._id).then(available => {
+                if (available) {
+                    availableCars.push(cars[i]);
+                }
+            })
+        }
+        resolve(availableCars);
+    })
+}
+
+function checkCarAvailable(pickupTime, returnTime, carId) {
+    // checkCarAvailable returns the availability of a car specified within time range
+    var available = true;
+    return new Promise((resolve, reject) => {
+        Booking.find({ car: carId }).select(bookingSelectFields).exec().then(carBookings => {
             if (carBookings.length != 0) {
-                for (booking in carBookings) {
-                    if ((booking.status == "Confirmed") || (booking == "Active")) {
-                        available = max(booking.pickupdatetime, booking.returndatetime) < min(pickupTime, returnTime)
+                for (i in carBookings) {
+                    if ((carBookings[i].status === "Confirmed") || (carBookings[i].status === "Active")) {
+                        available = Math.max(carBookings[i].pickuptime, carBookings[i].returntime) < Math.min(pickupTime, returnTime);
                         if (!available) {
-                            break
+                            break;
                         }
                     }
                 }
             }
+            resolve(available);
         })
-        if (available) {
-            availableCars.push(cars[i]);
-        }
-    }
-
-    return availableCars;
+    })
 }
