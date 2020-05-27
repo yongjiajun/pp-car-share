@@ -73,8 +73,8 @@ export class MapContainer extends React.Component {
           return (
             <Marker 
               id={marker.id}
-              title={marker.name}
-              name={marker.name + " @ " + marker.address}
+              name={marker.name}
+              address={marker.address}
               onClick= {this.onMarkerClick}
               position = {{lat: marker.lat, lng: marker.lng}}
             />)
@@ -85,7 +85,8 @@ export class MapContainer extends React.Component {
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}>
             <div id="info-window">
-              <p>{this.state.selectedPlace.name}</p>
+              <h2>{this.state.selectedPlace.name}</h2>
+              <p>{this.state.selectedPlace.address}</p>
               <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
             </div>
         </InfoWindow>
