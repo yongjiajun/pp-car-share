@@ -14,9 +14,10 @@ class MyBookingPage extends Component {
             errorMessage: ''
         }
         this.handleCancelButton = this.handleCancelButton.bind(this);
+        this.getUsersBookings = this.getUsersBookings.bind(this);
     }
 
-    componentDidMount() {
+    getUsersBookings() {
         BookingServiceApi.getUserBookings()
             .then(res => {
                 let bookings = res.data.bookings.reverse();
@@ -27,6 +28,10 @@ class MyBookingPage extends Component {
                 console.log(error)
                 this.setState({ errorMessage: error.response.data.message });
             })
+    }
+
+    componentDidMount() {
+        this.getUsersBookings();
         LocationServiceApi.getAllLocations()
             .then(res => {
                 let locationArray = this.state.locations;
@@ -57,16 +62,7 @@ class MyBookingPage extends Component {
         booking.status = 'Cancelled';
         BookingServiceApi.modifyBooking(booking)
             .then(res => {
-                console.log(res);
-                BookingServiceApi.getUserBookings()
-                .then(res => {
-                    this.setState({
-                        bookings: res.data.bookings
-                    })
-                }).catch((error) => {
-                    console.log(error)
-                    this.setState({ errorMessage: error.response.data.message });
-                })
+                this.getUsersBookings();
             })
     } 
 
