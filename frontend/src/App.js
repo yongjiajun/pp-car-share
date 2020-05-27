@@ -13,10 +13,17 @@ import StaffRoute from './StaffRoute.jsx'
 import AdminRoute from './AdminRoute.jsx'
 import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
-import AdminSignUpPage from './components/adminComponents/adminSignup';
 import Footer from './components/footer';
 import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
+
+/* Import admin and staff components */
+import Overview from './components/staffComponents/overview';
+import AdminSignUpPage from './components/adminComponents/adminSignup';
+import CreateCar from './components/staffComponents/createCar';
+import CreateLocation from './components/staffComponents/createLocation';
+import StaffRoute from './StaffRoute.jsx';
+import AdminRoute from './AdminRoute.jsx';
 
 class App extends Component {
 
@@ -35,6 +42,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    /* add script tag here */
+    
     if (UserServiceApi.isUserLoggedIn()) {
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
@@ -56,10 +65,14 @@ class App extends Component {
             availableCars={availableCars}
             pickupTime={pickupTime}
             returnTime={returnTime} />} />
-          <AdminRoute path="/admin/signup" component= {AdminSignUpPage} />
           <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
             updateCars={this.updateCars.bind(this)} />} />
           <StaffRoute path="/staff" component={StaffDashboard} />
+          {/* Staff and admin only routes */}
+          <StaffRoute path="/staff" component={Overview} />
+          <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
+          <StaffRoute path="/admin/addcars" component={CreateCar} />
+          <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
         </Switch>
         <Footer />
       </Router>
