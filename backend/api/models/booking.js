@@ -4,9 +4,9 @@ const bookingSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     user: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     car: {type: mongoose.Schema.Types.ObjectId, ref: "Car"},
-    bookeddatetime: Date,
-    pickupdatetime: Date,
-    returndatetime: Date,
+    bookedtime: Date,
+    pickuptime: Date,
+    returntime: Date,
     cost: Number,
     location: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
     status: String

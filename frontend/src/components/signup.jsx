@@ -35,7 +35,7 @@ class SignUpPage extends Component {
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
                 UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
-                window.location.href = `/dashboard`;
+                window.location.href = `/`;
             })
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
@@ -51,7 +51,7 @@ class SignUpPage extends Component {
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                <Form onSubmit={this.handleSubmit} id="signup_form">
+                <Form onSubmit={this.handleSubmit} id="signup_form" >
                     <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>
                             First Name

@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import UserServiceApi from '../api/UserServiceApi.js'
+import CarServiceApi from '../../api/CarServiceApi';
 
-class LoginPage extends Component {
+class BookingDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            pickupTime: '',
+            returnTime: '',
             errorMessage: ''
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
-    /* Set react state for each input when user inputs something on login form */
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value })
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        let creds = {
-            email: this.state.email,
-            password: this.state.password
+        // check for available cars and redirect
+        let newSearch = {
+            pickupTime: this.state.pickupTime,
+            returnTime: this.state.returnTime,
         }
-        UserServiceApi.loginUser(creds).then(res => {
-            UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
-            window.location.href = `/`;
+        CarServiceApi.searchAvailableCars(newSearch).then(res => {
+            this.props.updateCars(res.data.availableCars, this.state.pickupTime, this.state.returnTime);
+            this.props.history.push('/filter')
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
         })
@@ -36,34 +36,35 @@ class LoginPage extends Component {
     render() {
         return (
             <div className="container">
+                <h2>Let's find you a car!</h2>
                 {this.state.errorMessage && <Alert variant="danger">
-                    <Alert.Heading>Login failed!</Alert.Heading>
+                    <Alert.Heading>Error checking availability!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                <Form onSubmit={this.handleSubmit} id="login_form">
-                    <Form.Group as={Row} controlId="formHorizontalEmail">
+                <Form onSubmit={this.handleSubmit} id="availability_form" >
+                    <Form.Group as={Row} controlId="formHorizontalFirstName">
                         <Form.Label column sm={2}>
-                            Email
+                            Pickup Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} />
+                            <Form.Control name="pickupTime" type="datetime-local" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} controlId="formHorizontalPassword">
+                    <Form.Group as={Row} controlId="formHorizontalLastName">
                         <Form.Label column sm={2}>
-                            Password
+                            Return Time
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
+                            <Form.Control name="returnTime" type="datetime-local" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button type="submit">Login</Button>
+                            <Button type="submit">Check Availability</Button>
                         </Col>
                     </Form.Group>
                 </Form>
@@ -72,4 +73,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+export default BookingDashboard;
