@@ -42,7 +42,7 @@ export default class Overview extends Component {
                         <div className="benefits-div">
                             <h2>Benefits</h2>
                             <p>
-                                COOL Car share gives you access to cars and vans 24/7 without the hassle of owning one.
+                                MZA Car Share gives you access to cars and vans 24/7 without the hassle of owning one.
                                 You can rent a car from just $13 an hour, with fuel, insurance and Roadside assistance included
                             </p>
                             <Row>
@@ -82,7 +82,7 @@ export default class Overview extends Component {
                         </Row>
                     </Container>
                     <div className="find-nearest-car-div">
-                        <h2>Find your nearest COOL Car Share</h2>
+                        <h2>Find your nearest MZA Car Share</h2>
                         <p>There are cars and vans spread all over Australia. There's probably one near you</p>
                         <div>
                             This div contains a map

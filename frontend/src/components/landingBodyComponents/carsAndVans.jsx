@@ -21,7 +21,7 @@ export default class CarsAndVans extends Component {
                     </Container>
                 </div>
                 <div className="find-nearest-car-div">
-                    <h2>Find your nearest COOL Car Share</h2>
+                    <h2>Find your nearest MZA Car Share</h2>
                     <p>There are cars and vans spread all over Australia. There's probably one near you</p>
                     <div>
                         This div contains a map

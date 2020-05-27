@@ -8,7 +8,7 @@ export default class Pricing extends Component {
     render() {
         return (
             <section className="section-item">
-                <h2>Daily and hourly COOL Car Share rates</h2>
+                <h2>Daily and hourly MZA Car Share rates</h2>
                 <div className="table-div-white">
                     <Table striped bordered>
                         <thead>

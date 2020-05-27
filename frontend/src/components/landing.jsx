@@ -13,7 +13,7 @@ class LandingPage extends Component {
             <>
                 <Container id="landing-page" fluid>
                     <div id="catchphrase">
-                        <h1>COOL Car Share Melbourne</h1>
+                        <h1>MZA Car Share Melbourne</h1>
                         <h4>You don't need to own a car to drive one</h4>
 
                         {isUserLoggedIn &&
