@@ -9,16 +9,23 @@ import MapContainer from './components/map';
 import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
-import StaffRoute from './StaffRoute.jsx'
-import AdminRoute from './AdminRoute.jsx'
 import DashboardPage from './components/dashboard';
-import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
-import AdminSignUpPage from './components/adminComponents/adminSignup';
 import Footer from './components/footer';
 
+/* Import admin and staff components */
+import Overview from './components/staffComponents/overview';
+import AdminSignUpPage from './components/adminComponents/adminSignup';
+import CreateCar from './components/staffComponents/createCar';
+import CreateLocation from './components/staffComponents/createLocation';
+import StaffRoute from './StaffRoute.jsx';
+import AdminRoute from './AdminRoute.jsx';
+
 class App extends Component {
+
   componentDidMount() {
+    /* add script tag here */
+    
     if (UserServiceApi.isUserLoggedIn()) {
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
@@ -34,9 +41,13 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
           <Route path="/locations" component= {MapContainer} />
-          <AdminRoute path="/admin/signup" component= {AdminSignUpPage} />
           <AuthenticatedRoute path="/dashboard" component={DashboardPage} />
-          <StaffRoute path="/staff" component={StaffDashboard} />
+          
+          {/* Staff and admin only routes */}
+          <StaffRoute path="/staff" component={Overview} />
+          <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
+          <StaffRoute path="/admin/addcars" component={CreateCar} />
+          <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
         </Switch>
         <Footer />
       </Router>

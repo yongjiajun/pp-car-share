@@ -35,7 +35,7 @@ class AdminSignUpPage extends Component {
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
                 UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
-                window.location.href = `/dashboard`;
+                window.location.href = `/staff`;
             })
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
