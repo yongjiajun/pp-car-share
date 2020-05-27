@@ -68,25 +68,17 @@ exports.get_all_cars = (req, res, next) => {
 }
 
 exports.get_car = (req, res, next) => {
-    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
-
-    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-
-    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
-        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-
-        const id = req.params.carId;
-        Car.findOne({ _id: id })
-            .select(selectFields)
-            .exec()
-            .then(car => {
-                const response = {
-                    car: car
-                }
-                res.status(200).json(response);
-            })
-            .catch(error => { res.status(500).json({ message: `Unable to GET car of id '${id}'`, error: error }) })
-    });
+    const id = req.params.carId;
+    Car.findOne({ _id: id })
+        .select(selectFields)
+        .exec()
+        .then(car => {
+            const response = {
+                car: car
+            }
+            res.status(200).json(response);
+        })
+        .catch(error => { res.status(500).json({ message: `Unable to GET car of id '${id}'`, error: error }) })
 }
 
 exports.delete_car = (req, res, next) => {

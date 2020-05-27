@@ -17,6 +17,7 @@ import Footer from './components/footer';
 import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
 import MyBookingPage from './components/bookingComponents/myBookings';
+import BookingDetailsPage from './components/bookingComponents/bookingDetails';
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
@@ -44,7 +45,6 @@ class App extends Component {
     /* add script tag here */
     
     if (UserServiceApi.isUserLoggedIn()) {
-      console.log(UserServiceApi.getUserToken())
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
   }
@@ -67,7 +67,8 @@ class App extends Component {
             returnTime={returnTime} />} />
           <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
             updateCars={this.updateCars.bind(this)} />} />
-          <AuthenticatedRoute path="/bookings" component={MyBookingPage}/>
+          <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>
+          <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>
           <StaffRoute path="/staff" component={StaffDashboard} />
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />

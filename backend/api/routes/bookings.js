@@ -4,10 +4,11 @@ const router = express.Router();
 
 const BookingsController = require('../controllers/bookings');
 
-// router.get('/', BookingsController.get_all_bookings);
-// router.get('/:bookingId', BookingsController.get_booking);
+// PLEASE REVIEW
+router.get('/customers/:bookingId', BookingsController.get_user_booking);
 router.get('/', BookingsController.get_user_bookings);
 router.post('/', BookingsController.create_booking);
-router.patch('/customer/:bookingId', BookingsController.update_booking);
+router.patch('/customers/:bookingId', BookingsController.update_booking);
+// router.get('/customers', BookingsController.get_all_bookings);
 
 module.exports = router;

@@ -17,19 +17,6 @@ class MyBookingPage extends Component {
         this.getUsersBookings = this.getUsersBookings.bind(this);
     }
 
-    getUsersBookings() {
-        BookingServiceApi.getUserBookings()
-            .then(res => {
-                let bookings = res.data.bookings.reverse();
-                this.setState({
-                    bookings: res.data.bookings
-                })
-            }).catch((error) => {
-                console.log(error)
-                this.setState({ errorMessage: error.response.data.message });
-            })
-    }
-
     componentDidMount() {
         this.getUsersBookings();
         LocationServiceApi.getAllLocations()
@@ -53,7 +40,17 @@ class MyBookingPage extends Component {
                     cars: res.data.cars
                 })
             }).catch((error) => {
-                console.log(error)
+                this.setState({ errorMessage: error.response.data.message });
+            })
+    }
+
+    getUsersBookings() {
+        BookingServiceApi.getUserBookings()
+            .then(res => {
+                this.setState({
+                    bookings: res.data.bookings.reverse()
+                })
+            }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
     }
@@ -61,10 +58,10 @@ class MyBookingPage extends Component {
     handleCancelButton(booking) {
         booking.status = 'Cancelled';
         BookingServiceApi.modifyBooking(booking)
-            .then(res => {
+            .then(() => {
                 this.getUsersBookings();
             })
-    } 
+    }
 
     render() {
         return (
@@ -126,6 +123,9 @@ class MyBookingPage extends Component {
                                     {booking.status === "Confirmed" &&
                                         <Button onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
                                     }
+                                </td>
+                                <td>
+                                    <Button href={`/mybookings/${booking.id}`}>View</Button>
                                 </td>
                             </tr>
                         )}

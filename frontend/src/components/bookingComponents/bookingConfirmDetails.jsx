@@ -24,9 +24,7 @@ class BookingConfirmDetailsPopUp extends Component {
         }
         BookingServiceApi.createBooking(newBooking)
             .then(res => {
-                console.log(res);
-                alert("Booking craeated");
-                window.location.href = `/`;
+                window.location.href = `/mybookings/${res.data.response.booking._id}`;
             })
             .catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
@@ -44,12 +42,8 @@ class BookingConfirmDetailsPopUp extends Component {
         const returnTimeHours = new Date(this.props.returnTime);
         const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
         
-        // TODO: make a popup menu that shows the booking details when 1 car is selected: cost and stuff
-        // user will be given the option to book or checkout other cars
-        // DONT REDIRECT to another page for displaying the above details because availableCars will be lost if customers regret
-        // and go back to the previous page to pick other cars
         const cost = parseInt(this.props.car.costperhour) * (timeDeltaHours / 1000);
-        return cost;
+        return cost.toFixed(2);
     }
 
     render() {

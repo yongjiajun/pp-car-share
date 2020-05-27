@@ -11,6 +11,10 @@ class CarServiceApi {
         return axios.get(api_url);
     }
 
+    getCar(carId) {
+        return axios.get(`${api_url}/${carId}`)
+    }
+
     searchAvailableCars(search) {
         return axios.post(api_url + '/availability', search);
     }
