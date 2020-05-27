@@ -17,6 +17,7 @@ class Header extends Component {
                     {isUserLoggedIn &&
                         <>
                             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                            <Nav.Link href="/bookings">My Bookings</Nav.Link>
                             {isUserStaff && <Nav.Link href="/staff">Staff Dashboard</Nav.Link>}
                         </>
                     }

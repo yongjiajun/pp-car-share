@@ -16,14 +16,13 @@ import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
 import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
+import MyBookingPage from './components/bookingComponents/myBookings';
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
 import AdminSignUpPage from './components/adminComponents/adminSignup';
 import CreateCar from './components/staffComponents/createCar';
 import CreateLocation from './components/staffComponents/createLocation';
-import StaffRoute from './StaffRoute.jsx';
-import AdminRoute from './AdminRoute.jsx';
 
 class App extends Component {
 
@@ -45,6 +44,7 @@ class App extends Component {
     /* add script tag here */
     
     if (UserServiceApi.isUserLoggedIn()) {
+      console.log(UserServiceApi.getUserToken())
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
   }
@@ -67,6 +67,7 @@ class App extends Component {
             returnTime={returnTime} />} />
           <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
             updateCars={this.updateCars.bind(this)} />} />
+          <AuthenticatedRoute path="/bookings" component={MyBookingPage}/>
           <StaffRoute path="/staff" component={StaffDashboard} />
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />

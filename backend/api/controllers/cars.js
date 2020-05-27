@@ -40,38 +40,31 @@ exports.create_car = (req, res, next) => {
 }
 
 exports.get_all_cars = (req, res, next) => {
-    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
-
-    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-
-    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
-        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-        Car.find()
-            .select(selectFields)
-            .exec()
-            .then(cars => {
-                const response = {
-                    cars: cars.map(car => {
-                        return {
-                            id: car._id,
-                            make: car.make,
-                            seats: car.seats,
-                            bodytype: car.bodytype,
-                            numberplate: car.numberplate,
-                            colour: car.colour,
-                            costperhour: car.costperhour,
-                            fueltype: car.fueltype,
-                            location: car.location,
-                            currentbooking: car.currentbooking
-                        }
-                    })
-                }
-                res.status(200).json(response);
-            })
-            .catch(error => {
-                res.status(500).json({ message: `Unable to GET all cars`, error: error })
-            });
-    })
+    Car.find()
+        .select(selectFields)
+        .exec()
+        .then(cars => {
+            const response = {
+                cars: cars.map(car => {
+                    return {
+                        id: car._id,
+                        make: car.make,
+                        seats: car.seats,
+                        bodytype: car.bodytype,
+                        numberplate: car.numberplate,
+                        colour: car.colour,
+                        costperhour: car.costperhour,
+                        fueltype: car.fueltype,
+                        location: car.location,
+                        currentbooking: car.currentbooking
+                    }
+                })
+            }
+            res.status(200).json(response);
+        })
+        .catch(error => {
+            res.status(500).json({ message: `Unable to GET all cars`, error: error })
+        });
 }
 
 exports.get_car = (req, res, next) => {
@@ -172,7 +165,6 @@ exports.search_available_cars = (req, res, next) => {
                 if (availableCars.length == 0) {
                     return res.status(400).json({ message: "No cars are available at the moment." })
                 } else {
-                    console.log(availableCars)
                     return res.status(200).json({ availableCars: availableCars });
                 }
             });

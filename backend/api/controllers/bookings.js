@@ -17,7 +17,7 @@ exports.create_booking = (req, res, next) => {
         const pickupTimeHours = new Date(req.body.pickupTime);
         const returnTimeHours = new Date(req.body.returnTime);
         const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
-    
+        
         Car.findById(req.body.car)
             .then(car => {
                 const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
@@ -79,6 +79,42 @@ exports.get_all_bookings = (req, res, next) => {
     })
 }
 
+exports.get_user_bookings = (req, res, next) => {
+    console.log(req.headers)
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+    console.log(token)
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+
+        Booking.find({ user: decoded.id })
+            .select(selectFields)
+            .exec()
+            .then(bookings => {
+                const response = {
+                    bookings: bookings.map(booking => {
+                        return {
+                            id: booking._id,
+                            user: booking.user,
+                            car: booking.car,
+                            bookedtime: booking.bookedtime,
+                            pickuptime: booking.pickuptime,
+                            returntime: booking.returntime,
+                            cost: booking.cost,
+                            location: booking.location,
+                            status: booking.status
+                        }
+                    })
+                }
+                res.status(200).json(response);
+            })
+            .catch(error => {
+                res.status(500).json({ message: `Unable to GET user's bookings`, error: error })
+            });
+    })
+}
+
 exports.get_booking = (req, res, next) => {
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -99,28 +135,6 @@ exports.get_booking = (req, res, next) => {
             })
             .catch(error => { res.status(500).json({ message: `Unable to GET booking of id '${id}'`, error: error }) })
     });
-}
-
-exports.delete_booking = (req, res, next) => {
-    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
-
-    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-
-    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
-        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-
-        const id = req.params.bookingId;
-        Booking.findOneAndDelete({ _id: id })
-            .select(selectFields)
-            .exec()
-            .then(booking => {
-                const response = {
-                    message: `Deleted booking of id '${booking._id}' successfully`
-                }
-                res.status(200).json({ response });
-            })
-            .catch(error => { res.status(500).json({ message: `Unable to DELETE booking of id '${id}'`, error: error }) })
-    })
 }
 
 exports.update_booking = (req, res, next) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import BookingServiceApi from '../../api/BookingServiceApi';
+import CarServiceApi from '../../api/CarServiceApi';
 
 class BookingDashboard extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class BookingDashboard extends Component {
             pickupTime: this.state.pickupTime,
             returnTime: this.state.returnTime,
         }
-        BookingServiceApi.searchAvailableCars(newSearch).then(res => {
+        CarServiceApi.searchAvailableCars(newSearch).then(res => {
             this.props.updateCars(res.data.availableCars, this.state.pickupTime, this.state.returnTime);
             this.props.history.push('/filter')
         }).catch((error) => {

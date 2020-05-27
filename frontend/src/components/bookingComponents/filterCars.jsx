@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-import BookingServiceApi from '../../api/BookingServiceApi';
+import CarServiceApi from '../../api/CarServiceApi';
 import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js'
 import LocationServiceApi from '../../api/LocationServiceApi';
 import BookingConfirmDetailsPopUp from './bookingConfirmDetails'
@@ -46,7 +46,7 @@ class FilterCarsPage extends Component {
             location: this.state.location,
             bodytype: this.state.bodytype
         }
-        BookingServiceApi.filterCars(newFilter).then(res => {
+        CarServiceApi.filterCars(newFilter).then(res => {
             this.setState({
                 availableCars: res.data.availableCars,
                 errorMessage: ''
