@@ -1,5 +1,6 @@
 const Car = require('../models/car');
 const Booking = require('../models/booking');
+const Location = require('../models/location')
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
@@ -15,28 +16,30 @@ exports.create_car = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        const car = new Car({
-            _id: new mongoose.Types.ObjectId(),
-            make: req.body.make,
-            seats: req.body.seats,
-            bodytype: req.body.bodytype,
-            numberplate: req.body.numberplate,
-            colour: req.body.colour,
-            costperhour: req.body.costperhour,
-            fueltype: req.body.fueltype,
-            location: req.body.location,
-            currentbooking: null
-        });
-        car.save().then(car => {
-            const response = {
-                message: `Created car of id '${car._id}' successfully`,
-                car: car
-            }
-            return res.status(201).json({ response });
-        }).catch(error => {
-            return res.status(500).json({ message: `Unable to get CREATE car of id '${id}'`, error: error })
-        })
-    })
+        Location.findOne({ address: req.body.location }).then(location => {
+            const car = new Car({
+                _id: new mongoose.Types.ObjectId(),
+                make: req.body.make,
+                seats: req.body.seats,
+                bodytype: req.body.bodytype,
+                numberplate: req.body.numberplate,
+                colour: req.body.colour,
+                costperhour: req.body.costperhour,
+                fueltype: req.body.fueltype,
+                location: location,
+                currentbooking: null
+            });
+            car.save().then(car => {
+                const response = {
+                    message: `Created car of id '${car._id}' successfully`,
+                    car: car
+                }
+                return res.status(201).json({ response });
+            }).catch(error => {
+                return res.status(500).json({ message: `Unable to get CREATE car of id '${id}'`, error: error })
+            })
+        });        
+    });
 }
 
 exports.get_all_cars = (req, res, next) => {
