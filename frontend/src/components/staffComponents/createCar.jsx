@@ -103,7 +103,7 @@ export default class createCar extends Component {
                 <h2>Create Car</h2>
                 {this.state.errMsg && 
                     <Alert variant="danger">
-                        <Alert.Heading>Add location failed!</Alert.Heading>
+                        <Alert.Heading>Add car failed!</Alert.Heading>
                         <p>
                             {this.state.errMsg}
                         </p>
@@ -112,7 +112,7 @@ export default class createCar extends Component {
 
                 {this.state.successMsg && 
                     <Alert variant="success">
-                        <Alert.Heading>Add location succeed!</Alert.Heading>
+                        <Alert.Heading>Add car succeed!</Alert.Heading>
                         <p>
                             {this.state.successMsg}
                         </p>
@@ -220,7 +220,7 @@ export default class createCar extends Component {
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Create Location</Button>
+                            <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Create Car</Button>
                         </Col>
                     </Form.Group>
                 </Form>
