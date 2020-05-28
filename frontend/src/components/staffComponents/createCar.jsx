@@ -132,7 +132,7 @@ export default class createCar extends Component {
                             Seats
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="seats" type="seats" onChange={this.handleChange} value="">
+                            <Form.Control as="select" name="seats" type="seats" onChange={this.handleChange}>
                                 <option value="" disabled>Select seat number</option>
                                 {
                                     CAR_SEATS.map((option, index) => 
@@ -147,7 +147,7 @@ export default class createCar extends Component {
                             Body type
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="bodytype" type="bodytype" onChange={this.handleChange} value="">
+                            <Form.Control as="select" name="bodytype" type="bodytype" onChange={this.handleChange}>
                                 <option value="" disabled>Select body type</option>
                                 {
                                     CAR_BODY_TYPES.map((option, index) => 
@@ -170,7 +170,7 @@ export default class createCar extends Component {
                             Colour
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="colour" type="colour" onChange={this.handleChange} value="">
+                            <Form.Control as="select" name="colour" type="colour" onChange={this.handleChange}>
                                 <option value="" disabled>Select colour</option>
                                 {
                                     CAR_COLOURS.map((option, index) => 
@@ -193,7 +193,7 @@ export default class createCar extends Component {
                             Fuel type
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="fueltype" type="fueltype" onChange={this.handleChange} value="">
+                            <Form.Control as="select" name="fueltype" type="fueltype" onChange={this.handleChange}>
                                 <option value="" disabled>Select fuel type</option>
                                 {
                                     CAR_FUEL_TYPES.map((option, index) => 
@@ -208,7 +208,7 @@ export default class createCar extends Component {
                             Location
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="location" type="location" onChange={this.handleChange} value="">
+                            <Form.Control as="select" name="location" type="location" onChange={this.handleChange}>
                                 <option value="" disabled>Select location</option>
                                 {
                                     this.state.locationList.map((option, index) => 
