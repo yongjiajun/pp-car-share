@@ -69,7 +69,6 @@ class App extends Component {
             updateCars={this.updateCars.bind(this)} />} />
           <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>
           <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>
-          <StaffRoute path="/staff" component={StaffDashboard} />
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
