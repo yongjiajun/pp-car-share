@@ -102,7 +102,7 @@ export default class CreateLocation extends Component {
                 <Form>
                     <Form.Group as={Row} controlId="formHorizontalName">
                         <Form.Label column sm={2}>
-                            First Name
+                            Name
                         </Form.Label>
                         <Col sm={10}>
                             <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} />
