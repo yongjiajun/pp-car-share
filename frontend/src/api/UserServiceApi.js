@@ -1,7 +1,7 @@
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 
-const api_url = process.env.REACT_APP_SERVER_URL_USERS || "http://localhost:3001/api/users"
+const api_url = process.env.REACT_APP_SERVER_URL_USERS || "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/users"
 
 export const TOKEN_SESSION_ATTRIBUTE_NAME = 'token'
 export const DETACH_TOKEN_SESSION_ATTRIBUTE_NAME = 'detachToken'

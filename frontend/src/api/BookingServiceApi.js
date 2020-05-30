@@ -1,7 +1,7 @@
 import axios from 'axios'
 import UserServiceApi from './UserServiceApi';
 require('dotenv').config();
-const api_url = "http://localhost:3001/api/bookings"
+const api_url = "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/bookings"
 
 class BookingServiceApi {
     createBooking(booking) {

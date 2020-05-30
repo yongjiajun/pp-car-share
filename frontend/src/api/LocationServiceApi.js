@@ -1,6 +1,6 @@
 import axios from 'axios'
 require('dotenv').config();
-const api_url = process.env.server_url || "http://localhost:3001/api/locations"
+const api_url = process.env.server_url || "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/locations"
 
 class LocationServiceApi {
     getAllLocations() {
