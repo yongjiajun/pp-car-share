@@ -48,7 +48,7 @@ class LoginPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} />
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -57,7 +57,7 @@ class LoginPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
+                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
