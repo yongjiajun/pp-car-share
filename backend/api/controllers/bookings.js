@@ -14,10 +14,11 @@ exports.create_booking = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        const pickupTimeHours = new Date(req.body.pickupTime);
-        const returnTimeHours = new Date(req.body.returnTime);
-        const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
-        
+        const pickupTime = localiseTimeZone(new Date(req.body.pickupTime));
+        const returnTime = localiseTimeZone(new Date(req.body.returnTime));
+        const bookedTime = localiseTimeZone(new Date());
+        const timeDeltaHours = localiseTimeZone(new Date(returnTime - pickupTime)).getTime() / 3600;
+
         Car.findById(req.body.car)
             .then(car => {
                 const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
@@ -25,9 +26,9 @@ exports.create_booking = (req, res, next) => {
                     _id: new mongoose.Types.ObjectId(),
                     user: req.body.user,
                     car: req.body.car,
-                    bookedtime: Date.now(),
-                    pickuptime: req.body.pickupTime,
-                    returntime: req.body.returnTime,
+                    bookedtime: bookedTime,
+                    pickuptime: pickupTime,
+                    returntime: returnTime,
                     cost: cost.toFixed(2),
                     location: req.body.location,
                     status: "Confirmed"
@@ -183,4 +184,10 @@ exports.update_booking = (req, res, next) => {
             })
             .catch(error => { res.status(500).json({ message: `Unable to UPDATE booking of id '${id}'`, error: error }) })
     })
+}
+
+function localiseTimeZone(date) {
+    // hours offset from UTC for Melbourne (GMT+10)
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+    return date;
 }
