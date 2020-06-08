@@ -186,6 +186,33 @@ exports.update_booking = (req, res, next) => {
     })
 }
 
+exports.check_ready_pickup_return = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        Booking.find({status: "Picked up", user: decoded.id}).sort({ returntime: 1 }).then(bookings => {
+            var returned = false;
+            bookings.forEach(booking => {
+                if (!returned) {
+                    res.status(200).json(booking);
+                    returned = true;
+                }
+            })
+            if (!returned) {
+                Booking.find({returntime: { $gte: localiseTimeZone(new Date()) }, user: decoded.id, status: "Confirmed" }).sort({ pickuptime: 1 }).then(bookings => {
+                    if (bookings.length !== 0) {
+                        res.status(200).json(bookings[0])
+                    } else {
+                        res.status(200).json({})
+                    }
+                })
+            }
+        })
+    })
+}
+ 
 function localiseTimeZone(date) {
     // hours offset from UTC for Melbourne (GMT+10)
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
