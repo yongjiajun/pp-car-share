@@ -5,6 +5,7 @@ const router = express.Router();
 const BookingsController = require('../controllers/bookings');
 
 // PLEASE REVIEW
+router.get('/customers/next', BookingsController.check_ready_pickup_return);
 router.get('/customers/:bookingId', BookingsController.get_user_booking);
 router.get('/', BookingsController.get_user_bookings);
 router.post('/', BookingsController.create_booking);

@@ -4,6 +4,11 @@ require('dotenv').config();
 const api_url = "http://localhost:3001/api/bookings"
 
 class BookingServiceApi {
+
+    getNextBooking() {
+        return axios.get(`${api_url}/customers/next`, { headers: { authorization: UserServiceApi.getUserToken() } });
+    }
+
     createBooking(booking) {
         return axios.post(api_url, booking);
     }
@@ -19,6 +24,8 @@ class BookingServiceApi {
     modifyBooking(booking) {
         return axios.patch(`${api_url}/customers/${booking.id}`, booking);
     }
+
+
 
 }
 
