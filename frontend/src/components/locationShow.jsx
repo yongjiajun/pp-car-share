@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
-import UserServiceApi from '../api/UserServiceApi.js';
+import { Container, Row, Col } from 'react-bootstrap'
 import LocationServiceApi from '../api/LocationServiceApi.js';
 import MapContainer from './map';
+import CarServiceApi from '../api/CarServiceApi.js';
 
 class LocationShowPage extends Component {
     constructor(props) {
@@ -14,14 +15,20 @@ class LocationShowPage extends Component {
     }
 
     componentDidMount() {
-        let location_array = this.state.locations;
         let url = this.props.match.url
         let location_id = url.split("/")[2]
         // Get location from id
         LocationServiceApi.getLocationFromId(location_id).then(res => {
             this.setState({
                 location: res.data,
-                cars: res.data.cars
+            })
+            res.data.cars.map(carId => {
+                CarServiceApi.getCar(carId).then(res => {
+                    this.state.cars.push(res.data.car);
+                    this.setState({
+                        cars: this.state.cars
+                    })
+                })
             })
         })
       }
@@ -36,12 +43,31 @@ class LocationShowPage extends Component {
                 <h3>{this.state.location.name}</h3>
                 <h3>Address: </h3>{this.state.location.address}
                 <h3>Cars at this location:</h3>
-                {this.state.cars.map(car => 
-                    <p>car</p>
-                )}
+                <Container fluid>
+                    <Row>
+                        {this.state.cars.map(car => 
+                            <CarDescriptionComponent car={car}/>
+                        )}
+                    </Row>
+                </Container>
+
             </>
         )
     }
+}
+
+function CarDescriptionComponent(props) {
+    const { car } = props
+    return (
+        <Col sm={4}>
+            <div className="cars-div-white">
+                <h2 style={{marginTop: '3vh'}}>{car.make}</h2>
+                <p>{car.fueltype}, {car.bodytype}, {car.seats} seaters, {car.colour}</p>
+                <h5>${car.costperhour} per hour</h5>
+                {/* <img src={imgSrc} alt="car" /> */}
+            </div>
+        </Col>
+    );
 }
 
 export default LocationShowPage;
