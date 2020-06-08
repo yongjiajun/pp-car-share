@@ -22,10 +22,12 @@ export default class createCar extends Component {
             disableSubmit: false,
             successMsg: '',
             errMsg: '',
+            b64photo: ''
         }
         
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleFile = this.handleFile.bind(this)
     }
 
     resetState = () => {
@@ -37,8 +39,23 @@ export default class createCar extends Component {
             colour: '',
             costperhour: '',
             fueltype: '',
-            location: ''
+            location: '',
+            b64photo: ''
         })
+    }
+
+    handleFile = (event) => {
+        let files = event.target.files
+        if(files !== null) {
+            let reader = new FileReader();
+            reader.readAsDataURL(files[0]);
+    
+            reader.onload = (event) => {
+                this.setState({
+                    b64photo: event.target.result
+                })
+            }
+        }
     }
 
     handleChange = (event) => {
@@ -54,11 +71,23 @@ export default class createCar extends Component {
                 this.setState({
                     errMsg: "Please fill in everything"
                 })
+
+                return false;
             }
+        else {
+            this.setState({
+                errMsg: ""
+            })
+            
+            return true;
+        }
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
+        if (!this.inputValidation()) {
+            return
+        }
         this.setState({
             disableSubmit: true,
         })
@@ -70,10 +99,10 @@ export default class createCar extends Component {
             colour: this.state.colour,
             costperhour: this.state.costperhour,
             fueltype: this.state.fueltype,
-            location: this.state.location
+            location: this.state.location,
+            b64photo: this.state.b64photo
         }
         CarServiceApi.createNewCar(newCar).then((res) => {
-            this.resetState();
             this.setState({
                 disableSubmit: false,
                 successMsg: "Successfully added car",
@@ -85,7 +114,7 @@ export default class createCar extends Component {
                 successMsg: "",
                 errMsg: err.response.data.message
             })
-            console.log(err.response.data.error)
+            console.log(err.response)
         })
     }
 
@@ -93,7 +122,7 @@ export default class createCar extends Component {
         LocationServiceApi.getAllLocations().then((res) => {
             res.data.map(location => this.setState({locationList: this.state.locationList.concat(location.address)}))
         }, (err) => {
-            console.err(err.response.data.message)
+            console.log(err.response)
         })
     }
 
@@ -124,7 +153,7 @@ export default class createCar extends Component {
                             Make
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="make" type="make" placeholder="Car Make" onChange={this.handleChange} />
+                            <Form.Control name="make" type="make" placeholder="Car Make" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalSeats">
@@ -132,8 +161,8 @@ export default class createCar extends Component {
                             Seats
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="seats" type="seats" onChange={this.handleChange}>
-                                <option value="" disabled>Select seat number</option>
+                            <Form.Control as="select" name="seats" type="seats" onChange={this.handleChange} required>
+                                <option disabled selected>Select seat number</option>
                                 {
                                     CAR_SEATS.map((option, index) => 
                                                     <option key={index} value={option}>{option}</option>
@@ -147,8 +176,8 @@ export default class createCar extends Component {
                             Body type
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="bodytype" type="bodytype" onChange={this.handleChange}>
-                                <option value="" disabled>Select body type</option>
+                            <Form.Control as="select" name="bodytype" type="bodytype" onChange={this.handleChange} required>
+                                <option disabled selected>Select body type</option>
                                 {
                                     CAR_BODY_TYPES.map((option, index) => 
                                                         <option key={index} value={option}>{option}</option>
@@ -162,7 +191,7 @@ export default class createCar extends Component {
                             Number Plate
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="numberplate" type="numberplate" placeholder="Enter plate number" onChange={this.handleChange} />
+                            <Form.Control name="numberplate" type="numberplate" placeholder="Enter plate number" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalColour">
@@ -170,8 +199,8 @@ export default class createCar extends Component {
                             Colour
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="colour" type="colour" onChange={this.handleChange}>
-                                <option value="" disabled>Select colour</option>
+                            <Form.Control as="select" name="colour" type="colour" onChange={this.handleChange} required>
+                                <option disabled selected>Select colour</option>
                                 {
                                     CAR_COLOURS.map((option, index) => 
                                                     <option key={index} value={option}>{option}</option>
@@ -185,7 +214,7 @@ export default class createCar extends Component {
                             Cost per hour
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="costperhour" type="costperhour" placeholder="Select cost per hour" onChange={this.handleChange} />
+                            <Form.Control name="costperhour" type="costperhour" placeholder="Select cost per hour" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalFuelType">
@@ -193,8 +222,8 @@ export default class createCar extends Component {
                             Fuel type
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="fueltype" type="fueltype" onChange={this.handleChange}>
-                                <option value="" disabled>Select fuel type</option>
+                            <Form.Control as="select" name="fueltype" type="fueltype" onChange={this.handleChange} required>
+                                <option disabled selected>Select fuel type</option>
                                 {
                                     CAR_FUEL_TYPES.map((option, index) => 
                                                         <option key={index} value={option}>{option}</option>
@@ -208,14 +237,26 @@ export default class createCar extends Component {
                             Location
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control as="select" name="location" type="location" onChange={this.handleChange}>
-                                <option value="" disabled>Select location</option>
+                            <Form.Control as="select" name="location" type="location" onChange={this.handleChange} required>
+                                <option disabled selected>Select location</option>l
                                 {
                                     this.state.locationList.map((option, index) => 
                                                                 <option key={index} value={option}>{option}</option>
                                                                 )
                                 }
                             </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="formHorizontalLocation">
+                        <Form.Label column sm={2}>
+                        </Form.Label>
+                        <Col sm={10}>
+                            <Form.File 
+                                id="custom-file"
+                                label="Car picture"
+                                name="b64photo"
+                                onChange={this.handleFile}
+                            />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>

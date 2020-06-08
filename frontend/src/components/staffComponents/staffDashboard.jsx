@@ -47,8 +47,6 @@ export default class StaffDashboard extends Component {
                                 <p><a href="/admin/addlocation" style={(currentLocation === "/admin/addlocation") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Add Location</a></p>
                             </> 
                         }
-                        
-                        
                     </Col>
 
                     <Col className="main" md={10} style={{paddingTop: '5vh'}}>

@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import CarServiceApi from '../../api/CarServiceApi.js';
+import LocationServiceApi from '../../api/LocationServiceApi.js'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
@@ -6,25 +8,46 @@ import '../../styles/carsAndVans.css'
 
 export default class CarsAndVans extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            cars: []
+        }
+    }
+
+    componentDidMount() {
+        CarServiceApi.getAllCars().then(res => {
+            res.data.cars.map(car => {
+                LocationServiceApi.getLocationFromId(car.location).then(res => {
+                    car.location = res.data.name
+                    car.locationId = res.data._id
+                    this.state.cars.push(car);
+                    this.setState({
+                        cars: this.state.cars
+                    });
+                });
+            });
+        })
+    }
+
     render () {
         return (
             <section className="section-item">
                 <div>
                     <h2>Cars and Vans</h2>
                     <Container fluid>
-                        <Row>
-                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                            <CarDescriptionComponent name="Lightning McQueen" header="Popular with kids" description="Good guy, Easy to talk to" imgSrc="https://i.ebayimg.com/images/g/itQAAOSw~RNZn01p/s-l300.jpg"/>
-                        </Row>
+                    <Row>
+                        {
+                            this.state.cars.map(car => 
+                            <CarDescriptionComponent car={car}/>)
+                        }
+                    </Row>
                     </Container>
                 </div>
                 <div className="find-nearest-car-div">
                     <h2>Find your nearest MZA Car Share</h2>
                     <p>There are cars and vans spread all over Australia. There's probably one near you</p>
                     <div>
-                        This div contains a map
                     </div>
                 </div>
             </section>
@@ -33,14 +56,15 @@ export default class CarsAndVans extends Component {
 }
 
 function CarDescriptionComponent(props) {
-    const { name, header, description, imgSrc } = props
+    const { car } = props
     return (
         <Col sm={4}>
             <div className="cars-div-white">
-                <img src={imgSrc} alt="car" />
-                <h3 style={{marginTop: '3vh'}}>{name}</h3>
-                <h5>{header}</h5>
-                <p>{description}</p>
+                <img src={car.image} alt="car" width="100"/>
+                <h2 style={{marginTop: '1vh'}}>{car.make}</h2>
+                <p>{car.fueltype}, {car.bodytype}, {car.seats} seaters, {car.colour}</p>
+                <h5>${car.costperhour} per hour</h5>
+                <a href={"/locations/" + car.locationId}><strong>Garage Location:</strong> {car.location}</a>
             </div>
         </Col>
     );
