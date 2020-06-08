@@ -9,6 +9,7 @@ class LandingPage extends Component {
 
     render() {
         const isUserLoggedIn = UserServiceApi.isUserLoggedIn();
+        const isUserStaff = UserServiceApi.isUserStaff();
         return(
             <>
                 <Container id="landing-page" fluid>
@@ -16,10 +17,17 @@ class LandingPage extends Component {
                         <h1>MZA Car Share Melbourne</h1>
                         <h4>You don't need to own a car to drive one</h4>
 
-                        {isUserLoggedIn &&
+                        {(isUserLoggedIn && !isUserStaff) &&
                         <>
                             <Link to="/dashboard">
                                 <Button variant="warning" style={{fontSize: '2vh'}}>Book Now</Button>
+                            </Link>
+                        </>
+                        }
+                        {(isUserLoggedIn && isUserStaff) &&
+                        <>
+                            <Link to="/staff">
+                                <Button variant="warning" style={{fontSize: '2vh'}}>Manage System</Button>
                             </Link>
                         </>
                         }
