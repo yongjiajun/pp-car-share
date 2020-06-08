@@ -51,7 +51,7 @@ class App extends Component {
 
   render() {
     const { availableCars, pickupTime, returnTime } = this.state;
-
+    const isUserStaff = UserServiceApi.isUserStaff();
     return (
       <Router>
         <Header />
@@ -61,14 +61,15 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
           <Route path="/locations" component={MapContainer} />
-          <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
+          {/* Customers only routes */}
+          {!isUserStaff && <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
             availableCars={availableCars}
             pickupTime={pickupTime}
-            returnTime={returnTime} />} />
-          <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
-            updateCars={this.updateCars.bind(this)} />} />
-          <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>
-          <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>
+            returnTime={returnTime} />} />}
+          {!isUserStaff && <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
+            updateCars={this.updateCars.bind(this)} />} />}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>}
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
