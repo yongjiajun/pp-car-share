@@ -57,7 +57,7 @@ class SignUpPage extends Component {
                             First Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} />
+                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -66,7 +66,7 @@ class SignUpPage extends Component {
                             Last Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange}/>
+                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -75,7 +75,7 @@ class SignUpPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange}/>
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -84,7 +84,7 @@ class SignUpPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
+                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
