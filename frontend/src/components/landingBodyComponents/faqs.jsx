@@ -11,9 +11,9 @@ export default class Faqs extends Component {
                 <div>
                     <h2>FAQs</h2>
                     <Accordion style={{marginTop: '7vh'}}>
-                        <AccordionCustom eventKey="1" question="Question" answer="Answer"/>
-                        <AccordionCustom eventKey="2" question="Question" answer="Answer"/>
-                        <AccordionCustom eventKey="3" question="Question" answer="Answer"/>
+                        <AccordionCustom eventKey="1" question="How do I book a vehicle?" answer="Signup for an account if you haven't already, login and click on Book Now to get started!"/>
+                        <AccordionCustom eventKey="2" question="Can I cancel my bookings prior pickup time?" answer="Yes most definitely! You can do it through My Bookings dashboard."/>
+                        <AccordionCustom eventKey="3" question="Can I smoke in your cars?" answer="Smoking is prohibited and will incur a $300 penalty if found guilty."/>
                     </Accordion>
                 </div>
             </section>
