@@ -30,13 +30,15 @@ exports.create_car = (req, res, next) => {
                 currentbooking: null
             });
             car.save().then(car => {
+                location.cars.push(car._id);
+                location.save();
                 const response = {
                     message: `Created car of id '${car._id}' successfully`,
                     car: car
                 }
                 return res.status(201).json({ response });
             }).catch(error => {
-                return res.status(500).json({ message: `Unable to get CREATE car of id '${id}'`, error: error })
+                return res.status(500).json({ message: `Unable to get CREATE car of id '${_id}'`, error: error })
             })
         });        
     });
