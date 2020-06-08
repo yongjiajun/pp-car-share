@@ -17,7 +17,7 @@ exports.create_booking = (req, res, next) => {
         const pickupTime = localiseTimeZone(new Date(req.body.pickupTime));
         const returnTime = localiseTimeZone(new Date(req.body.returnTime));
         const bookedTime = localiseTimeZone(new Date());
-        const timeDeltaHours = localiseTimeZone(new Date(returnTime - pickupTime)).getTime() / 3600;
+        const timeDeltaHours = new Date(returnTime - pickupTime).getTime() / 3600;
 
         Car.findById(req.body.car)
             .then(car => {
