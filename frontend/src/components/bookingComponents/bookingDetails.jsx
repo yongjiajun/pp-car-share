@@ -15,6 +15,7 @@ class BookingDetailsPage extends Component {
         }
         this.handleCancelButton = this.handleCancelButton.bind(this);
         this.getBookingDetails = this.getBookingDetails.bind(this);
+        this.checkBookingPast = this.checkBookingPast.bind(this);
     }
 
     getBookingDetails() {
@@ -53,6 +54,12 @@ class BookingDetailsPage extends Component {
             })
     }
 
+    checkBookingPast(pickupTime) {
+        let currentTime = new Date();
+        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset())
+        return new Date(pickupTime) > currentTime;
+    }
+
     render() {
         return (
             <div className="container">
@@ -79,7 +86,7 @@ class BookingDetailsPage extends Component {
                         <b>Location: </b> {this.state.location.name} <br></br>
                         <b>Address: </b> {this.state.location.address} <br></br>
                         <b>Status: </b> {this.state.booking.status}
-                        {this.state.booking.status === "Confirmed" &&
+                        {(this.state.booking.status === "Confirmed" && this.checkBookingPast(this.state.booking.pickupTime)) &&
                             <Button onClick={this.handleCancelButton}>Cancel</Button>
                         }
                     </>

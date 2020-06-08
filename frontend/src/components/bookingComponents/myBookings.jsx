@@ -15,6 +15,7 @@ class MyBookingPage extends Component {
         }
         this.handleCancelButton = this.handleCancelButton.bind(this);
         this.getUsersBookings = this.getUsersBookings.bind(this);
+        this.checkBookingPast = this.checkBookingPast.bind(this);
     }
 
     componentDidMount() {
@@ -53,6 +54,12 @@ class MyBookingPage extends Component {
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
+    }
+
+    checkBookingPast(pickupTime) {
+        let currentTime = new Date();
+        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset())
+        return new Date(pickupTime) > currentTime;
     }
 
     handleCancelButton(booking) {
@@ -120,12 +127,12 @@ class MyBookingPage extends Component {
                                 </td>
                                 <td>{booking.status}</td>
                                 <td>
-                                    {booking.status === "Confirmed" &&
-                                        <Button onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
-                                    }
+                                    <Button href={`/mybookings/${booking.id}`}>View</Button>
                                 </td>
                                 <td>
-                                    <Button href={`/mybookings/${booking.id}`}>View</Button>
+                                    {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) && 
+                                        <Button onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
+                                    }
                                 </td>
                             </tr>
                         )}
