@@ -11,7 +11,6 @@ class SignUpPage extends Component {
             email: '',
             password: '',
             errorMessage: ''
-
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -31,6 +30,12 @@ class SignUpPage extends Component {
             email: this.state.email,
             password: this.state.password,
             usertype: "customer"
+        }
+        if (this.state.firstname.trim() == '') {
+            return this.setState({ errorMessage: "First name can't be empty!" });
+        }
+        if (this.state.lastname.trim() == '') {
+            return this.setState({ errorMessage: "Last name can't be empty!" });
         }
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
