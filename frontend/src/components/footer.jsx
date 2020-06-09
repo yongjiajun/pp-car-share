@@ -5,8 +5,10 @@ import '../styles/footer.css'
 export default class footer extends Component {
     render() {
         return (
-            <div className="footer">
-                <p>Email us: Gory@Rover.com</p>
+            <div className="footer-parent">
+                <div className="footer">
+                    <p>Email us: Gory@Rover.com</p>
+                </div>
             </div>
         )
     }

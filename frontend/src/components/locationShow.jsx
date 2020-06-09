@@ -74,7 +74,7 @@ class LocationShowPage extends Component {
                     <h2>Welcome to one of our locations</h2>
                     <Button href="/locations" variant="primary">Back to the map</Button>
                 </Jumbotron>
-                {this.state.isLoading && <div style={{height: '400px'}}>
+                {this.state.isLoading && <div id="garage-map" style={{height: '400px'}}>
                     <Map google={this.props.google}
                         initialCenter={{
                             lat: this.state.location.lat,
@@ -105,9 +105,12 @@ class LocationShowPage extends Component {
                     </Map>
                 </div>}
                 <h3>{this.state.location.name}</h3>
-                <h3>Address: </h3>{this.state.location.address}
-                <h3>Cars at this location:</h3>
-                <Container fluid>
+                <strong>Address: </strong>
+                <p>{this.state.location.address}</p>
+                <strong>Number of cars: </strong>
+                <p>{this.state.cars.length}</p>
+                <strong>Cars at this location:</strong>
+                <Container fluid id="car-show">
                     <Row>
                         {this.state.cars.map(car =>
                             <CarDescriptionComponent car={car} />
