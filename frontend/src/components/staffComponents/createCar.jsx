@@ -92,10 +92,10 @@ export default class createCar extends Component {
             disableSubmit: true,
         })
         const newCar = {
-            make: this.state.make,
+            make: this.state.make.trim(),
             seats: this.state.seats,
             bodytype: this.state.bodytype,
-            numberplate: this.state.numberplate,
+            numberplate: this.state.numberplate.trim(),
             colour: this.state.colour,
             costperhour: this.state.costperhour,
             fueltype: this.state.fueltype,
