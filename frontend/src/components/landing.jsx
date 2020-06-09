@@ -20,7 +20,7 @@ class LandingPage extends Component {
                         {(isUserLoggedIn && !isUserStaff) &&
                         <>
                             <Link to="/dashboard">
-                                <Button variant="warning" style={{fontSize: '2vh'}}>Book Now</Button>
+                                <Button variant="warning" style={{fontSize: '2vh'}}>Dashboard</Button>
                             </Link>
                         </>
                         }

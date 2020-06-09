@@ -85,8 +85,8 @@ class BookingDetailsPage extends Component {
                         <b>Cost: </b> ${this.state.booking.cost} <br></br>
                         <b>Location: </b> {this.state.location.name} <br></br>
                         <b>Address: </b> {this.state.location.address} <br></br>
-                        <b>Status: </b> {this.state.booking.status}
-                        {(this.state.booking.status === "Confirmed" && this.checkBookingPast(this.state.booking.pickupTime)) &&
+                        <b>Status: </b> {this.state.booking.status} <br></br>
+                        {(this.state.booking.status === "Confirmed" && this.checkBookingPast(this.state.booking.pickuptime)) &&
                             <Button onClick={this.handleCancelButton}>Cancel</Button>
                         }
                     </>
