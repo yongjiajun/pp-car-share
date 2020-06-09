@@ -25,16 +25,16 @@ class SignUpPage extends Component {
         event.preventDefault();
         /* May need to change / edit this */
         let newUser = {
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
+            firstname: this.state.firstname.trim(),
+            lastname: this.state.lastname.trim(),
             email: this.state.email,
             password: this.state.password,
             usertype: "customer"
         }
-        if (this.state.firstname.trim() == '') {
+        if (this.state.firstname == '') {
             return this.setState({ errorMessage: "First name can't be empty!" });
         }
-        if (this.state.lastname.trim() == '') {
+        if (this.state.lastname == '') {
             return this.setState({ errorMessage: "Last name can't be empty!" });
         }
         UserServiceApi.createNewUser(newUser).then(() => { 
