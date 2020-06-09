@@ -31,10 +31,10 @@ class SignUpPage extends Component {
             password: this.state.password,
             usertype: "customer"
         }
-        if (this.state.firstname == '') {
+        if (this.state.firstname === '') {
             return this.setState({ errorMessage: "First name can't be empty!" });
         }
-        if (this.state.lastname == '') {
+        if (this.state.lastname === '') {
             return this.setState({ errorMessage: "Last name can't be empty!" });
         }
         UserServiceApi.createNewUser(newUser).then(() => { 
