@@ -1,27 +1,11 @@
 const UserModel = require('../api/models/user');
-// const {MongoClient} = require("mongodb");
 const mongoose = require('mongoose');
 const userData = { _id: new mongoose.Types.ObjectId(), firstname: "Jonah", lastname: "Smith", email: "jonah1234@gmail.com", password: "foobar", usertype: "customer" }
 
 
 const test_uri = "mongodb://localhost:27017/pp-test"
 
-describe('insert', () => {
-    // let connection;
-    // let db;
-  
-    // beforeAll(async () => {
-    //   connection = await mongoose.connect(test_uri, {
-    //     useNewUrlParser: true,
-    //   });
-    //   db = await connection;
-    // });
-  
-    // afterAll(async () => {
-    //   await connection.close();
-    //   await db.close();
-    // });
-
+describe('insert new user into collection', () => {
     beforeAll(async () => {
       await mongoose.connect(test_uri, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
           if (err) {
