@@ -29,6 +29,9 @@ class BookingServiceApi {
         return axios.get(`${api_url}/customers/all`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
+    getBooking(bookingId) {
+        return axios.get(`${api_url}/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } })
+    }
 }
 
 export default new BookingServiceApi()
