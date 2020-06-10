@@ -30,6 +30,7 @@ import ViewCustomerPage from './components/staffComponents/viewCustomer';
 import ModifyCustomerDetailsPage from './components/staffComponents/modifyCustomerDetails';
 import ViewAllBookingsPage from './components/staffComponents/viewAllBookings';
 import ViewBookingPage from './components/staffComponents/viewBooking';
+import ViewCustomerBookingsPage from './components/staffComponents/viewCustomerBookings';
 
 class App extends Component {
 
@@ -82,6 +83,7 @@ class App extends Component {
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
           <StaffRoute path="/admin/addcars" component={CreateCar} />
           <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
+          <StaffRoute path="/admin/view/customers/:id/bookings" component={ViewCustomerBookingsPage}/>
           <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage}/>
           <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage}/>
           <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage}/>
