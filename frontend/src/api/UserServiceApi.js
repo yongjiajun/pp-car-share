@@ -11,6 +11,10 @@ class UserServiceApi {
         return axios.get(api_url)
     }
 
+    getAllCustomers() {
+        return axios.get(api_url+'/customers', { headers: { authorization: this.getUserToken() } })
+    }
+
     getUserFromId(id) {
         return axios.get(`${api_url}/${id}`)
     }
