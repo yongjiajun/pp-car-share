@@ -25,7 +25,7 @@ export default class ViewAllCustomersPage extends Component {
         return (
             <div className="container">
                 {this.state.errorMessage && <Alert variant="danger">
-                    <Alert.Heading>Error obtaining bookings!</Alert.Heading>
+                    <Alert.Heading>Error obtaining customers!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
                     </p>
