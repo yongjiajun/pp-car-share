@@ -25,7 +25,9 @@ class BookingServiceApi {
         return axios.patch(`${api_url}/customers/${booking.id}`, booking);
     }
 
-
+    getAllBookings() {
+        return axios.get(`${api_url}/customers/all`, { headers: { authorization: UserServiceApi.getUserToken() } });
+    }
 
 }
 
