@@ -59,7 +59,7 @@ export default class ModifyCustomerDetailsPage extends Component {
                         return this.setState({ modifyErrorMessage: error.response.data.message });
                     })
                 } else {
-                    return this.setState({ modifyErrorMessage: "New email already exists! Please revert or try another one." });
+                    return this.setState({ modifyErrorMessage: "Email already exists! Please revert or try another one." });
                 }
             }).catch(() => {
                 return this.setState({ modifyErrorMessage: "Error checking if email exists!" });
