@@ -84,10 +84,10 @@ class MyBookingPage extends Component {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Car ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
                             <th>Return Time</th>
+                            <th>Car ID</th>
                             <th>Cost</th>
                             <th>Location</th>
                             <th>Address</th>
@@ -98,10 +98,10 @@ class MyBookingPage extends Component {
                         {this.state.bookings.map(booking =>
                             <tr>
                                 <td>{booking.id}</td>
-                                <td>{booking.car}</td>
                                 <td>{booking.bookedtime}</td>
                                 <td>{booking.pickuptime}</td>
                                 <td>{booking.returntime}</td>
+                                <td>{booking.car}</td>
                                 <td>${booking.cost}</td>
                                 <td>
                                     {this.state.locations.map(location =>
