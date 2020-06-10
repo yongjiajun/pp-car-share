@@ -19,12 +19,20 @@ class UserServiceApi {
         return axios.get(`${api_url}/${id}`, { headers: { authorization: this.getUserToken() } })
     }
 
+    checkEmailExists(email) {
+        return axios.post(`${api_url}/email`, email);
+    }
+
     createNewUser(newUser) {
         return axios.post(api_url, newUser)
     }
 
     loginUser(creds) {
         return axios.post(`${api_url}/login`, creds)
+    }
+
+    updateUser(user) {
+        return axios.patch(`${api_url}/${user._id}`, user);
     }
 
     registerSuccessfulLoginForJwt(token) {

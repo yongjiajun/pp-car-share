@@ -25,7 +25,7 @@ export default class ViewCustomerPage extends Component {
         return (
             <div className="container">
                 {this.state.errorMessage && <Alert variant="danger">
-                    <Alert.Heading>Error obtaining customer!</Alert.Heading>
+                    <Alert.Heading>Error fetching customer details!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
                     </p>
@@ -36,7 +36,7 @@ export default class ViewCustomerPage extends Component {
                 <strong>Last name:</strong> {this.state.customer.lastname} <br></br>
                 <strong>Email:</strong> {this.state.customer.email} <br></br>
                 <Button>View Customer's Bookings</Button> <br></br>
-                <Button>Modify Customer Details</Button> <br></br>
+                <Button href={`/admin/modify/customers/${this.state.customer._id}`}>Modify Customer Details</Button> <br></br>
             </div>
         )
     }
