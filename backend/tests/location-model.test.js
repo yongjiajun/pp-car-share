@@ -21,7 +21,7 @@ describe('insert new location into collection', () => {
     });
   
     it('create and save location successfully', async () => {
-      const validLocation = new LocationModel(locationData)
+      const validLocation = new LocationModel(locationData);
       const savedLocation = await validLocation.save();
 
       expect(savedLocation._id).toBeDefined();
