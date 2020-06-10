@@ -13,6 +13,7 @@ export default class ViewBookingPage extends Component {
             location: {},
             errorMessage: ''
         }
+        this.handleCancelButton = this.handleCancelButton.bind(this);
     }
 
     getBookingDetails() {
