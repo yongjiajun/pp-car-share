@@ -13,8 +13,8 @@ class BookingServiceApi {
         return axios.post(api_url, booking);
     }
     
-    getUserBookings() {
-        return axios.get(api_url, { headers: { authorization: UserServiceApi.getUserToken() } });
+    getUserBookings(userId) {
+        return axios.get(`${api_url}/customers/all/${userId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
     getUserBooking(bookingId) {
@@ -25,8 +25,13 @@ class BookingServiceApi {
         return axios.patch(`${api_url}/customers/${booking.id}`, booking);
     }
 
+    getAllBookings() {
+        return axios.get(`${api_url}/customers/all`, { headers: { authorization: UserServiceApi.getUserToken() } });
+    }
 
-
+    getBooking(bookingId) {
+        return axios.get(`${api_url}/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } })
+    }
 }
 
 export default new BookingServiceApi()

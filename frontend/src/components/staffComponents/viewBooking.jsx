@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
+import React , { Component } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
-import CarServiceApi from '../../api/CarServiceApi';
-import LocationServiceApi from '../../api/LocationServiceApi';
+const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
+const { default: CarServiceApi } = require("../../api/CarServiceApi")
 
-class BookingDetailsPage extends Component {
+export default class ViewBookingPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            location: '',
-            booking: '',
-            car: '',
+            booking: {},
+            car: {},
+            location: {},
             errorMessage: ''
         }
         this.handleCancelButton = this.handleCancelButton.bind(this);
-        this.getBookingDetails = this.getBookingDetails.bind(this);
-        this.checkBookingPast = this.checkBookingPast.bind(this);
     }
 
     getBookingDetails() {
-        BookingServiceApi.getUserBooking(this.props.match.params.id)
+        BookingServiceApi.getBooking(this.props.match.params.id)
             .then(res => {
                 this.setState({
                     booking: res.data.booking
@@ -95,5 +93,3 @@ class BookingDetailsPage extends Component {
         )
     }
 }
-
-export default BookingDetailsPage;

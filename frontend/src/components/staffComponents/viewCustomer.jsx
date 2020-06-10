@@ -35,7 +35,7 @@ export default class ViewCustomerPage extends Component {
                 <strong>First name:</strong> {this.state.customer.firstname} <br></br>
                 <strong>Last name:</strong> {this.state.customer.lastname} <br></br>
                 <strong>Email:</strong> {this.state.customer.email} <br></br>
-                <Button>View Customer's Bookings</Button> <br></br>
+                <Button href={`/admin/view/customers/${this.state.customer._id}/bookings`}>View Customer's Bookings</Button> <br></br>
                 <Button href={`/admin/modify/customers/${this.state.customer._id}`}>Modify Customer Details</Button> <br></br>
             </div>
         )
