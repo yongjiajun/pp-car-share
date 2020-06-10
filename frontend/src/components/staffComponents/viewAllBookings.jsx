@@ -1,7 +1,6 @@
 import React , { Component } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
-const { default: UserServiceApi } = require("../../api/UserServiceApi")
 const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
 const { default: CarServiceApi } = require("../../api/CarServiceApi")
 
@@ -63,6 +62,7 @@ export default class ViewAllBookingsPage extends Component {
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>User ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
                             <th>Return Time</th>
@@ -78,6 +78,7 @@ export default class ViewAllBookingsPage extends Component {
                         {this.state.bookings.map(booking =>
                             <tr>
                                 <td>{booking.id}</td>
+                                <td>{booking.user}</td>
                                 <td>{booking.bookedtime}</td>
                                 <td>{booking.pickuptime}</td>
                                 <td>{booking.returntime}</td>
