@@ -18,6 +18,7 @@ import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
 import MyBookingPage from './components/bookingComponents/myBookings';
 import BookingDetailsPage from './components/bookingComponents/bookingDetails';
+import MyProfilePage from './components/myProfile'
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
@@ -70,6 +71,7 @@ class App extends Component {
             updateCars={this.updateCars.bind(this)} />} />}
           {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>}
           {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/myprofile" component={MyProfilePage}/>}
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
