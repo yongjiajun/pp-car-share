@@ -87,7 +87,8 @@ exports.get_user_bookings = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        Booking.find({ user: decoded.id })
+        const userId = req.params.userId;
+        Booking.find({ user: userId })
             .select(selectFields)
             .exec()
             .then(bookings => {
