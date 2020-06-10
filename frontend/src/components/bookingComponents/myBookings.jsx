@@ -3,6 +3,7 @@ import { Alert, Button } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
+import UserServiceApi from '../../api/UserServiceApi';
 
 class MyBookingPage extends Component {
     constructor(props) {
@@ -46,7 +47,8 @@ class MyBookingPage extends Component {
     }
 
     getUsersBookings() {
-        BookingServiceApi.getUserBookings()
+        const userDetails = UserServiceApi.getLoggedInUserDetails();
+        BookingServiceApi.getUserBookings(userDetails.id)
             .then(res => {
                 this.setState({
                     bookings: res.data.bookings.reverse()
@@ -131,7 +133,7 @@ class MyBookingPage extends Component {
                                 </td>
                                 <td>
                                     {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) && 
-                                        <Button onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
+                                        <Button variant="danger" onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
                                     }
                                 </td>
                             </tr>
