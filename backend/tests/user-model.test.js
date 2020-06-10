@@ -30,4 +30,20 @@ describe('insert new user into collection', () => {
       expect(savedUser.email).toBe(userData.email);
       expect(savedUser.userType).toBe(userData.userType);
     });
+
+    it('create user without required field should fail', async() => {
+      const invalidUserData = { _id: new mongoose.Types.ObjectId(), lastname: "Smith", email: "jonah1234@gmail.com", password: "foobar", usertype: "customer" }
+      let err;
+      try {
+        const invalidUser = new UserModel(invalidUserData)
+        const savedUserWithoutFirstname = await invalidUser.save();
+        error = savedUserWithoutFirstname;
+        console.log(error)
+      } catch (error) {
+        err = error
+      }
+      expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+      expect(err.errors.firstname).toBeDefined();
+      
+    });
 });
