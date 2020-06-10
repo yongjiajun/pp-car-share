@@ -13,8 +13,8 @@ class BookingServiceApi {
         return axios.post(api_url, booking);
     }
     
-    getUserBookings() {
-        return axios.get(api_url, { headers: { authorization: UserServiceApi.getUserToken() } });
+    getUserBookings(userId) {
+        return axios.get(`${api_url}/customers/all/${userId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
     getUserBooking(bookingId) {
