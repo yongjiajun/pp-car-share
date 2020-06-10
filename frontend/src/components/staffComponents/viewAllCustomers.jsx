@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 const { default: UserServiceApi } = require("../../api/UserServiceApi")
 
 export default class ViewAllCustomersPage extends Component {
@@ -47,6 +47,7 @@ export default class ViewAllCustomersPage extends Component {
                                 <td>{customer.firstname}</td>
                                 <td>{customer.lastname}</td>
                                 <td>{customer.email}</td>
+                                <td><Button href={`/admin/view/customers/${customer.id}`}>View</Button></td>
                             </tr>
                         )}
                     </tbody>

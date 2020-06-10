@@ -16,7 +16,7 @@ class UserServiceApi {
     }
 
     getUserFromId(id) {
-        return axios.get(`${api_url}/${id}`)
+        return axios.get(`${api_url}/${id}`, { headers: { authorization: this.getUserToken() } })
     }
 
     createNewUser(newUser) {

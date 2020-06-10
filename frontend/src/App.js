@@ -26,6 +26,7 @@ import AdminSignUpPage from './components/adminComponents/adminSignup';
 import CreateCar from './components/staffComponents/createCar';
 import CreateLocation from './components/staffComponents/createLocation';
 import ViewAllCustomersPage from './components/staffComponents/viewAllCustomers';
+import ViewCustomerPage from './components/staffComponents/viewCustomer';
 
 class App extends Component {
 
@@ -78,6 +79,7 @@ class App extends Component {
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
           <StaffRoute path="/admin/addcars" component={CreateCar} />
           <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
+          <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage}/>
           <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage}/>
         </Switch>
         <Footer />
