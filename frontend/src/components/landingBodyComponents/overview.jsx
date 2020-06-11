@@ -83,7 +83,7 @@ export default class Overview extends Component {
                     </Container>
                     <div className="find-nearest-car-div">
                         <h2>Find your nearest MZA Car Share Garage</h2>
-                        <p>There are cars spread all over Melbourne. There's probably one near you</p>
+                        <p>Our cars are spread all over Melbourne. There's probably one near you</p>
                         <div>
                             <Button href="/locations">Check out our locations</Button>
                         </div>
