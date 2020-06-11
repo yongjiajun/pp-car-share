@@ -37,6 +37,10 @@ class AdminSignUpPage extends Component {
         if (this.state.lastname === '') {
             return this.setState({ errorMessage: "Last name can't be empty!" });
         }
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(String(this.state.email).toLowerCase())) {
+            return this.setState({ errorMessage: "Please enter a valid email!" });
+        }
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
                 UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
