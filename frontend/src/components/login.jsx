@@ -25,6 +25,10 @@ class LoginPage extends Component {
             email: this.state.email,
             password: this.state.password
         }
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(String(this.state.email).toLowerCase())) {
+            return this.setState({ errorMessage: "Please enter a valid email!" });
+        }
         UserServiceApi.loginUser(creds).then(res => {
             UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
             window.location.href = `/`;
