@@ -77,8 +77,12 @@ class ViewBookingPage extends Component {
     }
 
     handleCancelButton() {
-        this.state.booking.status = 'Cancelled';
-        this.state.booking.id = this.state.booking._id;
+        let booking = this.state.booking;
+        booking.status = 'Cancelled';
+        booking.id = booking._id;
+        this.setState({
+            booking: booking
+        });
         BookingServiceApi.modifyBooking(this.state.booking)
             .then(() => {
                 this.getBookingDetails()
