@@ -11,6 +11,7 @@ const carSchema = mongoose.Schema({
     fueltype: String,
     location: {type: mongoose.Schema.Types.ObjectId, ref: "Location"},
     currentbooking: {type: mongoose.Schema.Types.ObjectId, ref: "Booking"},
+    image: String
 });
 
 module.exports = mongoose.model('Car', carSchema);

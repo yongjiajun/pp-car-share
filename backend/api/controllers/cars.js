@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const bookingSelectFields = '_id user car bookedtime pickuptime returntime cost location status';
-const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking';
+const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking image';
 
 /* CONTROLLERS WITH JWT GUARDING */
 exports.create_car = (req, res, next) => {
@@ -27,6 +27,7 @@ exports.create_car = (req, res, next) => {
                 costperhour: req.body.costperhour,
                 fueltype: req.body.fueltype,
                 location: location,
+                image: req.body.b64photo,
                 currentbooking: null
             });
             car.save().then(car => {
@@ -61,6 +62,7 @@ exports.get_all_cars = (req, res, next) => {
                         costperhour: car.costperhour,
                         fueltype: car.fueltype,
                         location: car.location,
+                        image: car.image,
                         currentbooking: car.currentbooking
                     }
                 })
