@@ -25,6 +25,10 @@ class LoginPage extends Component {
             email: this.state.email,
             password: this.state.password
         }
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(String(this.state.email).toLowerCase())) {
+            return this.setState({ errorMessage: "Please enter a valid email!" });
+        }
         UserServiceApi.loginUser(creds).then(res => {
             UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
             window.location.href = `/`;
@@ -48,7 +52,7 @@ class LoginPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} />
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -57,7 +61,7 @@ class LoginPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange} />
+                        <Form.Control name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain: at least one number, one uppercase, lowercase letter, and at least 8 or more characters" placeholder="Password" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 

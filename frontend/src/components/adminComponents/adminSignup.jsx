@@ -10,9 +10,8 @@ class AdminSignUpPage extends Component {
             lastname: '',
             email: '',
             password: '',
-            usertype: 'customer',
+            usertype: '',
             errorMessage: ''
-
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -26,11 +25,21 @@ class AdminSignUpPage extends Component {
     handleSubmit = event => {
         /* May need to change / edit this */
         let newUser = {
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
+            firstname: this.state.firstname.trim(),
+            lastname: this.state.lastname.trim(),
             email: this.state.email,
             password: this.state.password,
             usertype: this.state.usertype
+        }
+        if (this.state.firstname === '') {
+            return this.setState({ errorMessage: "First name can't be empty!" });
+        }
+        if (this.state.lastname === '') {
+            return this.setState({ errorMessage: "Last name can't be empty!" });
+        }
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(String(this.state.email).toLowerCase())) {
+            return this.setState({ errorMessage: "Please enter a valid email!" });
         }
         UserServiceApi.createNewUser(newUser).then(() => { 
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
@@ -58,7 +67,7 @@ class AdminSignUpPage extends Component {
                             First Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} />
+                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -67,7 +76,7 @@ class AdminSignUpPage extends Component {
                             Last Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange}/>
+                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -76,7 +85,7 @@ class AdminSignUpPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange}/>
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
@@ -85,14 +94,15 @@ class AdminSignUpPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
+                        <Form.Control name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain: at least one number, one uppercase, lowercase letter, and at least 8 or more characters" placeholder="Password" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} controlId="formHorizontalUserType">
                         <Form.Label column sm={2}>Account Type</Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="usertype" as="select" onChange={this.handleChange}>
+                            <Form.Control name="usertype" as="select" onChange={this.handleChange} required>
+                                <option disabled selected>Select account type</option>
                                 <option>customer</option>
                                 <option>staff</option>
                                 <option>admin</option>

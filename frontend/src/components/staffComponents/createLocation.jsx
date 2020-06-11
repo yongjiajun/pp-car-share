@@ -51,7 +51,7 @@ export default class CreateLocation extends Component {
             });
         } else {
             let newLoc = {
-                name: name,
+                name: name.trim(),
                 address: address
             }
             LocationServiceApi.createNewLocation(newLoc).then(res => {
@@ -101,11 +101,11 @@ export default class CreateLocation extends Component {
                 }
                 <Form>
                     <Form.Group as={Row} controlId="formHorizontalName">
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} required>
                             Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} />
+                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalName">
