@@ -4,7 +4,6 @@ import jwt_decode from 'jwt-decode'
 const api_url = process.env.server_url || "http://localhost:3001/api/users"
 
 export const TOKEN_SESSION_ATTRIBUTE_NAME = 'token'
-export const DETACH_TOKEN_SESSION_ATTRIBUTE_NAME = 'detachToken'
 export const TOKEN_HEADER_LENGTH = 7
 
 class UserServiceApi {
@@ -12,8 +11,16 @@ class UserServiceApi {
         return axios.get(api_url)
     }
 
+    getAllCustomers() {
+        return axios.get(api_url+'/customers', { headers: { authorization: this.getUserToken() } })
+    }
+
     getUserFromId(id) {
-        return axios.get(`${api_url}/${id}`)
+        return axios.get(`${api_url}/${id}`, { headers: { authorization: this.getUserToken() } })
+    }
+
+    checkEmailExists(email) {
+        return axios.post(`${api_url}/email`, email);
     }
 
     createNewUser(newUser) {
@@ -22,6 +29,10 @@ class UserServiceApi {
 
     loginUser(creds) {
         return axios.post(`${api_url}/login`, creds)
+    }
+
+    updateUser(user) {
+        return axios.patch(`${api_url}/${user._id}`, user);
     }
 
     registerSuccessfulLoginForJwt(token) {
@@ -84,7 +95,6 @@ class UserServiceApi {
 
     logout() {
         sessionStorage.removeItem(TOKEN_SESSION_ATTRIBUTE_NAME);
-        sessionStorage.removeItem(DETACH_TOKEN_SESSION_ATTRIBUTE_NAME);
         window.location.href = `/`;
     }
 }

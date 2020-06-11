@@ -117,6 +117,56 @@ exports.get_all_users = (req, res, next) => {
     })
 }
 
+exports.check_email_taken = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        User.findOne({ email: req.body.email }).then(user => {
+            if (user) {
+                return res.status(200).json({ exist: true });
+            } else {
+                return res.status(200).json({ exist: false });
+            }
+        });
+    });
+}
+
+exports.get_all_customers = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!`})
+        } else {
+            User.find({usertype: "customer"})
+            .select(selectFields)
+            .exec()
+            .then(customers => {
+                const response = {
+                    customers: customers.map(customer => {
+                        return {
+                            id: customer._id,
+                            firstname: customer.firstname,
+                            lastname: customer.lastname,
+                            email: customer.email
+                        }
+                    })
+                }
+                res.status(200).json(response);
+            })
+            .catch(error => {
+                res.status(500).json({ message: `Unable to GET all customers!`, error: error })
+            });
+        }
+    });
+}
+
 exports.get_user = (req, res, next) => {
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 
@@ -180,7 +230,7 @@ exports.update_user = (req, res, next) => {
             .exec()
             .then(user => {
                 const response = {
-                    message: `Updated user of id '${user._id}' successfully`,
+                    message: `Updated user of id '${id}' successfully`,
                     user: user
                 }
                 res.status(200).json({ response });

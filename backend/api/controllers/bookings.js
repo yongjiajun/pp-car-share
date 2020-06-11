@@ -17,7 +17,7 @@ exports.create_booking = (req, res, next) => {
         const pickupTime = localiseTimeZone(new Date(req.body.pickupTime));
         const returnTime = localiseTimeZone(new Date(req.body.returnTime));
         const bookedTime = localiseTimeZone(new Date());
-        const timeDeltaHours = localiseTimeZone(new Date(returnTime - pickupTime)).getTime() / 3600;
+        const timeDeltaHours = new Date(returnTime - pickupTime).getTime() / 3600;
 
         Car.findById(req.body.car)
             .then(car => {
@@ -87,7 +87,8 @@ exports.get_user_bookings = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        Booking.find({ user: decoded.id })
+        const userId = req.params.userId;
+        Booking.find({ user: userId })
             .select(selectFields)
             .exec()
             .then(bookings => {
@@ -186,6 +187,33 @@ exports.update_booking = (req, res, next) => {
     })
 }
 
+exports.check_ready_pickup_return = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        Booking.find({status: "Picked up", user: decoded.id}).sort({ returntime: 1 }).then(bookings => {
+            var returned = false;
+            bookings.forEach(booking => {
+                if (!returned) {
+                    res.status(200).json(booking);
+                    returned = true;
+                }
+            })
+            if (!returned) {
+                Booking.find({returntime: { $gte: localiseTimeZone(new Date()) }, user: decoded.id, status: "Confirmed" }).sort({ pickuptime: 1 }).then(bookings => {
+                    if (bookings.length !== 0) {
+                        res.status(200).json(bookings[0])
+                    } else {
+                        res.status(200).json({})
+                    }
+                })
+            }
+        })
+    })
+}
+ 
 function localiseTimeZone(date) {
     // hours offset from UTC for Melbourne (GMT+10)
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset())

@@ -18,12 +18,19 @@ import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
 import MyBookingPage from './components/bookingComponents/myBookings';
 import BookingDetailsPage from './components/bookingComponents/bookingDetails';
+import MyProfilePage from './components/myProfile'
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
 import AdminSignUpPage from './components/adminComponents/adminSignup';
 import CreateCar from './components/staffComponents/createCar';
 import CreateLocation from './components/staffComponents/createLocation';
+import ViewAllCustomersPage from './components/staffComponents/viewAllCustomers';
+import ViewCustomerPage from './components/staffComponents/viewCustomer';
+import ModifyCustomerDetailsPage from './components/staffComponents/modifyCustomerDetails';
+import ViewAllBookingsPage from './components/staffComponents/viewAllBookings';
+import ViewBookingPage from './components/staffComponents/viewBooking';
+import ViewCustomerBookingsPage from './components/staffComponents/viewCustomerBookings';
 
 class App extends Component {
 
@@ -70,11 +77,18 @@ class App extends Component {
             updateCars={this.updateCars.bind(this)} />} />}
           {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>}
           {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/myprofile" component={MyProfilePage}/>}
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
           <StaffRoute path="/admin/addcars" component={CreateCar} />
           <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
+          <StaffRoute path="/admin/view/customers/:id/bookings" component={ViewCustomerBookingsPage}/>
+          <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage}/>
+          <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage}/>
+          <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage}/>
+          <StaffRoute path="/admin/view/bookings" component={ViewAllBookingsPage}/>
+          <StaffRoute path="/admin/modify/customers/:id" component={ModifyCustomerDetailsPage}/>
         </Switch>
         <Footer />
       </Router>

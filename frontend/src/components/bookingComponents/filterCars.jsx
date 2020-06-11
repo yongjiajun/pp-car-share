@@ -91,7 +91,7 @@ class FilterCarsPage extends Component {
 
         return (
             <div className="container">
-                {this.state.popUp && <BookingConfirmDetailsPopUp car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} togglePopUp={this.togglePopUp} />}
+                {this.state.popUp && <BookingConfirmDetailsPopUp locations={this.state.locations} car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} togglePopUp={this.togglePopUp} />}
                 <h2>Search for a car</h2>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error filtering cars!</Alert.Heading>
