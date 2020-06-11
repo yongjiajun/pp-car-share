@@ -50,7 +50,7 @@ class BookingDashboard extends Component {
     }
 
     handlePickupButton() {
-        this.this.state.nextBooking.status = 'Picked up';
+        this.state.nextBooking.status = 'Picked up';
         this.state.nextBooking.id = this.state.nextBooking._id;
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
