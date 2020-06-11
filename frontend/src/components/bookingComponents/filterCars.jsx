@@ -186,6 +186,7 @@ class FilterCarsPage extends Component {
                             <th>Fuel Type</th>
                             <th>Location</th>
                             <th>Address</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

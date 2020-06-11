@@ -94,6 +94,8 @@ class MyBookingPage extends Component {
                             <th>Location</th>
                             <th>Address</th>
                             <th>Status</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
