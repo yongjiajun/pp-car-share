@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Button, Alert, Table, Form, Col, Row } from 'react-bootstrap'
+import { Container, Button, Alert, Table, Col, Row } from 'react-bootstrap'
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
@@ -44,7 +44,7 @@ class ViewLocation extends Component {
                     })
                 });
 
-            res.data.cars.map(carId => {
+            res.data.cars.forEach(carId => {
                 CarServiceApi.getCar(carId).then(res => {
                     this.state.cars.push(res.data.car);
                     this.setState({
