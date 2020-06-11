@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Alert, Button } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
@@ -8,10 +9,14 @@ class BookingDetailsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            location: '',
-            booking: '',
-            car: '',
-            errorMessage: ''
+            location: {},
+            booking: {},
+            car: {},
+            errorMessage: '',
+            activeMarker: {},
+            showingInfoWindow: false,
+            selectedPlace: {},
+            isLoading: false
         }
         this.handleCancelButton = this.handleCancelButton.bind(this);
         this.getBookingDetails = this.getBookingDetails.bind(this);
@@ -32,14 +37,42 @@ class BookingDetailsPage extends Component {
                     })
                 LocationServiceApi.getLocationFromId(this.state.booking.location)
                     .then(res => {
-                        this.setState({
-                            location: res.data
-                        })
+                        LocationServiceApi.getGeocodeFromAddress(res.data.address)
+                            .then(newRes => {
+                                // Create object with address, latitude and longitude
+                                let locationObject = {
+                                    id: res.data._id,
+                                    address: res.data.address,
+                                    name: res.data.name,
+                                    lat: newRes.data.results[0].geometry.location.lat,
+                                    lng: newRes.data.results[0].geometry.location.lng,
+                                    cars: res.data.cars
+                                }
+                                // set new location object to react state array
+                                this.setState({
+                                    location: locationObject,
+                                    isLoading: true
+                                })
+                            });
                     })
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
     }
+
+    onMarkerClick = (props, marker) =>
+        this.setState({
+            selectedPlace: props,
+            activeMarker: marker,
+            showingInfoWindow: true,
+        })
+
+    onMapClick = () =>
+        this.setState({
+            showingInfoWindow: false,
+            selectedPlace: {},
+            activeMarker: {}
+        })
 
     componentDidMount() {
         this.getBookingDetails()
@@ -72,6 +105,36 @@ class BookingDetailsPage extends Component {
                 </Alert>}
                 {!this.state.errorMessage &&
                     <>
+                        {this.state.isLoading && <div id="garage-map" style={{ height: '400px' }}>
+                            <Map google={this.props.google}
+                                initialCenter={{
+                                    lat: this.state.location.lat,
+                                    lng: this.state.location.lng
+                                }}
+                                style={{ height: '400px', width: '400px' }}
+                                zoom={14}
+                                onClick={this.onMapClick}>
+
+                                <Marker
+                                    id={this.state.location.id}
+                                    name={this.state.location.name}
+                                    address={this.state.location.address}
+                                    onClick={this.onMarkerClick}
+                                    position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
+                                />
+
+                                <InfoWindow
+                                    onClose={this.onInfoWindowClose}
+                                    marker={this.state.activeMarker}
+                                    visible={this.state.showingInfoWindow}>
+                                    <div id="info-window">
+                                        <h2>{this.state.selectedPlace.name}</h2>
+                                        <p>{this.state.selectedPlace.address}</p>
+                                        <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
+                                    </div>
+                                </InfoWindow>
+                            </Map>
+                        </div>}
                         <b>Car ID: </b> {this.state.car._id} <br></br>
                         <b>Car Make: </b> {this.state.car.make} <br></br>
                         <b>Car Number Plate: </b> {this.state.car.numberplate} <br></br>
@@ -96,4 +159,6 @@ class BookingDetailsPage extends Component {
     }
 }
 
-export default BookingDetailsPage;
+export default GoogleApiWrapper({
+    apiKey: process.env.REACT_APP_API_KEY
+})(BookingDetailsPage)
