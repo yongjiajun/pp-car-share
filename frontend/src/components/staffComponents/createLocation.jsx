@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LocationServiceApi from '../../api/LocationServiceApi'
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
 export default class CreateLocation extends Component {
     constructor(props) {
@@ -44,7 +44,7 @@ export default class CreateLocation extends Component {
             disableSubmit: true
         })
 
-        if( name == '' || address == '') {
+        if( name === '' || address === '') {
             this.setState({
                 errMsg: "name and address cannot be empty",
                 disableSubmit: false
