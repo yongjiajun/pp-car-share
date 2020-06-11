@@ -221,7 +221,6 @@ exports.update_user = (req, res, next) => {
 
         const id = req.params.userId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }
