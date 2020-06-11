@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Col } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
@@ -96,7 +96,7 @@ class BookingDetailsPage extends Component {
     render() {
         return (
             <div className="container">
-                <h2>Booking details for ID {this.state.booking._id}</h2>
+                <h2>Booking details</h2>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error obtaining booking!</Alert.Heading>
                     <p>
@@ -135,13 +135,8 @@ class BookingDetailsPage extends Component {
                                 </InfoWindow>
                             </Map>
                         </div>}
+                        <b>Booking ID: </b> {this.state.booking._id} <br></br>
                         <b>Car ID: </b> {this.state.car._id} <br></br>
-                        <b>Car Make: </b> {this.state.car.make} <br></br>
-                        <b>Car Number Plate: </b> {this.state.car.numberplate} <br></br>
-                        <b>Car Colour: </b> {this.state.car.colour} <br></br>
-                        <b>Car Fuel Type: </b> {this.state.car.fueltype} <br></br>
-                        <b>Car Seats: </b> {this.state.car.seats} <br></br>
-                        <b>Car Body Type: </b> {this.state.car.bodytype} <br></br>
                         <b>Booking time: </b> {this.state.booking.bookedtime} <br></br>
                         <b>Pickup time: </b> {this.state.booking.pickuptime} <br></br>
                         <b>Return time: </b> {this.state.booking.returntime} <br></br>
@@ -152,6 +147,14 @@ class BookingDetailsPage extends Component {
                         {(this.state.booking.status === "Confirmed" && this.checkBookingPast(this.state.booking.pickuptime)) &&
                             <Button variant="danger" onClick={this.handleCancelButton}>Cancel</Button>
                         }
+                        <Col sm={4}>
+                            <div className="cars-div-white" style={{ 'border': 'solid black 2px' }}>
+                                <img src={this.state.car.image} alt="car" width="100" />
+                                <h2 style={{ marginTop: '1vh' }}>{this.state.car.make}</h2>
+                                <p>{this.state.car.fueltype}, {this.state.car.bodytype}, {this.state.car.seats} seaters, {this.state.car.colour}</p>
+                                <h5>Number Plate: {this.state.car.numberplate}</h5>
+                            </div>
+                        </Col>
                     </>
                 }
             </div>
