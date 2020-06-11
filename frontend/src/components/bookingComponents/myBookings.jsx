@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Container, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
@@ -74,7 +74,7 @@ class MyBookingPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error obtaining bookings!</Alert.Heading>
                     <p>
@@ -82,7 +82,7 @@ class MyBookingPage extends Component {
                     </p>
                 </Alert>}
                 <h2>My Bookings</h2>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -139,8 +139,8 @@ class MyBookingPage extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         )
     }
 }
