@@ -61,7 +61,7 @@ export default class ViewAllBookingsPage extends Component {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Booking ID</th>
                             <th>User ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
@@ -78,18 +78,28 @@ export default class ViewAllBookingsPage extends Component {
                         {this.state.bookings.map(booking =>
                             <tr>
                                 <td>{booking.id}</td>
-                                <td>{booking.user}</td>
+                                <td><a href={`/admin/view/customers/${booking.user}`}>{booking.user}</a></td>
                                 <td>{booking.bookedtime}</td>
                                 <td>{booking.pickuptime}</td>
                                 <td>{booking.returntime}</td>
-                                <td>{booking.car}</td>
+                                <td>
+                                    {this.state.cars.map(car =>
+                                        <>
+                                            {car.id === booking.car &&
+                                                <>
+                                                    <a href={`/admin/view/cars/${booking.car}`}>{car.make}</a>
+                                                </>
+                                            }
+                                        </>
+                                    )}
+                                </td>
                                 <td>${booking.cost}</td>
                                 <td>
                                     {this.state.locations.map(location =>
                                         <>
                                             {location.id === booking.location &&
                                                 <>
-                                                    {location.name}
+                                                    <a href={`/admin/view/location/${booking.location}`}>{location.name}</a>
                                                 </>
                                             }
                                         </>
