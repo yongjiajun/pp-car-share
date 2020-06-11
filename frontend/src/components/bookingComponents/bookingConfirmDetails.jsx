@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import UserServiceApi from '../../api/UserServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
@@ -9,7 +10,11 @@ class BookingConfirmDetailsPopUp extends Component {
         super(props);
         this.state = {
             errorMessage: '',
-            location: {}
+            location: {},
+            activeMarker: {},
+            showingInfoWindow: false,
+            selectedPlace: {},
+            isLoading: false
         }
         this.handleConfirmButton = this.handleConfirmButton.bind(this);
         this.handleCancelButton = this.handleCancelButton.bind(this);
@@ -38,6 +43,46 @@ class BookingConfirmDetailsPopUp extends Component {
         this.props.togglePopUp();
     }
 
+    componentDidMount() {
+        const { car } = this.props;
+
+        LocationServiceApi.getLocationFromId(car.location)
+            .then(res => {
+                console.log(res)
+                LocationServiceApi.getGeocodeFromAddress(res.data.address)
+                    .then(newRes => {
+                        // Create object with address, latitude and longitude
+                        let locationObject = {
+                            id: res.data._id,
+                            address: res.data.address,
+                            name: res.data.name,
+                            lat: newRes.data.results[0].geometry.location.lat,
+                            lng: newRes.data.results[0].geometry.location.lng,
+                            cars: res.data.cars
+                        }
+                        // set new location object to react state array
+                        this.setState({
+                            location: locationObject,
+                            isLoading: true
+                        })
+                    });
+            })
+    }
+
+    onMarkerClick = (props, marker) =>
+        this.setState({
+            selectedPlace: props,
+            activeMarker: marker,
+            showingInfoWindow: true,
+        })
+
+    onMapClick = () =>
+        this.setState({
+            showingInfoWindow: false,
+            selectedPlace: {},
+            activeMarker: {}
+        })
+
     calculateBookingCost() {
         // cost calculation
         const pickupTimeHours = new Date(this.props.pickupTime);
@@ -60,13 +105,36 @@ class BookingConfirmDetailsPopUp extends Component {
                 </p>
             </Alert>}
             <h2>Confirm Booking?</h2>
-            <b>Car ID: </b> {car._id} <br></br>
-            <b>Car Make: </b> {car.make} <br></br>
-            <b>Car Number Plate: </b> {car.numberplate} <br></br>
-            <b>Car Colour: </b> {car.colour} <br></br>
-            <b>Car Fuel Type: </b> {car.fueltype} <br></br>
-            <b>Car Seats: </b> {car.seats} <br></br>
-            <b>Car Body Type: </b> {car.bodytype} <br></br>
+            {this.state.isLoading && <div id="garage-map" style={{ height: '400px' }}>
+                <Map google={this.props.google}
+                    initialCenter={{
+                        lat: this.state.location.lat,
+                        lng: this.state.location.lng
+                    }}
+                    style={{ height: '400px', width: '400px' }}
+                    zoom={14}
+                    onClick={this.onMapClick}>
+
+                    <Marker
+                        id={this.state.location.id}
+                        name={this.state.location.name}
+                        address={this.state.location.address}
+                        onClick={this.onMarkerClick}
+                        position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
+                    />
+
+                    <InfoWindow
+                        onClose={this.onInfoWindowClose}
+                        marker={this.state.activeMarker}
+                        visible={this.state.showingInfoWindow}>
+                        <div id="info-window">
+                            <h2>{this.state.selectedPlace.name}</h2>
+                            <p>{this.state.selectedPlace.address}</p>
+                            <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
+                        </div>
+                    </InfoWindow>
+                </Map>
+            </div>}
             <b>Pickup time: </b> {pickupTime} <br></br>
             <b>Return time: </b> {returnTime} <br></br>
             <b>Cost: </b> ${cost} <br></br>
@@ -88,10 +156,21 @@ class BookingConfirmDetailsPopUp extends Component {
                     }
                 </>
             )} <br></br>
-            <Button onClick={this.handleConfirmButton}>Confirm</Button>
+            <Col sm={4}>
+                <div className="cars-div-white">
+                    <img src={car.image} alt="car" width="100" />
+                    <h2 style={{ marginTop: '1vh' }}>{car.make}</h2>
+                    <p>{car.fueltype}, {car.bodytype}, {car.seats} seaters, {car.colour}</p>
+                    <h5>${car.costperhour} per hour</h5>
+                    <a href={"/locations/" + car.locationId}><strong>Garage Location:</strong> {car.location}</a>
+                </div>
+            </Col>
+            <Button variant="success" onClick={this.handleConfirmButton}>Confirm</Button>
             <Button variant="danger" onClick={this.handleCancelButton}>Cancel</Button>
         </div>);
     }
 }
 
-export default BookingConfirmDetailsPopUp;
+export default GoogleApiWrapper({
+    apiKey: process.env.REACT_APP_API_KEY
+})(BookingConfirmDetailsPopUp)
