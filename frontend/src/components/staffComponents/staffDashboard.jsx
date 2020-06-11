@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import UserServiceApi from '../../api/UserServiceApi'
-import CreateCar from './createCar'
-import Overview from './overview'
-import AdminSignup from '../adminComponents/adminSignup'
 
 import '../../styles/staffDashboard.css'
 
@@ -17,19 +14,6 @@ const FunctionNotSelectedStyle = {
 }
 
 export default class StaffDashboard extends Component {
-
-    constructor(props){
-        super(props);
-
-        this.state = {
-            
-        }
-    }
-    
-    componentDidMount() {
-        
-    }
-
     render() {
         const currentLocation = window.location.pathname
         const isAdmin = UserServiceApi.isUserAdmin
