@@ -85,7 +85,7 @@ class MyBookingPage extends Component {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Booking ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
                             <th>Return Time</th>
