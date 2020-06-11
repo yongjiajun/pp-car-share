@@ -17,7 +17,7 @@ export default class CarsAndVans extends Component {
 
     componentDidMount() {
         CarServiceApi.getAllCars().then(res => {
-            res.data.cars.map(car => {
+            res.data.cars.forEach(car => {
                 LocationServiceApi.getLocationFromId(car.location).then(res => {
                     car.location = res.data.name
                     car.locationId = res.data._id
