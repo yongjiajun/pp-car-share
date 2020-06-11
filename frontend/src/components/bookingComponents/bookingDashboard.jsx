@@ -50,8 +50,12 @@ class BookingDashboard extends Component {
     }
 
     handlePickupButton() {
-        this.state.nextBooking.status = 'Picked up';
-        this.state.nextBooking.id = this.state.nextBooking._id;
+        let nextBooking = this.state.nextBooking;
+        nextBooking.status = 'Picked up';
+        nextBooking.id = nextBooking._id;
+        this.setState({
+            nextBooking: nextBooking
+        });
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
@@ -77,8 +81,12 @@ onMapClick = () =>
     })
 
     handleReturnButton() {
-        this.state.nextBooking.status = 'Returned';
-        this.state.nextBooking.id = this.state.nextBooking._id;
+        let nextBooking = this.state.nextBooking;
+        nextBooking.status = 'Returned';
+        nextBooking.id = nextBooking._id;
+        this.setState({
+            nextBooking: nextBooking
+        });
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
