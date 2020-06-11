@@ -50,7 +50,7 @@ class BookingDashboard extends Component {
     }
 
     handlePickupButton() {
-        this.state.nextBooking.status = 'Picked up';
+        this.this.state.nextBooking.status = 'Picked up';
         this.state.nextBooking.id = this.state.nextBooking._id;
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
@@ -96,8 +96,8 @@ onMapClick = () =>
                 this.setState({
                     nextBooking: res.data,
                     nextBookingExists: true,
-                    availablePickup: (!(new Date(res.data.pickuptime) > currentTime) && res.data.status == "Confirmed"),
-                    avaialbleReturn: res.data.status == "Picked up"
+                    availablePickup: (!(new Date(res.data.pickuptime) > currentTime) && res.data.status === "Confirmed"),
+                    avaialbleReturn: res.data.status === "Picked up"
                 })
                 CarServiceApi.getCar(res.data.car)
                     .then(res => {
@@ -185,8 +185,8 @@ onMapClick = () =>
                             <b>Address: </b> {this.state.location.address} <br></br>
                             <b>Status: </b> {this.state.nextBooking.status} <br></br>
                             <Button variant="success" onClick={this.handlePickupButton} disabled={!this.state.availablePickup}>Pickup</Button>
-                            <Button variant="danger" onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button> <br></br>
-                            <Button href={`/mybookings/${this.state.nextBooking._id}`}>View</Button>
+                            <Button variant="danger" onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button>
+                            <Button href={`/mybookings/${this.state.nextBooking._id}`}>View Booking</Button>
                             <Col sm={4}>
                                 <div className="cars-div-white" style={{ 'border': 'solid black 2px' }}>
                                     <img src={this.state.car.image} alt="car" width="100" />
