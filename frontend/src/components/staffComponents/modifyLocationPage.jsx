@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Alert, Button, Form, Container, Col, Row } from 'react-bootstrap';
 import LocationServiceApi from '../../api/LocationServiceApi';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
 import { withRouter } from 'react-router-dom';
 class modifyLocationPage extends Component {
     constructor(props) {
