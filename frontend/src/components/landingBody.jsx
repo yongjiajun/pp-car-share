@@ -3,7 +3,6 @@ import { Nav } from 'react-bootstrap';
 
 import '../styles/landingBody.css'
 import Overview from './landingBodyComponents/overview'
-import Pricing from './landingBodyComponents/pricing'
 import Cars from './landingBodyComponents/cars'
 import Faqs from './landingBodyComponents/faqs'
 
