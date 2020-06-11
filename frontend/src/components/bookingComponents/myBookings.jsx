@@ -95,7 +95,6 @@ class MyBookingPage extends Component {
                             <th>Address</th>
                             <th>Status</th>
                             <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,11 +132,11 @@ class MyBookingPage extends Component {
                                 <td>
                                     <Button href={`/mybookings/${booking.id}`}>View</Button>
                                 </td>
-                                <td>
-                                    {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) && 
+                                {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) &&
+                                    <td>
                                         <Button variant="danger" onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
-                                    }
-                                </td>
+                                    </td>
+                                }
                             </tr>
                         )}
                     </tbody>
