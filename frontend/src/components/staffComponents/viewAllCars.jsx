@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Table, Button, Alert} from 'react-bootstrap'
+import { Container, Table, Alert} from 'react-bootstrap'
 import CarServiceApi from '../../api/CarServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import { withRouter } from 'react-router-dom';
@@ -22,7 +22,7 @@ class ViewAllCars extends Component {
 
     componentDidMount() {
         CarServiceApi.getAllCars().then(res => {
-            res.data.cars.map(car => {
+            res.data.cars.forEach(car => {
                 LocationServiceApi.getLocationFromId(car.location).then(res => {
                     car.location = res.data.name
                     car.locationId = res.data._id
@@ -76,7 +76,7 @@ class ViewAllCars extends Component {
                                     <td>{car.costperhour}</td>
                                     <td>{car.fueltype}</td>
                                     <td>{car.location}</td>
-                                    <td><img src={car.image} width={50}/></td>
+                                    <td><img alt="car" src={car.image} width={50}/></td>
                                     <td>{(car.currentbooking === null) ? "No booking" : car.currentbooking}</td>
                                 </tr>
                             )
