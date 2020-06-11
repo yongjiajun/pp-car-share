@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
+import { Col, Button, Alert } from 'react-bootstrap';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import UserServiceApi from '../../api/UserServiceApi';
