@@ -2,7 +2,6 @@ import React from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../api/LocationServiceApi.js';
 import "../styles/map.css"
-import UserServiceApi from '../api/UserServiceApi.js';
 
 export class MapContainer extends React.Component {
   constructor(props) {
