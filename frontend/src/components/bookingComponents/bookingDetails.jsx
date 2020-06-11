@@ -136,7 +136,6 @@ class BookingDetailsPage extends Component {
                             </Map>
                         </div>}
                         <b>Booking ID: </b> {this.state.booking._id} <br></br>
-                        <b>Car ID: </b> {this.state.car._id} <br></br>
                         <b>Booking time: </b> {this.state.booking.bookedtime} <br></br>
                         <b>Pickup time: </b> {this.state.booking.pickuptime} <br></br>
                         <b>Return time: </b> {this.state.booking.returntime} <br></br>
@@ -153,6 +152,7 @@ class BookingDetailsPage extends Component {
                                 <h2 style={{ marginTop: '1vh' }}>{this.state.car.make}</h2>
                                 <p>{this.state.car.fueltype}, {this.state.car.bodytype}, {this.state.car.seats} seaters, {this.state.car.colour}</p>
                                 <h5>Number Plate: {this.state.car.numberplate}</h5>
+                                <p><b>Car ID: </b>{this.state.car._id}</p>
                             </div>
                         </Col>
                     </>
