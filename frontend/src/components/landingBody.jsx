@@ -4,7 +4,7 @@ import { Nav } from 'react-bootstrap';
 import '../styles/landingBody.css'
 import Overview from './landingBodyComponents/overview'
 import Pricing from './landingBodyComponents/pricing'
-import CarsAndVans from './landingBodyComponents/carsAndVans'
+import Cars from './landingBodyComponents/cars'
 import Faqs from './landingBodyComponents/faqs'
 
 const navWhenSelectedStyle = {
@@ -39,8 +39,8 @@ export default class landingBody extends Component {
                     <Nav.Item onClick={this.handleClick.bind(this)} style={(component === "Pricing") ? navWhenSelectedStyle : {}}>
                         <Nav.Link className="nav-link">Pricing</Nav.Link>
                     </Nav.Item>
-                    <Nav.Item onClick={this.handleClick.bind(this)} style={(component === "Cars and Vans") ? navWhenSelectedStyle : {}}>
-                        <Nav.Link className="nav-link">Cars and Vans</Nav.Link>
+                    <Nav.Item onClick={this.handleClick.bind(this)} style={(component === "Cars") ? navWhenSelectedStyle : {}}>
+                        <Nav.Link className="nav-link">Cars</Nav.Link>
                     </Nav.Item>
                     <Nav.Item onClick={this.handleClick.bind(this)} style={(component === "FAQs") ? navWhenSelectedStyle : {}}>
                         <Nav.Link className="nav-link">FAQs</Nav.Link>
@@ -61,8 +61,8 @@ function RenderCorrectComponents(props) {
             return(<Overview />);
         case "Pricing":
             return(<Pricing />);
-        case "Cars and Vans":
-            return(<CarsAndVans />);
+        case "Cars":
+            return(<Cars />);
         case "FAQs":
             return(<Faqs />);
         default:
