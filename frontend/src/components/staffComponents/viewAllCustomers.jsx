@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Table, Container } from 'react-bootstrap';
 const { default: UserServiceApi } = require("../../api/UserServiceApi")
 
 export default class ViewAllCustomersPage extends Component {
@@ -23,7 +23,7 @@ export default class ViewAllCustomersPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error obtaining customers!</Alert.Heading>
                     <p>
@@ -31,13 +31,14 @@ export default class ViewAllCustomersPage extends Component {
                     </p>
                 </Alert>}
                 <h2>View All Customers</h2>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Customer ID</th>
                             <th>First name</th>
                             <th>Last name</th>
                             <th>Email</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,8 +52,8 @@ export default class ViewAllCustomersPage extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         )
     }
 }

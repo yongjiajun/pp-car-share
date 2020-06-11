@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Container, ButtonGroup } from 'react-bootstrap';
 const { default: UserServiceApi } = require("../../api/UserServiceApi")
 
 export default class ViewCustomerPage extends Component {
@@ -23,7 +23,7 @@ export default class ViewCustomerPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error fetching customer details!</Alert.Heading>
                     <p>
@@ -35,9 +35,11 @@ export default class ViewCustomerPage extends Component {
                 <strong>First name:</strong> {this.state.customer.firstname} <br></br>
                 <strong>Last name:</strong> {this.state.customer.lastname} <br></br>
                 <strong>Email:</strong> {this.state.customer.email} <br></br>
-                <Button href={`/admin/view/customers/${this.state.customer._id}/bookings`}>View Customer's Bookings</Button> <br></br>
-                <Button href={`/admin/modify/customers/${this.state.customer._id}`}>Modify Customer Details</Button> <br></br>
-            </div>
+                <ButtonGroup style={{marginTop: '3vh'}}>
+                    <Button href={`/admin/view/customers/${this.state.customer._id}/bookings`}>View Customer's Bookings</Button>
+                    <Button href={`/admin/modify/customers/${this.state.customer._id}`}>Modify Customer Details</Button>
+                </ButtonGroup>
+            </Container>
         )
     }
 }

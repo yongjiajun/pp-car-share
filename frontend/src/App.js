@@ -31,6 +31,11 @@ import ModifyCustomerDetailsPage from './components/staffComponents/modifyCustom
 import ViewAllBookingsPage from './components/staffComponents/viewAllBookings';
 import ViewBookingPage from './components/staffComponents/viewBooking';
 import ViewCustomerBookingsPage from './components/staffComponents/viewCustomerBookings';
+import ViewAllCarsPage from './components/staffComponents/viewAllCars';
+import ModifyCarDetailsPage from './components/staffComponents/modifyCarDetails';
+import ViewAllLocation from './components/staffComponents/viewAllLocation';
+import ViewLocation from './components/staffComponents/ViewLocation';
+import ModifyLocationPage from './components/staffComponents/modifyLocationPage';
 
 class App extends Component {
 
@@ -89,6 +94,11 @@ class App extends Component {
           <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage}/>
           <StaffRoute path="/admin/view/bookings" component={ViewAllBookingsPage}/>
           <StaffRoute path="/admin/modify/customers/:id" component={ModifyCustomerDetailsPage}/>
+          <StaffRoute path="/admin/view/cars/:id" component={ModifyCarDetailsPage}/>
+          <StaffRoute path="/admin/view/cars" component={ViewAllCarsPage}/>
+          <StaffRoute path="/admin/modify/location/:id" component={ModifyLocationPage}/>
+          <StaffRoute path="/admin/view/location/:id" component={ViewLocation}/>
+          <StaffRoute path="/admin/view/location" component={ViewAllLocation}/>
         </Switch>
         <Footer />
       </Router>

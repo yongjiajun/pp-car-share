@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Table, Container } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
 const { default: CarServiceApi } = require("../../api/CarServiceApi")
@@ -50,7 +50,7 @@ export default class ViewAllBookingsPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error fetching all bookings!</Alert.Heading>
                     <p>
@@ -58,7 +58,7 @@ export default class ViewAllBookingsPage extends Component {
                     </p>
                 </Alert>}
                 <h2>View All Bookings</h2>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -113,8 +113,8 @@ export default class ViewAllBookingsPage extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         )
     }
 }

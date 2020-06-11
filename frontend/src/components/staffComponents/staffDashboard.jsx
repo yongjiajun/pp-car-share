@@ -47,6 +47,8 @@ export default class StaffDashboard extends Component {
                                 <p><a href="/admin/addlocation" style={(currentLocation === "/admin/addlocation") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>Add Location</a></p>
                                 <p><a href="/admin/view/customers" style={(currentLocation === "/admin/customers") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Customers</a></p>
                                 <p><a href="/admin/view/bookings" style={(currentLocation === "/admin/view/bookings") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Bookings</a></p>
+                                <p><a href="/admin/view/cars" style={(currentLocation === "/admin/view/cars") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Cars</a></p>
+                                <p><a href="/admin/view/location" style={(currentLocation === "/admin/view/location") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Location</a></p>
                             </> 
                         }
                     </Col>
