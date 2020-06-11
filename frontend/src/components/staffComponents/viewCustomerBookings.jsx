@@ -26,7 +26,7 @@ export default class ViewCustomerBookingsPage extends Component {
         LocationServiceApi.getAllLocations()
             .then(res => {
                 let locationArray = this.state.locations;
-                res.data.map(location => {
+                res.data.forEach(location => {
                     let locationObject = {
                         id: location._id,
                         address: location.address,
