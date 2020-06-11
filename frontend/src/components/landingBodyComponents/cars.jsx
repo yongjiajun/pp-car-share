@@ -4,9 +4,9 @@ import LocationServiceApi from '../../api/LocationServiceApi.js'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
-import '../../styles/carsAndVans.css'
+import '../../styles/cars.css'
 
-export default class CarsAndVans extends Component {
+export default class Cars extends Component {
 
     constructor(props) {
         super(props);
