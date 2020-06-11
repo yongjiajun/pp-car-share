@@ -25,6 +25,10 @@ class LocationServiceApi {
         return axiosThirdParty.get(`${url + formatted_address + key_input + api_key}`);
     }
 
+    updateLocation(location) {
+        return axios.patch(api_url + `/${location._id}`, location)
+    }
+
 }
 
 export default new LocationServiceApi()

@@ -1,6 +1,7 @@
 /* The sidebar menu */
 .sidenav {
-    height: 100vh; /* Full-height: remove this if you want "auto" height */
+    min-height: 100vh;
+    height: auto; /* Full-height: remove this if you want "auto" height */
     background-color: rgb(57, 57, 136); /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
 }
