@@ -4,7 +4,6 @@ import { Jumbotron, Button } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap'
 import LocationServiceApi from '../api/LocationServiceApi.js';
 import "../styles/map.css"
-import MapContainer from './map';
 import CarServiceApi from '../api/CarServiceApi.js';
 
 class LocationShowPage extends Component {
@@ -42,7 +41,7 @@ class LocationShowPage extends Component {
                         isLoading: true
                     })
                 });
-            res.data.cars.map(carId => {
+            res.data.cars.forEach(carId => {
                 CarServiceApi.getCar(carId).then(res => {
                     this.state.cars.push(res.data.car);
                     this.setState({
