@@ -75,7 +75,7 @@ class FilterCarsPage extends Component {
 
         let locationArray = this.state.locations;
         LocationServiceApi.getAllLocations().then(res => {
-            res.data.map(location => {
+            res.data.forEach(location => {
                 let locationObject = {
                     id: location._id,
                     address: location.address,
