@@ -50,7 +50,9 @@ class BookingDashboard extends Component {
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
-                    successMsg: "Car has been picked up! Please return it before your specified return time."
+                    successMsg: "Car has been picked up! Please return it before your specified return time.",
+                    availablePickup: false,
+                    avaialbleReturn: true
                 })
             })
     }
@@ -61,7 +63,8 @@ class BookingDashboard extends Component {
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
-                    successMsg: "Car has been returned! Thanks for using MZA Car Share!"
+                    successMsg: "Car has been returned! Thanks for using MZA Car Share!",
+                    avaialbleReturn: false
                 })
             })
     }
@@ -123,8 +126,8 @@ class BookingDashboard extends Component {
                             <b>Location: </b> {this.state.location.name} <br></br>
                             <b>Address: </b> {this.state.location.address} <br></br>
                             <b>Status: </b> {this.state.nextBooking.status} <br></br>
-                            <Button onClick={this.handlePickupButton} disabled={!this.state.availablePickup}>Pickup</Button>
-                            <Button onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button>
+                            <Button variant="success" onClick={this.handlePickupButton} disabled={!this.state.availablePickup}>Pickup</Button>
+                            <Button variant="danger" onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button>
                         </Container>
                     </div>
                 }
