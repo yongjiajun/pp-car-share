@@ -176,6 +176,7 @@ onMapClick = () =>
                                 </InfoWindow>
                             </Map>
                         </div>}
+                            <b>Booking ID: </b> {this.state.nextBooking._id} <br></br>
                             <b>Booking time: </b> {this.state.nextBooking.bookedtime} <br></br>
                             <b>Pickup time: </b> {this.state.nextBooking.pickuptime} <br></br>
                             <b>Return time: </b> {this.state.nextBooking.returntime} <br></br>
@@ -184,7 +185,8 @@ onMapClick = () =>
                             <b>Address: </b> {this.state.location.address} <br></br>
                             <b>Status: </b> {this.state.nextBooking.status} <br></br>
                             <Button variant="success" onClick={this.handlePickupButton} disabled={!this.state.availablePickup}>Pickup</Button>
-                            <Button variant="danger" onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button>
+                            <Button variant="danger" onClick={this.handleReturnButton} disabled={!this.state.avaialbleReturn}>Return</Button> <br></br>
+                            <Button href={`/mybookings/${this.state.nextBooking._id}`}>View</Button>
                             <Col sm={4}>
                                 <div className="cars-div-white" style={{ 'border': 'solid black 2px' }}>
                                     <img src={this.state.car.image} alt="car" width="100" />
