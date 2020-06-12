@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
-import LocationServiceApi from '../../api/LocationServiceApi'
-import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-
+import { Alert, Button, Form, Container, Col, Row } from 'react-bootstrap';
+import LocationServiceApi from '../../api/LocationServiceApi';
 import PlacesAutocomplete from 'react-places-autocomplete';
-
-export default class CreateLocation extends Component {
+import { withRouter } from 'react-router-dom';
+class modifyLocationPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            location: '',
             address: '',
+            name: '',
             errMsg: '',
             gmapsLoaded: false,
-            disableSubmit: false,
+            successMsg: '',
+            disableSubmit: false
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.handleAutocomplete = this.handleAutocomplete.bind(this)
     }
 
@@ -30,82 +31,81 @@ export default class CreateLocation extends Component {
         this.setState({ address });
     }
 
-    handleChange = event => {
-        this.setState({[event.target.name] : event.target.value});
-    }
-
-    handleSubmit = event => {
-        const { name, address } = this.state;
-        event.preventDefault()
-
-        this.setState({
-            successMsg: "",
-            errMsg: "",
-            disableSubmit: true
-        })
-
-        if( name === '' || address === '') {
-            this.setState({
-                errMsg: "name and address cannot be empty",
-                disableSubmit: false
-            });
-        } else {
-            let newLoc = {
-                name: name.trim(),
-                address: address
-            }
-            LocationServiceApi.createNewLocation(newLoc).then(res => {
-                console.log(res.data)
-                this.setState({
-                    successMsg: "Location successfully added",
-                    disableSubmit: false,
-                    name: '',
-                    address: ''
-                });
-            }, error => {
-                this.setState({
-                    errMsg: error.response.data.message,
-                    disableSubmit: false
-                });
-            });
-        }
-    }
-
     componentDidMount() {
         window.initMap = this.initMap
         const gmapScriptEl = document.createElement(`script`)
         gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places&callback=initMap`
         document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
+
+        LocationServiceApi.getLocationFromId(this.props.match.params.id).then(res => {
+            this.setState({
+                address: res.data.address,
+                name: res.data.name,
+                location: res.data
+            })
+        }).catch(err => {
+            this.setState({
+                errMsg: err.response
+            })
+        })
+    }
+
+    handleSubmit() {
+        if(this.state.name === '') {
+            this.setState({
+                errMsg: "name can't be empty"
+            })
+            return
+        }
+
+        this.setState({
+            disableSubmit: true
+        })
+
+        let location = {
+            _id: this.state.location._id,
+            name: this.state.name,
+            address: this.state.address,
+            cars: this.state.location.cars
+        }
+
+        LocationServiceApi.updateLocation(location).then(res => {
+            this.props.history.push(`/admin/view/location/${location._id}`, {success: "Successfully updated location"})
+        }).catch(err => {
+            this.setState({
+                errMsg: err.response.data.message,
+                disableSubmit: false,
+                successMsg: ""
+            })
+        })
+    }
+
+    handleChange = event => {
+        this.setState({[event.target.name] : event.target.value})
     }
 
     render() {
         return (
-            <div className="container">
-                <h2>Create Location</h2>
+            <Container>
+                <h2>Modify Location Details</h2>
+                <strong>Location ID:</strong> {this.state.location._id} <br></br>
+                
                 {this.state.errMsg && 
                     <Alert variant="danger">
-                        <Alert.Heading>Add location failed!</Alert.Heading>
+                        <Alert.Heading>Add car failed!</Alert.Heading>
                         <p>
                             {this.state.errMsg}
                         </p>
                     </Alert>
                 }
 
-                {this.state.successMsg && 
-                    <Alert variant="success">
-                        <Alert.Heading>Add location succeed!</Alert.Heading>
-                        <p>
-                            {this.state.successMsg}
-                        </p>
-                    </Alert>
-                }
                 <Form>
-                    <Form.Group as={Row} controlId="formHorizontalName">
-                        <Form.Label column sm={2} required>
+                    <Form.Group as={Row} controlId="formHorizontalFirstName">
+                        <Form.Label column sm={2}>
                             Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} required/>
+                            <Form.Control name="name" type="text" value={this.state.name} onChange={this.handleChange} required/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalName">
@@ -158,11 +158,14 @@ export default class CreateLocation extends Component {
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Col sm={{ span: 10, offset: 2 }}>
-                            <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Create Location</Button>
+                            <Button onClick={this.handleSubmit} disabled={this.state.disableSubmit}>Update Location</Button>
                         </Col>
                     </Form.Group>
                 </Form>
-            </div>
+            </Container>
         )
     }
 }
+
+
+export default withRouter(modifyLocationPage)

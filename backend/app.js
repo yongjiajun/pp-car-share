@@ -48,7 +48,7 @@ require("./config/passport")(passport);
 app.use('/api/users', users_routes);
 app.use('/api/locations', locations_routes);
 app.use('/api/bookings', bookings_routes);
-app.use('/api/cars', cars_routes)
+app.use('/api/cars', cars_routes);
 
 // Error Handling
 app.use((req, res, next) => {

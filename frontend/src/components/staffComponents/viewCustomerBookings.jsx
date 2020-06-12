@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Alert, Button, Container, Table } from 'react-bootstrap';
+import { Alert, Button, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
-import LocationServiceApi from '../../api/LocationServiceApi';
-import CarServiceApi from '../../api/CarServiceApi';
-import UserServiceApi from '../../api/UserServiceApi';
+const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
+const { default: CarServiceApi } = require("../../api/CarServiceApi")
 
-class MyBookingPage extends Component {
+export default class ViewCustomerBookingsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,13 +13,16 @@ class MyBookingPage extends Component {
             cars: [],
             errorMessage: ''
         }
-        this.handleCancelButton = this.handleCancelButton.bind(this);
-        this.getUsersBookings = this.getUsersBookings.bind(this);
-        this.checkBookingPast = this.checkBookingPast.bind(this);
     }
 
     componentDidMount() {
-        this.getUsersBookings();
+        BookingServiceApi.getUserBookings(this.props.match.params.id).then(res => {
+            this.setState({
+                bookings: res.data.bookings.reverse()
+            })
+        }).catch((error) => {
+            this.setState({ errorMessage: error.response.data.message });
+        })
         LocationServiceApi.getAllLocations()
             .then(res => {
                 let locationArray = this.state.locations;
@@ -46,42 +48,17 @@ class MyBookingPage extends Component {
             })
     }
 
-    getUsersBookings() {
-        const userDetails = UserServiceApi.getLoggedInUserDetails();
-        BookingServiceApi.getUserBookings(userDetails.id)
-            .then(res => {
-                this.setState({
-                    bookings: res.data.bookings.reverse()
-                })
-            }).catch((error) => {
-                this.setState({ errorMessage: error.response.data.message });
-            })
-    }
-
-    checkBookingPast(pickupTime) {
-        let currentTime = new Date();
-        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset())
-        return new Date(pickupTime) > currentTime;
-    }
-
-    handleCancelButton(booking) {
-        booking.status = 'Cancelled';
-        BookingServiceApi.modifyBooking(booking)
-            .then(() => {
-                this.getUsersBookings();
-            })
-    }
-
     render() {
         return (
-            <Container>
+            <div className="container">
                 {this.state.errorMessage && <Alert variant="danger">
-                    <Alert.Heading>Error obtaining bookings!</Alert.Heading>
+                    <Alert.Heading>Error fetching customer's bookings!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                <h2>My Bookings</h2>
+                <h2>Bookings for Customer {this.props.match.params.id}</h2>
+                <Button href={`/admin/view/customers/${this.props.match.params.id}`}>View Customer Profile</Button>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -109,7 +86,7 @@ class MyBookingPage extends Component {
                                         <>
                                             {car.id === booking.car &&
                                                 <>
-                                                    {car.make}
+                                                    <a href={`/admin/view/cars/${booking.car}`}>{car.make}</a>
                                                 </>
                                             }
                                         </>
@@ -121,7 +98,7 @@ class MyBookingPage extends Component {
                                         <>
                                             {location.id === booking.location &&
                                                 <>
-                                                    {location.name}
+                                                    <a href={`/admin/view/location/${booking.location}`}>{location.name}</a>
                                                 </>
                                             }
                                         </>
@@ -140,20 +117,13 @@ class MyBookingPage extends Component {
                                 </td>
                                 <td>{booking.status}</td>
                                 <td>
-                                    <Button href={`/mybookings/${booking.id}`}>View</Button>
+                                    <Button href={`/admin/view/bookings/${booking.id}`}>View</Button>
                                 </td>
-                                {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) &&
-                                    <td>
-                                        <Button variant="danger" onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
-                                    </td>
-                                }
                             </tr>
                         )}
                     </tbody>
                 </Table>
-            </Container>
+            </div>
         )
     }
 }
-
-export default MyBookingPage;

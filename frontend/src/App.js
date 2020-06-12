@@ -10,20 +10,30 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
-import AdminRoute from './AdminRoute.jsx'
-import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
 import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
 import MyBookingPage from './components/bookingComponents/myBookings';
 import BookingDetailsPage from './components/bookingComponents/bookingDetails';
+import MyProfilePage from './components/myProfile'
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
 import AdminSignUpPage from './components/adminComponents/adminSignup';
 import CreateCar from './components/staffComponents/createCar';
 import CreateLocation from './components/staffComponents/createLocation';
+import ViewAllCustomersPage from './components/staffComponents/viewAllCustomers';
+import ViewCustomerPage from './components/staffComponents/viewCustomer';
+import ModifyCustomerDetailsPage from './components/staffComponents/modifyCustomerDetails';
+import ViewAllBookingsPage from './components/staffComponents/viewAllBookings';
+import ViewBookingPage from './components/staffComponents/viewBooking';
+import ViewCustomerBookingsPage from './components/staffComponents/viewCustomerBookings';
+import ViewAllCarsPage from './components/staffComponents/viewAllCars';
+import ModifyCarDetailsPage from './components/staffComponents/modifyCarDetails';
+import ViewAllLocation from './components/staffComponents/viewAllLocation';
+import ViewLocation from './components/staffComponents/ViewLocation';
+import ModifyLocationPage from './components/staffComponents/modifyLocationPage';
 
 class App extends Component {
 
@@ -51,7 +61,7 @@ class App extends Component {
 
   render() {
     const { availableCars, pickupTime, returnTime } = this.state;
-
+    const isUserStaff = UserServiceApi.isUserStaff();
     return (
       <Router>
         <Header />
@@ -61,19 +71,32 @@ class App extends Component {
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
           <Route path="/locations" component={MapContainer} />
-          <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
+          {/* Customers only routes */}
+          {!isUserStaff && <AuthenticatedRoute path="/filter" component={(props) => <FilterCarsPage {...props}
             availableCars={availableCars}
             pickupTime={pickupTime}
-            returnTime={returnTime} />} />
-          <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
-            updateCars={this.updateCars.bind(this)} />} />
-          <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>
-          <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>
+            returnTime={returnTime} />} />}
+          {!isUserStaff && <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
+            updateCars={this.updateCars.bind(this)} />} />}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/myprofile" component={MyProfilePage}/>}
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
           <StaffRoute path="/admin/addcars" component={CreateCar} />
           <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
+          <StaffRoute path="/admin/view/customers/:id/bookings" component={ViewCustomerBookingsPage}/>
+          <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage}/>
+          <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage}/>
+          <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage}/>
+          <StaffRoute path="/admin/view/bookings" component={ViewAllBookingsPage}/>
+          <StaffRoute path="/admin/modify/customers/:id" component={ModifyCustomerDetailsPage}/>
+          <StaffRoute path="/admin/view/cars/:id" component={ModifyCarDetailsPage}/>
+          <StaffRoute path="/admin/view/cars" component={ViewAllCarsPage}/>
+          <StaffRoute path="/admin/modify/location/:id" component={ModifyLocationPage}/>
+          <StaffRoute path="/admin/view/location/:id" component={ViewLocation}/>
+          <StaffRoute path="/admin/view/location" component={ViewAllLocation}/>
         </Switch>
         <Footer />
       </Router>

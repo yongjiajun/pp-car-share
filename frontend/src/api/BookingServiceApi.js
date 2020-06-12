@@ -4,12 +4,17 @@ require('dotenv').config();
 const api_url = "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/bookings"
 
 class BookingServiceApi {
+
+    getNextBooking() {
+        return axios.get(`${api_url}/customers/next`, { headers: { authorization: UserServiceApi.getUserToken() } });
+    }
+
     createBooking(booking) {
         return axios.post(api_url, booking);
     }
     
-    getUserBookings() {
-        return axios.get(api_url, { headers: { authorization: UserServiceApi.getUserToken() } });
+    getUserBookings(userId) {
+        return axios.get(`${api_url}/customers/all/${userId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
     getUserBooking(bookingId) {
@@ -20,6 +25,13 @@ class BookingServiceApi {
         return axios.patch(`${api_url}/customers/${booking.id}`, booking);
     }
 
+    getAllBookings() {
+        return axios.get(`${api_url}/customers/all`, { headers: { authorization: UserServiceApi.getUserToken() } });
+    }
+
+    getBooking(bookingId) {
+        return axios.get(`${api_url}/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } })
+    }
 }
 
 export default new BookingServiceApi()

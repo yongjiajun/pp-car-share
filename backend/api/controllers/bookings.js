@@ -14,10 +14,11 @@ exports.create_booking = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        const pickupTimeHours = new Date(req.body.pickupTime);
-        const returnTimeHours = new Date(req.body.returnTime);
-        const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
-        
+        const pickupTime = localiseTimeZone(new Date(req.body.pickupTime));
+        const returnTime = localiseTimeZone(new Date(req.body.returnTime));
+        const bookedTime = localiseTimeZone(new Date());
+        const timeDeltaHours = new Date(returnTime - pickupTime).getTime() / 3600;
+
         Car.findById(req.body.car)
             .then(car => {
                 const cost = parseInt(car.costperhour) * (timeDeltaHours / 1000);
@@ -25,9 +26,9 @@ exports.create_booking = (req, res, next) => {
                     _id: new mongoose.Types.ObjectId(),
                     user: req.body.user,
                     car: req.body.car,
-                    bookedtime: Date.now(),
-                    pickuptime: req.body.pickupTime,
-                    returntime: req.body.returnTime,
+                    bookedtime: bookedTime,
+                    pickuptime: pickupTime,
+                    returntime: returnTime,
                     cost: cost.toFixed(2),
                     location: req.body.location,
                     status: "Confirmed"
@@ -86,7 +87,8 @@ exports.get_user_bookings = (req, res, next) => {
     jwt.verify(token, keys.secretOrKey, function (err, decoded) {
         if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        Booking.find({ user: decoded.id })
+        const userId = req.params.userId;
+        Booking.find({ user: userId })
             .select(selectFields)
             .exec()
             .then(bookings => {
@@ -167,7 +169,6 @@ exports.update_booking = (req, res, next) => {
 
         const id = req.params.bookingId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }
@@ -175,6 +176,13 @@ exports.update_booking = (req, res, next) => {
             .select(selectFields)
             .exec()
             .then(booking => {
+                if (req.body.status === 'Picked up') {
+                    // set car's current booking id if car is being picked up
+                    Car.update({ _id: req.body.car }, {$set: { currentbooking: req.body._id }}).select("currentbooking").exec();
+                } else if (req.body.status === 'Returned') {
+                    // set car's current booking id to null if car is being returned
+                    Car.update({ _id: req.body.car }, {$set: { currentbooking: null }}).select("currentbooking").exec();
+                }
                 const response = {
                     message: `Updated booking of id '${booking._id}' successfully`,
                     booking: booking
@@ -183,4 +191,37 @@ exports.update_booking = (req, res, next) => {
             })
             .catch(error => { res.status(500).json({ message: `Unable to UPDATE booking of id '${id}'`, error: error }) })
     })
+}
+
+exports.check_ready_pickup_return = (req, res, next) => {
+    var token = req.headers['authorization'].replace(/^Bearer\s/, '');
+    if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+    jwt.verify(token, keys.secretOrKey, function (err, decoded) {
+        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        Booking.find({status: "Picked up", user: decoded.id}).sort({ returntime: 1 }).then(bookings => {
+            var returned = false;
+            bookings.forEach(booking => {
+                if (!returned) {
+                    res.status(200).json(booking);
+                    returned = true;
+                }
+            })
+            if (!returned) {
+                Booking.find({returntime: { $gte: localiseTimeZone(new Date()) }, user: decoded.id, status: "Confirmed" }).sort({ pickuptime: 1 }).then(bookings => {
+                    if (bookings.length !== 0) {
+                        res.status(200).json(bookings[0])
+                    } else {
+                        res.status(200).json({})
+                    }
+                })
+            }
+        })
+    })
+}
+ 
+function localiseTimeZone(date) {
+    // hours offset from UTC for Melbourne (GMT+10)
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+    return date;
 }

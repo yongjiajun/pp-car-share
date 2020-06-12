@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const bookingSelectFields = '_id user car bookedtime pickuptime returntime cost location status';
-const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking';
+const selectFields = '_id make seats bodytype numberplate colour costperhour fueltype location currentbooking image';
 
 /* CONTROLLERS WITH JWT GUARDING */
 exports.create_car = (req, res, next) => {
@@ -27,16 +27,19 @@ exports.create_car = (req, res, next) => {
                 costperhour: req.body.costperhour,
                 fueltype: req.body.fueltype,
                 location: location,
+                image: req.body.b64photo,
                 currentbooking: null
             });
             car.save().then(car => {
+                location.cars.push(car._id);
+                location.save();
                 const response = {
                     message: `Created car of id '${car._id}' successfully`,
                     car: car
                 }
                 return res.status(201).json({ response });
             }).catch(error => {
-                return res.status(500).json({ message: `Unable to get CREATE car of id '${id}'`, error: error })
+                return res.status(500).json({ message: `Unable to get CREATE car of id '${_id}'`, error: error })
             })
         });        
     });
@@ -59,6 +62,7 @@ exports.get_all_cars = (req, res, next) => {
                         costperhour: car.costperhour,
                         fueltype: car.fueltype,
                         location: car.location,
+                        image: car.image,
                         currentbooking: car.currentbooking
                     }
                 })
@@ -116,7 +120,6 @@ exports.update_car = (req, res, next) => {
 
         const id = req.params.carId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }
@@ -168,17 +171,6 @@ exports.search_available_cars = (req, res, next) => {
 }
 
 exports.filter_cars = (req, res, next) => {
-    /* REQUIRED PARAMETERS: 
-        req.body.make
-        req.body.seats
-        req.body.fueltype
-        req.body.colour
-        req.body.location (LOCATION OBJECT ID)
-        req.body.bodytype
-        req.body.pickupTime
-        req.body.returnTime
-    */
-
     // filter_cars allows the filtering of car attributes
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 

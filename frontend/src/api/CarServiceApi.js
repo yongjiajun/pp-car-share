@@ -23,6 +23,10 @@ class CarServiceApi {
         return axios.post(api_url + '/filter', filter);
     }
 
+    updateCar(car) {
+        return axios.patch(api_url + `/${car._id}`, car);
+    }
+
 }
 
 export default new CarServiceApi()

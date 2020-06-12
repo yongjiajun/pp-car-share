@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
+import { Form, Col, Button, Row, Alert, Table, Container } from 'react-bootstrap';
 import CarServiceApi from '../../api/CarServiceApi';
 import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js'
 import LocationServiceApi from '../../api/LocationServiceApi';
@@ -75,7 +75,7 @@ class FilterCarsPage extends Component {
 
         let locationArray = this.state.locations;
         LocationServiceApi.getAllLocations().then(res => {
-            res.data.map(location => {
+            res.data.forEach(location => {
                 let locationObject = {
                     id: location._id,
                     address: location.address,
@@ -90,8 +90,8 @@ class FilterCarsPage extends Component {
     render() {
 
         return (
-            <div className="container">
-                {this.state.popUp && <BookingConfirmDetailsPopUp car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} togglePopUp={this.togglePopUp} />}
+            <Container>
+                {this.state.popUp && <BookingConfirmDetailsPopUp locations={this.state.locations} car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} togglePopUp={this.togglePopUp} />}
                 <h2>Search for a car</h2>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error filtering cars!</Alert.Heading>
@@ -175,7 +175,7 @@ class FilterCarsPage extends Component {
                 </Form>
 
                 <h2>Available Cars from {this.state.pickupTime} till {this.state.returnTime}</h2>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>Make</th>
@@ -186,6 +186,7 @@ class FilterCarsPage extends Component {
                             <th>Fuel Type</th>
                             <th>Location</th>
                             <th>Address</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,8 +226,8 @@ class FilterCarsPage extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         )
     }
 }
