@@ -27,7 +27,6 @@ exports.update_location =(req, res) => {
 
         const id = req.params.locationId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }

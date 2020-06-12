@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Container, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
@@ -24,7 +24,7 @@ class MyBookingPage extends Component {
         LocationServiceApi.getAllLocations()
             .then(res => {
                 let locationArray = this.state.locations;
-                res.data.map(location => {
+                res.data.forEach(location => {
                     let locationObject = {
                         id: location._id,
                         address: location.address,
@@ -74,7 +74,7 @@ class MyBookingPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <Container>
                 {this.state.errorMessage && <Alert variant="danger">
                     <Alert.Heading>Error obtaining bookings!</Alert.Heading>
                     <p>
@@ -82,18 +82,19 @@ class MyBookingPage extends Component {
                     </p>
                 </Alert>}
                 <h2>My Bookings</h2>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Booking ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
                             <th>Return Time</th>
-                            <th>Car ID</th>
+                            <th>Car</th>
                             <th>Cost</th>
                             <th>Location</th>
                             <th>Address</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,7 +104,17 @@ class MyBookingPage extends Component {
                                 <td>{booking.bookedtime}</td>
                                 <td>{booking.pickuptime}</td>
                                 <td>{booking.returntime}</td>
-                                <td>{booking.car}</td>
+                                <td>
+                                    {this.state.cars.map(car =>
+                                        <>
+                                            {car.id === booking.car &&
+                                                <>
+                                                    {car.make}
+                                                </>
+                                            }
+                                        </>
+                                    )}
+                                </td>
                                 <td>${booking.cost}</td>
                                 <td>
                                     {this.state.locations.map(location =>
@@ -131,16 +142,16 @@ class MyBookingPage extends Component {
                                 <td>
                                     <Button href={`/mybookings/${booking.id}`}>View</Button>
                                 </td>
-                                <td>
-                                    {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) && 
+                                {(booking.status === "Confirmed" && this.checkBookingPast(booking.pickuptime)) &&
+                                    <td>
                                         <Button variant="danger" onClick={() => this.handleCancelButton(booking)}>Cancel</Button>
-                                    }
-                                </td>
+                                    </td>
+                                }
                             </tr>
                         )}
                     </tbody>
-                </table>
-            </div>
+                </Table>
+            </Container>
         )
     }
 }

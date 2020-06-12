@@ -66,8 +66,8 @@ export default class createCar extends Component {
         const { make, seats, bodytype, numberplate, 
             colour, costperhour, fueltype, location} = this.state
 
-        if(make == '' || seats == '' || bodytype == '' || numberplate == ''
-            || colour == '' || costperhour == '' || fueltype == '' || location == '') {
+        if(make === '' || seats === '' || bodytype === '' || numberplate === ''
+            || colour === '' || costperhour === '' || fueltype === '' || location === '') {
                 this.setState({
                     errMsg: "Please fill in everything"
                 })

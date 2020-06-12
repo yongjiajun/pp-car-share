@@ -10,8 +10,6 @@ import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
-import AdminRoute from './AdminRoute.jsx'
-import StaffDashboard from './components/staffComponents/staffDashboard';
 import LocationShowPage from './components/locationShow';
 import Footer from './components/footer';
 import FilterCarsPage from './components/bookingComponents/filterCars';

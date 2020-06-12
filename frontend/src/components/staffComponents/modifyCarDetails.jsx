@@ -19,7 +19,6 @@ export default class ModifyCarDetails extends Component {
             costperhour: '',
             fueltype: '',
             location: '',
-            locationList: [],
             b64photo: '',
             errMsg: '',
             successMsg: ''
@@ -48,8 +47,8 @@ export default class ModifyCarDetails extends Component {
         const { make, seats, bodytype, numberplate, 
             colour, costperhour, fueltype, location} = this.state
 
-        if(make == '' || seats == '' || bodytype == '' || numberplate == ''
-            || colour == '' || costperhour == '' || fueltype == '' || location == '') {
+        if(make === '' || seats === '' || bodytype === '' || numberplate === ''
+            || colour === '' || costperhour === '' || fueltype === '' || location === '') {
                 this.setState({
                     errMsg: "Please fill in everything"
                 })
@@ -186,7 +185,7 @@ export default class ModifyCarDetails extends Component {
                             <td>{car.costperhour}</td>
                             <td>{car.fueltype}</td>
                             <td>{car.location}</td>
-                            <td><img src={car.image} width={50}/></td>
+                            <td><img alt="car" src={car.image} width={50}/></td>
                             <td>{(car.currentbooking === null) ? "No booking" : car.currentbooking}</td>
                         </tr>
                     </tbody>

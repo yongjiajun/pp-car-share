@@ -169,7 +169,6 @@ exports.update_booking = (req, res, next) => {
 
         const id = req.params.bookingId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }
@@ -177,6 +176,13 @@ exports.update_booking = (req, res, next) => {
             .select(selectFields)
             .exec()
             .then(booking => {
+                if (req.body.status === 'Picked up') {
+                    // set car's current booking id if car is being picked up
+                    Car.update({ _id: req.body.car }, {$set: { currentbooking: req.body._id }}).select("currentbooking").exec();
+                } else if (req.body.status === 'Returned') {
+                    // set car's current booking id to null if car is being returned
+                    Car.update({ _id: req.body.car }, {$set: { currentbooking: null }}).select("currentbooking").exec();
+                }
                 const response = {
                     message: `Updated booking of id '${booking._id}' successfully`,
                     booking: booking

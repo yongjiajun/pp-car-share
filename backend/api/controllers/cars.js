@@ -120,7 +120,6 @@ exports.update_car = (req, res, next) => {
 
         const id = req.params.carId;
         const updateOps = {};
-        console.log(Object.entries(req.body))
         for (const ops of Object.entries(req.body)) {
             updateOps[ops[0]] = ops[1];
         }
@@ -172,17 +171,6 @@ exports.search_available_cars = (req, res, next) => {
 }
 
 exports.filter_cars = (req, res, next) => {
-    /* REQUIRED PARAMETERS: 
-        req.body.make
-        req.body.seats
-        req.body.fueltype
-        req.body.colour
-        req.body.location (LOCATION OBJECT ID)
-        req.body.bodytype
-        req.body.pickupTime
-        req.body.returnTime
-    */
-
     // filter_cars allows the filtering of car attributes
     var token = req.headers['authorization'].replace(/^Bearer\s/, '');
 

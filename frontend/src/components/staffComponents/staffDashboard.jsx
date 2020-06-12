@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
 import UserServiceApi from '../../api/UserServiceApi'
-import CreateCar from './createCar'
-import Overview from './overview'
-import AdminSignup from '../adminComponents/adminSignup'
 
 import '../../styles/staffDashboard.css'
 
@@ -17,19 +14,6 @@ const FunctionNotSelectedStyle = {
 }
 
 export default class StaffDashboard extends Component {
-
-    constructor(props){
-        super(props);
-
-        this.state = {
-            
-        }
-    }
-    
-    componentDidMount() {
-        
-    }
-
     render() {
         const currentLocation = window.location.pathname
         const isAdmin = UserServiceApi.isUserAdmin
@@ -48,7 +32,7 @@ export default class StaffDashboard extends Component {
                                 <p><a href="/admin/view/customers" style={(currentLocation === "/admin/customers") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Customers</a></p>
                                 <p><a href="/admin/view/bookings" style={(currentLocation === "/admin/view/bookings") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Bookings</a></p>
                                 <p><a href="/admin/view/cars" style={(currentLocation === "/admin/view/cars") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Cars</a></p>
-                                <p><a href="/admin/view/location" style={(currentLocation === "/admin/view/location") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Location</a></p>
+                                <p><a href="/admin/view/location" style={(currentLocation === "/admin/view/location") ? FunctionSelectedStyle : FunctionNotSelectedStyle }>View All Locations</a></p>
                             </> 
                         }
                     </Col>

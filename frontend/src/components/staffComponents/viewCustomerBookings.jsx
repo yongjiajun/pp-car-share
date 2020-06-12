@@ -1,5 +1,5 @@
-import React , { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Alert, Button, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
 const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
 const { default: CarServiceApi } = require("../../api/CarServiceApi")
@@ -24,28 +24,28 @@ export default class ViewCustomerBookingsPage extends Component {
             this.setState({ errorMessage: error.response.data.message });
         })
         LocationServiceApi.getAllLocations()
-        .then(res => {
-            let locationArray = this.state.locations;
-            res.data.map(location => {
-                let locationObject = {
-                    id: location._id,
-                    address: location.address,
-                    name: location.name
-                }
-                locationArray.push(locationObject);
-                this.setState({ locations: locationArray });
+            .then(res => {
+                let locationArray = this.state.locations;
+                res.data.forEach(location => {
+                    let locationObject = {
+                        id: location._id,
+                        address: location.address,
+                        name: location.name
+                    }
+                    locationArray.push(locationObject);
+                    this.setState({ locations: locationArray });
+                })
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
             })
-        }).catch((error) => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
-    CarServiceApi.getAllCars()
-        .then(res => {
-            this.setState({
-                cars: res.data.cars
+        CarServiceApi.getAllCars()
+            .then(res => {
+                this.setState({
+                    cars: res.data.cars
+                })
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
             })
-        }).catch((error) => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
     }
 
     render() {
@@ -58,14 +58,15 @@ export default class ViewCustomerBookingsPage extends Component {
                     </p>
                 </Alert>}
                 <h2>Bookings for Customer {this.props.match.params.id}</h2>
-                <table>
+                <Button href={`/admin/view/customers/${this.props.match.params.id}`}>View Customer Profile</Button>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Booking ID</th>
                             <th>Booked Time</th>
                             <th>Pickup Time</th>
                             <th>Return Time</th>
-                            <th>Car ID</th>
+                            <th>Car</th>
                             <th>Cost</th>
                             <th>Location</th>
                             <th>Address</th>
@@ -80,14 +81,24 @@ export default class ViewCustomerBookingsPage extends Component {
                                 <td>{booking.bookedtime}</td>
                                 <td>{booking.pickuptime}</td>
                                 <td>{booking.returntime}</td>
-                                <td>{booking.car}</td>
+                                <td>
+                                    {this.state.cars.map(car =>
+                                        <>
+                                            {car.id === booking.car &&
+                                                <>
+                                                    <a href={`/admin/view/cars/${booking.car}`}>{car.make}</a>
+                                                </>
+                                            }
+                                        </>
+                                    )}
+                                </td>
                                 <td>${booking.cost}</td>
                                 <td>
                                     {this.state.locations.map(location =>
                                         <>
                                             {location.id === booking.location &&
                                                 <>
-                                                    {location.name}
+                                                    <a href={`/admin/view/location/${booking.location}`}>{location.name}</a>
                                                 </>
                                             }
                                         </>
@@ -111,7 +122,7 @@ export default class ViewCustomerBookingsPage extends Component {
                             </tr>
                         )}
                     </tbody>
-                </table>
+                </Table>
             </div>
         )
     }
