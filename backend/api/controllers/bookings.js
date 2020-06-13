@@ -81,7 +81,7 @@ exports.get_all_bookings = (req, res, next) => {
 
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!` })
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` })
         } else {
             // get all bookings from database
             Booking.find()
