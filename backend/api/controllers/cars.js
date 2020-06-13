@@ -82,7 +82,7 @@ exports.create_car = (req, res, next) => {
 
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` })
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
         } else {
             // get location by car's pickup/return spot
             Location.findOne({ address: req.body.location }).then(location => {
@@ -136,7 +136,7 @@ exports.delete_car = (req, res, next) => {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` })
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
         } else {
             // obtain car id from request parameters
             const id = req.params.carId;
@@ -177,7 +177,7 @@ exports.update_car = (req, res, next) => {
 
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` })
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
         } else {
             // obtain car id from request parameters
             const id = req.params.carId;

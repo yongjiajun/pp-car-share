@@ -44,29 +44,34 @@ exports.update_location = (req, res) => {
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        // obtain location id from request parameters
-        const id = req.params.locationId;
-        // obtaining updated values in request body
-        const updateOps = {};
-        for (const ops of Object.entries(req.body)) {
-            updateOps[ops[0]] = ops[1];
-        }
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
+        } else {
+            // obtain location id from request parameters
+            const id = req.params.locationId;
+            // obtaining updated values in request body
+            const updateOps = {};
+            for (const ops of Object.entries(req.body)) {
+                updateOps[ops[0]] = ops[1];
+            }
 
-        // update particular location by id with updated values
-        Location.update({ _id: id }, { $set: updateOps })
-            .select(selectFields)
-            .exec()
-            .then(location => {
-                // return success message in response
-                const response = {
-                    message: `Updated location of id '${location._id}' successfully`
-                }
-                res.status(200).json({ response });
-            })
-            .catch(error => {
-                // return error if there's any
-                res.status(500).json({ message: `Unable to UPDATE location of id '${id}'`, error: error });
-            });
+            // update particular location by id with updated values
+            Location.update({ _id: id }, { $set: updateOps })
+                .select(selectFields)
+                .exec()
+                .then(location => {
+                    // return success message in response
+                    const response = {
+                        message: `Updated location of id '${location._id}' successfully`
+                    }
+                    res.status(200).json({ response });
+                })
+                .catch(error => {
+                    // return error if there's any
+                    res.status(500).json({ message: `Unable to UPDATE location of id '${id}'`, error: error });
+                });
+        }
     });
 }
 
@@ -84,28 +89,33 @@ exports.create_location = loc = (req, res) => {
         if (err)
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-        
-        // obtain location address from request body
-        const req_address = req.body.address;
-        
-        // check if location with same address already exists
-        Location.findOne({ address: req_address }).then(location => {
-            if (location) {
-                // return error if location with the same address already exsits
-                return res.status(400).json({ address: "Address already exists" });
-            } else {
-                // create a location object
-                const location = new Location({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: req.body.name,
-                    address: req.body.address,
-                    cars: []
-                });
-                // save location object and return success message in response
-                location.save().then(location => {
-                    res.json('New location added')
-                });
-            }
-        });
+
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
+        } else {
+            // obtain location address from request body
+            const req_address = req.body.address;
+
+            // check if location with same address already exists
+            Location.findOne({ address: req_address }).then(location => {
+                if (location) {
+                    // return error if location with the same address already exsits
+                    return res.status(400).json({ address: "Address already exists" });
+                } else {
+                    // create a location object
+                    const location = new Location({
+                        _id: new mongoose.Types.ObjectId(),
+                        name: req.body.name,
+                        address: req.body.address,
+                        cars: []
+                    });
+                    // save location object and return success message in response
+                    location.save().then(location => {
+                        res.json('New location added')
+                    });
+                }
+            });
+        }
     });
 }
