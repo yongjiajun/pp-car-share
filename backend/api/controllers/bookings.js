@@ -59,9 +59,9 @@ exports.create_booking = (req, res, next) => {
                 }).catch(error => {
                     // return error if there's any
                     return res.status(500).json({ message: `Unable to get CREATE booking`, error: error });
-                })
-            })
-    })
+                });
+            });
+    });
 }
 
 // obtain all customers bookings from the system
@@ -106,7 +106,7 @@ exports.get_all_bookings = (req, res, next) => {
                 // return error if there's any
                 res.status(500).json({ message: `Unable to GET all bookings`, error: error });
             });
-    })
+    });
 }
 
 // get all bookings from a particular user
@@ -154,7 +154,7 @@ exports.get_user_bookings = (req, res, next) => {
                 // return error if there's any
                 res.status(500).json({ message: `Unable to GET user's bookings`, error: error });
             });
-    })
+    });
 }
 
 // obtain a booking from the user sending the request
@@ -275,7 +275,7 @@ exports.update_booking = (req, res, next) => {
                 // return error if there's any
                 res.status(500).json({ message: `Unable to UPDATE booking of id '${id}'`, error: error })
             });
-    })
+    });
 }
 
 // obtain a user's upcoming booking if any
@@ -314,14 +314,14 @@ exports.get_upcoming_booking = (req, res, next) => {
                         // return nothing if there aren't any confirmed bookings
                         res.status(200).json({})
                     }
-                })
+                });
             }
-        })
-    })
+        });
+    });
 }
 
 function localiseTimeZone(date) {
     // hours offset from UTC for Melbourne (GMT+10)
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return date;
 }
