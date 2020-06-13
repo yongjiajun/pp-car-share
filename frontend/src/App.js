@@ -1,12 +1,11 @@
+/* App router */
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Header from './components/header';
 import LandingPage from './components/landing';
-import SignUpPage from './components/signup'
+import SignUpPage from './components/signup';
 import LoginPage from './components/login';
 import MapContainer from './components/map';
-import './App.css';
 import UserServiceApi from './api/UserServiceApi';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import StaffRoute from './StaffRoute.jsx'
@@ -16,7 +15,7 @@ import FilterCarsPage from './components/bookingComponents/filterCars';
 import BookingDashboard from './components/bookingComponents/bookingDashboard';
 import MyBookingPage from './components/bookingComponents/myBookings';
 import BookingDetailsPage from './components/bookingComponents/bookingDetails';
-import MyProfilePage from './components/myProfile'
+import MyProfilePage from './components/myProfile';
 
 /* Import admin and staff components */
 import Overview from './components/staffComponents/overview';
@@ -31,29 +30,29 @@ import ViewBookingPage from './components/staffComponents/viewBooking';
 import ViewCustomerBookingsPage from './components/staffComponents/viewCustomerBookings';
 import ViewAllCarsPage from './components/staffComponents/viewAllCars';
 import ModifyCarDetailsPage from './components/staffComponents/modifyCarDetails';
-import ViewAllLocation from './components/staffComponents/viewAllLocation';
+import ViewAllLocations from './components/staffComponents/viewAllLocations';
 import ViewLocation from './components/staffComponents/ViewLocation';
 import ModifyLocationPage from './components/staffComponents/modifyLocationPage';
 
-class App extends Component {
+import "bootstrap/dist/css/bootstrap.min.css";
+import './App.css';
 
+class App extends Component {
   state = {
     availableCars: [],
     pickupTime: "",
     returnTime: ""
-  }
+  };
 
   updateCars(availableCars, pickupTime, returnTime) {
     this.setState({
       availableCars: availableCars,
       pickupTime: pickupTime,
       returnTime: returnTime
-    })
+    });
   }
 
   componentDidMount() {
-    /* add script tag here */
-    
     if (UserServiceApi.isUserLoggedIn()) {
       UserServiceApi.setupAxiosInterceptors(UserServiceApi.getUserToken());
     }
@@ -66,7 +65,7 @@ class App extends Component {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/"  component={LandingPage} />
+          <Route exact path="/" component={LandingPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/locations/:id" component={LocationShowPage} />
@@ -78,25 +77,25 @@ class App extends Component {
             returnTime={returnTime} />} />}
           {!isUserStaff && <AuthenticatedRoute path="/dashboard" component={(props) => <BookingDashboard {...props}
             updateCars={this.updateCars.bind(this)} />} />}
-          {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage}/>}
-          {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage}/>}
-          {!isUserStaff && <AuthenticatedRoute path="/myprofile" component={MyProfilePage}/>}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings/:id" component={BookingDetailsPage} />}
+          {!isUserStaff && <AuthenticatedRoute path="/mybookings" component={MyBookingPage} />}
+          {!isUserStaff && <AuthenticatedRoute path="/myprofile" component={MyProfilePage} />}
           {/* Staff and admin only routes */}
           <StaffRoute path="/staff" component={Overview} />
           <StaffRoute path="/admin/signup" component={AdminSignUpPage} />
           <StaffRoute path="/admin/addcars" component={CreateCar} />
-          <StaffRoute path="/admin/addlocation" component={CreateLocation}/>
-          <StaffRoute path="/admin/view/customers/:id/bookings" component={ViewCustomerBookingsPage}/>
-          <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage}/>
-          <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage}/>
-          <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage}/>
-          <StaffRoute path="/admin/view/bookings" component={ViewAllBookingsPage}/>
-          <StaffRoute path="/admin/modify/customers/:id" component={ModifyCustomerDetailsPage}/>
-          <StaffRoute path="/admin/view/cars/:id" component={ModifyCarDetailsPage}/>
-          <StaffRoute path="/admin/view/cars" component={ViewAllCarsPage}/>
-          <StaffRoute path="/admin/modify/location/:id" component={ModifyLocationPage}/>
-          <StaffRoute path="/admin/view/location/:id" component={ViewLocation}/>
-          <StaffRoute path="/admin/view/location" component={ViewAllLocation}/>
+          <StaffRoute path="/admin/addlocation" component={CreateLocation} />
+          <StaffRoute path="/admin/view/customers/:id/bookings" component={ViewCustomerBookingsPage} />
+          <StaffRoute path="/admin/view/customers/:id" component={ViewCustomerPage} />
+          <StaffRoute path="/admin/view/customers" component={ViewAllCustomersPage} />
+          <StaffRoute path="/admin/view/bookings/:id" component={ViewBookingPage} />
+          <StaffRoute path="/admin/view/bookings" component={ViewAllBookingsPage} />
+          <StaffRoute path="/admin/modify/customers/:id" component={ModifyCustomerDetailsPage} />
+          <StaffRoute path="/admin/view/cars/:id" component={ModifyCarDetailsPage} />
+          <StaffRoute path="/admin/view/cars" component={ViewAllCarsPage} />
+          <StaffRoute path="/admin/modify/location/:id" component={ModifyLocationPage} />
+          <StaffRoute path="/admin/view/location/:id" component={ViewLocation} />
+          <StaffRoute path="/admin/view/location" component={ViewAllLocations} />
         </Switch>
         <Footer />
       </Router>

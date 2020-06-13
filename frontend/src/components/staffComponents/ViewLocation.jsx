@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Container, Button, Alert, Table, Col, Row } from 'react-bootstrap'
+/* View location page */
+import React, { Component } from 'react';
+import { Container, Button, Alert, Table, Col, Row } from 'react-bootstrap';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import CarServiceApi from '../../api/CarServiceApi';
@@ -16,15 +17,16 @@ class ViewLocation extends Component {
             showingInfoWindow: false,
             selectedPlace: {},
             isLoading: false
-        }
+        };
     }
 
     componentDidMount() {
         if (this.props.location.state !== undefined) {
             this.setState({
                 successMessage: this.props.location.state.success
-            })
+            });
         }
+        // fetch location details by id
         LocationServiceApi.getLocationFromId(this.props.match.params.id).then(res => {
             LocationServiceApi.getGeocodeFromAddress(res.data.address)
                 .then(newRes => {
@@ -36,45 +38,44 @@ class ViewLocation extends Component {
                         lat: newRes.data.results[0].geometry.location.lat,
                         lng: newRes.data.results[0].geometry.location.lng,
                         cars: res.data.cars
-                    }
+                    };
                     // set new location object to react state array
                     this.setState({
                         location: locationObject,
                         isLoading: true
-                    })
+                    });
                 });
-
             res.data.cars.forEach(carId => {
                 CarServiceApi.getCar(carId).then(res => {
                     this.state.cars.push(res.data.car);
                     this.setState({
                         cars: this.state.cars
-                    })
-                })
-            })
+                    });
+                });
+            });
         }).catch(err => {
             this.setState({
                 errMessage: err.response
-            })
-        })
+            });
+        });
     }
 
-    onMarkerClick = (props, marker) =>
+    mapOnMarkerClick = (props, marker) =>
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
             showingInfoWindow: true,
-        })
+        });
 
-    onMapClick = () =>
+    mapOnMapClick = () =>
         this.setState({
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {}
-        })
+        });
 
     render() {
-        const { location } = this.state
+        const { location } = this.state;
 
         return (
             <Container>
@@ -89,35 +90,35 @@ class ViewLocation extends Component {
                 <h2>Location details:</h2>
                 <Container>
                     {this.state.isLoading && <div style={{ height: '400px' }}>
-                            <Map google={this.props.google}
-                                initialCenter={{
-                                    lat: this.state.location.lat,
-                                    lng: this.state.location.lng
-                                }}
-                                style={{ height: '400px', width: '50%' }}
-                                zoom={14}
-                                onClick={this.onMapClick}>
+                        <Map google={this.props.google}
+                            initialCenter={{
+                                lat: this.state.location.lat,
+                                lng: this.state.location.lng
+                            }}
+                            style={{ height: '400px', width: '50%' }}
+                            zoom={14}
+                            onClick={this.mapOnMapClick}>
 
-                                <Marker
-                                    id={this.state.location.id}
-                                    name={this.state.location.name}
-                                    address={this.state.location.address}
-                                    onClick={this.onMarkerClick}
-                                    position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
-                                />
+                            <Marker
+                                id={this.state.location.id}
+                                name={this.state.location.name}
+                                address={this.state.location.address}
+                                onClick={this.mapOnMarkerClick}
+                                position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
+                            />
 
-                                <InfoWindow
-                                    onClose={this.onInfoWindowClose}
-                                    marker={this.state.activeMarker}
-                                    visible={this.state.showingInfoWindow}>
-                                    <div id="info-window">
-                                        <h2>{this.state.selectedPlace.name}</h2>
-                                        <p>{this.state.selectedPlace.address}</p>
-                                        <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
-                                    </div>
-                                </InfoWindow>
-                            </Map>
-                        </div>}
+                            <InfoWindow
+                                onClose={this.onInfoWindowClose}
+                                marker={this.state.activeMarker}
+                                visible={this.state.showingInfoWindow}>
+                                <div id="info-window">
+                                    <h2>{this.state.selectedPlace.name}</h2>
+                                    <p>{this.state.selectedPlace.address}</p>
+                                    <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
+                                </div>
+                            </InfoWindow>
+                        </Map>
+                    </div>}
                 </Container>
                 <Table striped bordered hover>
                     <thead>
@@ -150,6 +151,7 @@ class ViewLocation extends Component {
 }
 
 function CarDescriptionComponent(props) {
+    // car description component card
     const { car } = props
     return (
         <Col sm={4}>
@@ -167,4 +169,4 @@ function CarDescriptionComponent(props) {
 
 export default GoogleApiWrapper({
     apiKey: process.env.REACT_APP_API_KEY
-})(ViewLocation)
+})(ViewLocation);

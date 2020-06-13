@@ -1,8 +1,9 @@
-import React , { Component } from 'react';
+/* View all bookings page */
+import React, { Component } from 'react';
 import { Alert, Button, Table, Container } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
-const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
-const { default: CarServiceApi } = require("../../api/CarServiceApi")
+const { default: LocationServiceApi } = require("../../api/LocationServiceApi");
+const { default: CarServiceApi } = require("../../api/CarServiceApi");
 
 export default class ViewAllBookingsPage extends Component {
     constructor(props) {
@@ -12,40 +13,42 @@ export default class ViewAllBookingsPage extends Component {
             locations: [],
             cars: [],
             errorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // obtain all bookings, locations and cars for rendering
         BookingServiceApi.getAllBookings().then(res => {
             this.setState({
+                // sort bookings by latest
                 bookings: res.data.bookings.reverse()
-            })
+            });
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
-        })
+        });
         LocationServiceApi.getAllLocations()
-        .then(res => {
-            let locationArray = this.state.locations;
-            res.data.forEach(location => {
-                let locationObject = {
-                    id: location._id,
-                    address: location.address,
-                    name: location.name
-                }
-                locationArray.push(locationObject);
-                this.setState({ locations: locationArray });
+            .then(res => {
+                let locationArray = this.state.locations;
+                res.data.forEach(location => {
+                    let locationObject = {
+                        id: location._id,
+                        address: location.address,
+                        name: location.name
+                    };
+                    locationArray.push(locationObject);
+                    this.setState({ locations: locationArray });
+                });
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
             })
-        }).catch((error) => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
-    CarServiceApi.getAllCars()
-        .then(res => {
-            this.setState({
-                cars: res.data.cars
-            })
-        }).catch((error) => {
-            this.setState({ errorMessage: error.response.data.message });
-        })
+        CarServiceApi.getAllCars()
+            .then(res => {
+                this.setState({
+                    cars: res.data.cars
+                });
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
+            });
     }
 
     render() {

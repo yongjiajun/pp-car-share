@@ -1,6 +1,7 @@
-import React , { Component } from 'react';
+/* Modify customer details page */
+import React, { Component } from 'react';
 import { Alert, Button, Form, Col, Row } from 'react-bootstrap';
-const { default: UserServiceApi } = require("../../api/UserServiceApi")
+const { default: UserServiceApi } = require("../../api/UserServiceApi");
 
 export default class ModifyCustomerDetailsPage extends Component {
     constructor(props) {
@@ -12,10 +13,11 @@ export default class ModifyCustomerDetailsPage extends Component {
             email: '',
             fetchErrorMessage: '',
             modifyErrorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // fetch user by id
         UserServiceApi.getUserFromId(this.props.match.params.id).then(res => {
             this.setState({
                 firstname: res.data.user.firstname,
@@ -23,17 +25,18 @@ export default class ModifyCustomerDetailsPage extends Component {
                 email: res.data.user.email,
                 id: res.data.user._id,
                 customer: res.data.user
-            })
+            });
         }).catch((error) => {
             this.setState({ fetchErrorMessage: error.response.data.message });
-        })
+        });
     }
 
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value})
+        this.setState({ [event.target.name]: event.target.value })
     }
 
     handleSubmit = (event) => {
+        // modify customer details handler
         event.preventDefault();
         let modifiedCustomer = this.state.customer;
         // input validation
@@ -49,13 +52,14 @@ export default class ModifyCustomerDetailsPage extends Component {
             let checkEmailExistsPayload = {
                 email: this.state.email.trim()
             }
+            // check if modified email exists
             UserServiceApi.checkEmailExists(checkEmailExistsPayload).then(res => {
                 if (!(res.data.exist) || (this.state.email === this.state.customer.email)) {
                     modifiedCustomer.email = this.state.email.trim();
+                    // publish modified customer to backend
                     UserServiceApi.updateUser(modifiedCustomer).then(res => {
                         return window.location.href = `/admin/view/customers/${this.state.customer._id}`;
                     }).catch((error) => {
-                        console.log(error)
                         return this.setState({ modifyErrorMessage: error.response.data.message });
                     })
                 } else {
@@ -67,7 +71,6 @@ export default class ModifyCustomerDetailsPage extends Component {
         }
         else
             return this.setState({ modifyErrorMessage: "Email shall not be empty" });
-
     }
 
     render() {
@@ -93,7 +96,7 @@ export default class ModifyCustomerDetailsPage extends Component {
                             First Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="firstname" type="text" value={this.state.firstname} onChange={this.handleChange} required/>
+                            <Form.Control name="firstname" type="text" value={this.state.firstname} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalLastName">
@@ -101,7 +104,7 @@ export default class ModifyCustomerDetailsPage extends Component {
                             Last Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="lastname" type="text" value={this.state.lastname} onChange={this.handleChange} required/>
+                            <Form.Control name="lastname" type="text" value={this.state.lastname} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalEmail">
@@ -109,7 +112,7 @@ export default class ModifyCustomerDetailsPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" value={this.state.email} onChange={this.handleChange} required/>
+                            <Form.Control name="email" type="email" value={this.state.email} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>

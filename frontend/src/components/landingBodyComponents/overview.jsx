@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-
-import { Container, Col, Row, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPiggyBank, faCar, faPhone, faMoneyBill } from '@fortawesome/free-solid-svg-icons'
-
-import '../../styles/overview.css'
+/* Overview component in landing page */
+import React, { Component } from 'react';
+import { Container, Col, Row, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPiggyBank, faCar, faPhone, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import '../../styles/overview.css';
 
 export default class Overview extends Component {
     render() {

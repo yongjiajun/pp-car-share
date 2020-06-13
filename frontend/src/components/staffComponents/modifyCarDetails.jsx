@@ -1,11 +1,11 @@
+/* Modify car details page */
 import React, { Component } from 'react'
-import { Container, Button, Alert, Table, Form, Col, Row} from 'react-bootstrap'
+import { Container, Button, Alert, Table, Form, Col, Row } from 'react-bootstrap'
 import CarServiceApi from '../../api/CarServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import { CAR_COLOURS, CAR_BODY_TYPES, CAR_FUEL_TYPES, CAR_SEATS } from '../../Constants.js';
 
 export default class ModifyCarDetails extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -22,58 +22,57 @@ export default class ModifyCarDetails extends Component {
             b64photo: '',
             errMsg: '',
             successMsg: ''
-        }
-
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleFile = this.handleFile.bind(this)
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFile = this.handleFile.bind(this);
     }
 
     handleFile = (event) => {
-        let files = event.target.files
-        if(files !== null) {
+        // handle file upload for car image
+        let files = event.target.files;
+        if (files !== null) {
             let reader = new FileReader();
             reader.readAsDataURL(files[0]);
-    
+
             reader.onload = (event) => {
                 this.setState({
                     b64photo: event.target.result
-                })
-            }
+                });
+            };
         }
     }
 
     inputValidation = () => {
-        const { make, seats, bodytype, numberplate, 
-            colour, costperhour, fueltype, location} = this.state
+        const { make, seats, bodytype, numberplate,
+            colour, costperhour, fueltype, location } = this.state;
 
-        if(make === '' || seats === '' || bodytype === '' || numberplate === ''
+        if (make === '' || seats === '' || bodytype === '' || numberplate === ''
             || colour === '' || costperhour === '' || fueltype === '' || location === '') {
-                this.setState({
-                    errMsg: "Please fill in everything"
-                })
-
-                return false;
-            }
+            this.setState({
+                errMsg: "Please fill in everything"
+            });
+            return false;
+        }
         else {
             this.setState({
                 errMsg: ""
-            })
-            
+            });
             return true;
         }
     }
 
     handleSubmit(event) {
-        event.preventDefault()
+        // modify car details handler
+        event.preventDefault();
         if (!this.inputValidation()) {
-            return
+            return;
         }
-
-        const { car } = this.state
+        const { car } = this.state;
         this.setState({
             disableSubmit: true,
-        })
+        });
+        // create car object with modified values
         let carDetails = {
             _id: car._id,
             make: this.state.make,
@@ -85,29 +84,31 @@ export default class ModifyCarDetails extends Component {
             fueltype: this.state.fueltype,
             location: this.state.location,
             image: this.state.b64photo
-        }
+        };
+        // publish modified car object to backend
         CarServiceApi.updateCar(carDetails).then(res => {
             this.setState({
                 successMsg: "Car is successfully updated",
                 disableSubmit: false,
                 errMsg: ""
-            })
-            this.getCar()
-            this.scrollTop()
+            });
+            this.getCar();
+            this.scrollTop();
         }).catch(err => {
             this.setState({
                 errMsg: err.response.data.message,
                 disableSubmit: false,
                 successMsg: ""
-            })
+            });
         })
     }
 
     handleChange = (event) => {
-        this.setState({[event.target.name] : event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     scrollTop() {
+        // scroll window to top
         window.scrollTo({
             top: 0,
             behavior: "smooth"
@@ -118,8 +119,8 @@ export default class ModifyCarDetails extends Component {
         CarServiceApi.getCar(this.props.match.params.id).then(res => {
             const car = res.data.car;
             LocationServiceApi.getLocationFromId(car.location).then(res => {
-                car.location = res.data.address
-                car.locationId = res.data._id
+                car.location = res.data.address;
+                car.locationId = res.data._id;
                 this.setState({
                     car: car,
                     make: car.make,
@@ -136,20 +137,20 @@ export default class ModifyCarDetails extends Component {
         }).catch(err => {
             this.setState({
                 errMsg: err.response
-            })
-        })
+            });
+        });
     }
 
     componentDidMount() {
-        this.getCar()        
+        this.getCar();
 
         LocationServiceApi.getAllLocations().then((res) => {
-            res.data.map(location => this.setState({locationList: this.state.locationList.concat(location)}))
+            res.data.map(location => this.setState({ locationList: this.state.locationList.concat(location) }));
         }, (err) => {
             this.setState({
                 errMsg: err.response
-            })
-        })
+            });
+        });
     }
 
     render() {
@@ -159,21 +160,21 @@ export default class ModifyCarDetails extends Component {
             <Container>
                 <h2>Car details:</h2>
                 <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>make</th>
-                        <th>seats</th>
-                        <th>body type</th>
-                        <th>number plate</th>
-                        <th>colour</th>
-                        <th>cost per hour</th>
-                        <th>fuel type</th>
-                        <th>location</th>
-                        <th>image</th>
-                        <th>current booking</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>make</th>
+                            <th>seats</th>
+                            <th>body type</th>
+                            <th>number plate</th>
+                            <th>colour</th>
+                            <th>cost per hour</th>
+                            <th>fuel type</th>
+                            <th>location</th>
+                            <th>image</th>
+                            <th>current booking</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr key={car._id}>
                             <td>{car._id}</td>
@@ -185,14 +186,14 @@ export default class ModifyCarDetails extends Component {
                             <td>{car.costperhour}</td>
                             <td>{car.fueltype}</td>
                             <td>{car.location}</td>
-                            <td><img alt="car" src={car.image} width={50}/></td>
+                            <td><img alt="car" src={car.image} width={50} /></td>
                             <td>{(car.currentbooking === null) ? "No booking" : car.currentbooking}</td>
                         </tr>
                     </tbody>
                 </Table>
 
                 <h2>Modify details</h2>
-                {this.state.errMsg && 
+                {this.state.errMsg &&
                     <Alert variant="danger">
                         <Alert.Heading>Add car failed!</Alert.Heading>
                         <p>
@@ -201,7 +202,7 @@ export default class ModifyCarDetails extends Component {
                     </Alert>
                 }
 
-                {this.state.successMsg && 
+                {this.state.successMsg &&
                     <Alert variant="success">
                         <Alert.Heading>Add car succeed!</Alert.Heading>
                         <p>
@@ -215,7 +216,7 @@ export default class ModifyCarDetails extends Component {
                             Make
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="make" type="make" value={this.state.make} onChange={this.handleChange} required/>
+                            <Form.Control name="make" type="make" value={this.state.make} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalSeats">
@@ -227,11 +228,11 @@ export default class ModifyCarDetails extends Component {
                                 {
                                     CAR_SEATS.map((option, index) => {
                                         const bool = option === car.seats
-                                        return(
+                                        return (
                                             (bool) ? <option key={index} value={option} selected>{option}</option> :
-                                            <option key={index} value={option}>{option}</option>
+                                                <option key={index} value={option}>{option}</option>
                                         )
-                                })
+                                    })
                                 }
                             </Form.Control>
                         </Col>
@@ -243,11 +244,11 @@ export default class ModifyCarDetails extends Component {
                         <Col sm={10}>
                             <Form.Control as="select" name="bodytype" type="bodytype" onChange={this.handleChange} required>
                                 {
-                                    CAR_BODY_TYPES.map((option, index) =>{
+                                    CAR_BODY_TYPES.map((option, index) => {
                                         const bool = option === car.bodytype
-                                        return(
+                                        return (
                                             (bool) ? <option key={index} value={option} selected>{option}</option> :
-                                            <option key={index} value={option}>{option}</option>
+                                                <option key={index} value={option}>{option}</option>
                                         )
                                     })
                                 }
@@ -259,7 +260,7 @@ export default class ModifyCarDetails extends Component {
                             Number Plate
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="numberplate" type="numberplate" value={this.state.numberplate} onChange={this.handleChange} required/>
+                            <Form.Control name="numberplate" type="numberplate" value={this.state.numberplate} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalColour">
@@ -272,9 +273,9 @@ export default class ModifyCarDetails extends Component {
                                 {
                                     CAR_COLOURS.map((option, index) => {
                                         const bool = option === car.colour
-                                        return(
+                                        return (
                                             (bool) ? <option key={index} value={option} selected>{option}</option> :
-                                            <option key={index} value={option}>{option}</option>
+                                                <option key={index} value={option}>{option}</option>
                                         )
                                     })
                                 }
@@ -286,7 +287,7 @@ export default class ModifyCarDetails extends Component {
                             Cost per hour
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="costperhour" type="number" value={this.state.costperhour} onChange={this.handleChange} required/>
+                            <Form.Control name="costperhour" type="number" value={this.state.costperhour} onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalFuelType">
@@ -299,9 +300,9 @@ export default class ModifyCarDetails extends Component {
                                 {
                                     CAR_FUEL_TYPES.map((option, index) => {
                                         const bool = option === car.fueltype
-                                        return(
+                                        return (
                                             (bool) ? <option key={index} value={option} selected>{option}</option> :
-                                            <option key={index} value={option}>{option}</option>
+                                                <option key={index} value={option}>{option}</option>
                                         )
                                     })
                                 }
@@ -318,9 +319,9 @@ export default class ModifyCarDetails extends Component {
                                 {
                                     this.state.locationList.map((option, index) => {
                                         const bool = option.address === car.location
-                                        return(
+                                        return (
                                             (bool) ? <option key={index} value={option._id} selected>{option.address}</option> :
-                                            <option key={index} value={option._id}>{option.address}</option>
+                                                <option key={index} value={option._id}>{option.address}</option>
                                         )
                                     })
                                 }
@@ -331,7 +332,7 @@ export default class ModifyCarDetails extends Component {
                         <Form.Label column sm={2}>
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.File 
+                            <Form.File
                                 id="custom-file"
                                 label="Car picture"
                                 name="b64photo"
