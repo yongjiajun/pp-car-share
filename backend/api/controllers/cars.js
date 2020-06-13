@@ -80,38 +80,43 @@ exports.create_car = (req, res, next) => {
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        // get location by car's pickup/return spot
-        Location.findOne({ address: req.body.location }).then(location => {
-            // create a car object
-            const car = new Car({
-                _id: new mongoose.Types.ObjectId(),
-                make: req.body.make,
-                seats: req.body.seats,
-                bodytype: req.body.bodytype,
-                numberplate: req.body.numberplate,
-                colour: req.body.colour,
-                costperhour: req.body.costperhour,
-                fueltype: req.body.fueltype,
-                location: location,
-                image: req.body.b64photo,
-                currentbooking: null
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!` })
+        } else {
+            // get location by car's pickup/return spot
+            Location.findOne({ address: req.body.location }).then(location => {
+                // create a car object
+                const car = new Car({
+                    _id: new mongoose.Types.ObjectId(),
+                    make: req.body.make,
+                    seats: req.body.seats,
+                    bodytype: req.body.bodytype,
+                    numberplate: req.body.numberplate,
+                    colour: req.body.colour,
+                    costperhour: req.body.costperhour,
+                    fueltype: req.body.fueltype,
+                    location: location,
+                    image: req.body.b64photo,
+                    currentbooking: null
+                });
+                // save car object
+                car.save().then(car => {
+                    // add car id into location's car list
+                    location.cars.push(car._id);
+                    location.save();
+                    // wrap and return car object in response
+                    const response = {
+                        message: `Created car of id '${car._id}' successfully`,
+                        car: car
+                    }
+                    return res.status(201).json({ response });
+                }).catch(error => {
+                    // return error if there's any
+                    return res.status(500).json({ message: `Unable to get CREATE car of id '${_id}'`, error: error });
+                });
             });
-            // save car object
-            car.save().then(car => {
-                // add car id into location's car list
-                location.cars.push(car._id);
-                location.save();
-                // wrap and return car object in response
-                const response = {
-                    message: `Created car of id '${car._id}' successfully`,
-                    car: car
-                }
-                return res.status(201).json({ response });
-            }).catch(error => {
-                // return error if there's any
-                return res.status(500).json({ message: `Unable to get CREATE car of id '${_id}'`, error: error });
-            });
-        });
+        }
     });
 }
 
@@ -129,25 +134,29 @@ exports.delete_car = (req, res, next) => {
         if (err)
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!` })
+        } else {
+            // obtain car id from request parameters
+            const id = req.params.carId;
 
-        // obtain car id from request parameters
-        const id = req.params.carId;
-        
-        // find and delete a car by id
-        Car.findOneAndDelete({ _id: id })
-            .select(selectFields)
-            .exec()
-            .then(car => {
-                // return success message in response
-                const response = {
-                    message: `Deleted car of id '${car._id}' successfully`
-                }
-                res.status(200).json({ response });
-            })
-            .catch(error => {
-                // return error if there's any
-                res.status(500).json({ message: `Unable to DELETE car of id '${id}'`, error: error });
-            });
+            // find and delete a car by id
+            Car.findOneAndDelete({ _id: id })
+                .select(selectFields)
+                .exec()
+                .then(car => {
+                    // return success message in response
+                    const response = {
+                        message: `Deleted car of id '${car._id}' successfully`
+                    }
+                    res.status(200).json({ response });
+                })
+                .catch(error => {
+                    // return error if there's any
+                    res.status(500).json({ message: `Unable to DELETE car of id '${id}'`, error: error });
+                });
+        }
     });
 }
 
@@ -166,30 +175,35 @@ exports.update_car = (req, res, next) => {
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        // obtain car id from request parameters
-        const id = req.params.carId;
-        // obtaining updated values in request body
-        const updateOps = {};
-        for (const ops of Object.entries(req.body)) {
-            updateOps[ops[0]] = ops[1];
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!` })
+        } else {
+            // obtain car id from request parameters
+            const id = req.params.carId;
+            // obtaining updated values in request body
+            const updateOps = {};
+            for (const ops of Object.entries(req.body)) {
+                updateOps[ops[0]] = ops[1];
+            }
+
+            // update car by id with updated values
+            Car.update({ _id: id }, { $set: updateOps })
+                .select(selectFields)
+                .exec()
+                .then(car => {
+                    // wrap and return car object in response
+                    const response = {
+                        message: `Updated car of id '${car._id}' successfully`,
+                        car: car
+                    }
+                    res.status(200).json({ response });
+                })
+                .catch(error => {
+                    // return error if there's any
+                    res.status(500).json({ message: `Unable to UPDATE car of id '${id}'`, error: error });
+                });
         }
-        
-        // update car by id with updated values
-        Car.update({ _id: id }, { $set: updateOps })
-            .select(selectFields)
-            .exec()
-            .then(car => {
-                // wrap and return car object in response
-                const response = {
-                    message: `Updated car of id '${car._id}' successfully`,
-                    car: car
-                }
-                res.status(200).json({ response });
-            })
-            .catch(error => { 
-                // return error if there's any
-                res.status(500).json({ message: `Unable to UPDATE car of id '${id}'`, error: error });
-            });
     });
 }
 

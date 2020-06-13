@@ -79,33 +79,38 @@ exports.get_all_bookings = (req, res, next) => {
             // return error if JWT is invalid
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        // get all bookings from database
-        Booking.find()
-            .select(selectFields)
-            .exec()
-            .then(bookings => {
-                // wrap and return all booking objects in response
-                const response = {
-                    bookings: bookings.map(booking => {
-                        return {
-                            id: booking._id,
-                            user: booking.user,
-                            car: booking.car,
-                            bookedtime: booking.bookedtime,
-                            pickuptime: booking.pickuptime,
-                            returntime: booking.returntime,
-                            cost: booking.cost,
-                            location: booking.location,
-                            status: booking.status
-                        }
-                    })
-                }
-                res.status(200).json(response);
-            })
-            .catch(error => {
-                // return error if there's any
-                res.status(500).json({ message: `Unable to GET all bookings`, error: error });
-            });
+        // restrict feature to staff only
+        if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
+            return res.status(500).json({ message: `Unable to GET all customers, you must be a staff member!` })
+        } else {
+            // get all bookings from database
+            Booking.find()
+                .select(selectFields)
+                .exec()
+                .then(bookings => {
+                    // wrap and return all booking objects in response
+                    const response = {
+                        bookings: bookings.map(booking => {
+                            return {
+                                id: booking._id,
+                                user: booking.user,
+                                car: booking.car,
+                                bookedtime: booking.bookedtime,
+                                pickuptime: booking.pickuptime,
+                                returntime: booking.returntime,
+                                cost: booking.cost,
+                                location: booking.location,
+                                status: booking.status
+                            }
+                        })
+                    }
+                    res.status(200).json(response);
+                })
+                .catch(error => {
+                    // return error if there's any
+                    res.status(500).json({ message: `Unable to GET all bookings`, error: error });
+                });
+        }
     });
 }
 
