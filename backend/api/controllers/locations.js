@@ -46,7 +46,7 @@ exports.update_location = (req, res) => {
 
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });
         } else {
             // obtain location id from request parameters
             const id = req.params.locationId;
@@ -92,7 +92,7 @@ exports.create_location = loc = (req, res) => {
 
         // restrict feature to staff only
         if (decoded.usertype !== 'staff' && decoded.usertype !== 'admin') {
-            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });;;
+            return res.status(500).json({ message: `Unable to perform action, you have to be staff member!` });
         } else {
             // obtain location address from request body
             const req_address = req.body.address;
