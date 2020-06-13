@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import UserServiceApi from './api/UserServiceApi'
+/* authenticated router */
+import React, { Component } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import UserServiceApi from './api/UserServiceApi';
 
 
 class AuthenticatedRoute extends Component {
@@ -11,8 +12,7 @@ class AuthenticatedRoute extends Component {
         } else {
             return <Redirect to="/" />
         }
-
     }
 }
 
-export default AuthenticatedRoute
+export default AuthenticatedRoute;

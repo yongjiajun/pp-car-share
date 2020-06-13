@@ -1,3 +1,4 @@
+/* Admin sign up page */
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
 import UserServiceApi from '../../api/UserServiceApi.js'
@@ -12,25 +13,26 @@ class AdminSignUpPage extends Component {
             password: '',
             usertype: '',
             errorMessage: ''
-        }
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     /* Set react state for each input when user inputs something on signup form */
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value})
-    }
+        this.setState({ [event.target.name]: event.target.value });
+    };
 
     handleSubmit = event => {
-        /* May need to change / edit this */
+        // generate new user object
         let newUser = {
             firstname: this.state.firstname.trim(),
             lastname: this.state.lastname.trim(),
             email: this.state.email,
             password: this.state.password,
             usertype: this.state.usertype
-        }
+        };
+        // input validation
         if (this.state.firstname === '') {
             return this.setState({ errorMessage: "First name can't be empty!" });
         }
@@ -41,15 +43,18 @@ class AdminSignUpPage extends Component {
         if (!emailRegex.test(String(this.state.email).toLowerCase())) {
             return this.setState({ errorMessage: "Please enter a valid email!" });
         }
-        UserServiceApi.createNewUser(newUser).then(() => { 
+        // publish create user request to backend
+        UserServiceApi.createNewUser(newUser).then(() => {
+            // login newly created user
             UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
-                UserServiceApi.registerSuccessfulLoginForJwt(res.data.token)
+                UserServiceApi.registerSuccessfulLoginForJwt(res.data.token);
                 window.location.href = `/staff`;
             })
         }).catch((error) => {
+            // display error if there's any
             this.setState({ errorMessage: error.response.data.message });
         })
-    }
+    };
 
     render() {
         return (
@@ -67,7 +72,7 @@ class AdminSignUpPage extends Component {
                             First Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} required/>
+                            <Form.Control name="firstname" type="firstname" placeholder="First Name" onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
 
@@ -76,7 +81,7 @@ class AdminSignUpPage extends Component {
                             Last Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange} required/>
+                            <Form.Control name="lastname" type="lastname" placeholder="Last Name" onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
 
@@ -85,7 +90,7 @@ class AdminSignUpPage extends Component {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required/>
+                            <Form.Control name="email" type="email" placeholder="Email" onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
 
@@ -94,7 +99,7 @@ class AdminSignUpPage extends Component {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                        <Form.Control name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain: at least one number, one uppercase, lowercase letter, and at least 8 or more characters" placeholder="Password" onChange={this.handleChange} required/>
+                            <Form.Control name="password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain: at least one number, one uppercase, lowercase letter, and at least 8 or more characters" placeholder="Password" onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
 

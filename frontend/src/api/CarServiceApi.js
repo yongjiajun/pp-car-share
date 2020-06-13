@@ -1,10 +1,11 @@
-import axios from 'axios'
+/* Car service APIs */
+import axios from 'axios';
 require('dotenv').config();
-const api_url = process.env.server_url || "http://localhost:3001/api/cars"
+const api_url = process.env.server_url || "http://localhost:3001/api/cars";
 
 class CarServiceApi {
     createNewCar(newCar) {
-        return axios.post(api_url, newCar)
+        return axios.post(api_url, newCar);
     }
 
     getAllCars() {
@@ -12,7 +13,7 @@ class CarServiceApi {
     }
 
     getCar(carId) {
-        return axios.get(`${api_url}/${carId}`)
+        return axios.get(`${api_url}/${carId}`);
     }
 
     searchAvailableCars(search) {
@@ -26,7 +27,6 @@ class CarServiceApi {
     updateCar(car) {
         return axios.patch(api_url + `/${car._id}`, car);
     }
-
 }
 
-export default new CarServiceApi()
+export default new CarServiceApi();

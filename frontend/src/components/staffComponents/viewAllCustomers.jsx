@@ -1,6 +1,7 @@
-import React , { Component } from 'react';
+/* View all customers page */
+import React, { Component } from 'react';
 import { Alert, Button, Table, Container } from 'react-bootstrap';
-const { default: UserServiceApi } = require("../../api/UserServiceApi")
+const { default: UserServiceApi } = require("../../api/UserServiceApi");
 
 export default class ViewAllCustomersPage extends Component {
     constructor(props) {
@@ -8,17 +9,18 @@ export default class ViewAllCustomersPage extends Component {
         this.state = {
             customers: [],
             errorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // fetch all customers
         UserServiceApi.getAllCustomers().then(res => {
             this.setState({
                 customers: res.data.customers.reverse()
-            })
+            });
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
-        })
+        });
     }
 
     render() {

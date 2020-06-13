@@ -1,3 +1,4 @@
+/* Bookings confirm details page */
 import React, { Component } from 'react';
 import { Col, Button, Alert } from 'react-bootstrap';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
@@ -15,40 +16,46 @@ class BookingConfirmDetailsPopUp extends Component {
             showingInfoWindow: false,
             selectedPlace: {},
             isLoading: false
-        }
+        };
         this.handleConfirmButton = this.handleConfirmButton.bind(this);
         this.handleCancelButton = this.handleCancelButton.bind(this);
     }
 
     handleConfirmButton = event => {
+        // prevent browser from refreshing on click
         event.preventDefault();
+        // generate new booking object
         let newBooking = {
             pickupTime: this.props.pickupTime,
             returnTime: this.props.returnTime,
             user: UserServiceApi.getLoggedInUserID(),
             car: this.props.car._id,
             location: this.props.car.location,
-        }
+        };
+        // publish create booking request to backend
         BookingServiceApi.createBooking(newBooking)
             .then(res => {
+                // redirect to booking details page on success
                 window.location.href = `/mybookings/${res.data.response.booking._id}`;
             })
             .catch((error) => {
+                // display error message on failure
                 this.setState({ errorMessage: error.response.data.message });
             })
-    }
+    };
 
     handleCancelButton = event => {
+        // prevent browser from refreshing on click
         event.preventDefault();
         this.props.togglePopUp();
-    }
+    };
 
     componentDidMount() {
         const { car } = this.props;
 
+        // obtain location from id
         LocationServiceApi.getLocationFromId(car.location)
             .then(res => {
-                console.log(res)
                 LocationServiceApi.getGeocodeFromAddress(res.data.address)
                     .then(newRes => {
                         // Create object with address, latitude and longitude
@@ -66,25 +73,25 @@ class BookingConfirmDetailsPopUp extends Component {
                             isLoading: true
                         })
                     });
-            })
+            });
     }
 
-    onMarkerClick = (props, marker) =>
+    mapOnMarkerClick = (props, marker) =>
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
             showingInfoWindow: true,
-        })
+        });
 
-    onMapClick = () =>
+    mapOnMapClick = () =>
         this.setState({
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {}
-        })
+        });
 
     calculateBookingCost() {
-        // cost calculation
+        // cost calculation based on pickup time and return time difference
         const pickupTimeHours = new Date(this.props.pickupTime);
         const returnTimeHours = new Date(this.props.returnTime);
         const timeDeltaHours = new Date(returnTimeHours - pickupTimeHours).getTime() / 3600;
@@ -113,13 +120,13 @@ class BookingConfirmDetailsPopUp extends Component {
                     }}
                     style={{ height: '400px', width: '400px' }}
                     zoom={14}
-                    onClick={this.onMapClick}>
+                    onClick={this.mapOnMapClick}>
 
                     <Marker
                         id={this.state.location.id}
                         name={this.state.location.name}
                         address={this.state.location.address}
-                        onClick={this.onMarkerClick}
+                        onClick={this.mapOnMarkerClick}
                         position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
                     />
 
@@ -173,4 +180,4 @@ class BookingConfirmDetailsPopUp extends Component {
 
 export default GoogleApiWrapper({
     apiKey: process.env.REACT_APP_API_KEY
-})(BookingConfirmDetailsPopUp)
+})(BookingConfirmDetailsPopUp);

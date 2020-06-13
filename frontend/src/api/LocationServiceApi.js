@@ -1,18 +1,19 @@
-import axios from 'axios'
+/* Location service APIs */
+import axios from 'axios';
 require('dotenv').config();
-const api_url = process.env.server_url || "http://localhost:3001/api/locations"
+const api_url = process.env.server_url || "http://localhost:3001/api/locations";
 
 class LocationServiceApi {
     getAllLocations() {
-        return axios.get(api_url)
+        return axios.get(api_url);
     }
 
     getLocationFromId(id) {
-        return axios.get(`${api_url}/${id}`)
+        return axios.get(`${api_url}/${id}`);
     }
 
     createNewLocation(newLocation) {
-        return axios.post(api_url, newLocation)
+        return axios.post(api_url, newLocation);
     }
 
     getGeocodeFromAddress(address) {
@@ -26,9 +27,8 @@ class LocationServiceApi {
     }
 
     updateLocation(location) {
-        return axios.patch(api_url + `/${location._id}`, location)
+        return axios.patch(api_url + `/${location._id}`, location);
     }
-
 }
 
-export default new LocationServiceApi()
+export default new LocationServiceApi();

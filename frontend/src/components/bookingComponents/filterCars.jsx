@@ -1,9 +1,10 @@
+/* Filter cars page */
 import React, { Component } from 'react';
 import { Form, Col, Button, Row, Alert, Table, Container } from 'react-bootstrap';
 import CarServiceApi from '../../api/CarServiceApi';
-import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js'
+import { CAR_COLOURS, CAR_BODY_TYPES, CAR_SEATS, CAR_FUEL_TYPES } from '../../Constants.js';
 import LocationServiceApi from '../../api/LocationServiceApi';
-import BookingConfirmDetailsPopUp from './bookingConfirmDetails'
+import BookingConfirmDetailsPopUp from './bookingConfirmDetails';
 
 class FilterCarsPage extends Component {
     constructor(props) {
@@ -22,14 +23,14 @@ class FilterCarsPage extends Component {
             errorMessage: '',
             popUp: false,
             selectedCar: ''
-        }
-        this.handleSubmitFilter = this.handleSubmitFilter.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.togglePopUp = this.togglePopUp.bind(this)
+        };
+        this.handleSubmitFilter = this.handleSubmitFilter.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.togglePopUp = this.togglePopUp.bind(this);
     }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmitFilter = event => {
@@ -45,7 +46,8 @@ class FilterCarsPage extends Component {
             colour: this.state.colour,
             location: this.state.location,
             bodytype: this.state.bodytype
-        }
+        };
+        // publish filter cars request to backend
         CarServiceApi.filterCars(newFilter).then(res => {
             this.setState({
                 availableCars: res.data.availableCars,
@@ -53,7 +55,7 @@ class FilterCarsPage extends Component {
             });
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message, availableCars: [] });
-        })
+        });
     }
 
     togglePopUp(car) {
@@ -67,12 +69,19 @@ class FilterCarsPage extends Component {
 
     componentDidMount() {
         const { availableCars, pickupTime, returnTime } = this.props;
+
+        // redirect to dashboard if props don't exist
         if (availableCars.length === 0 || pickupTime === '' || returnTime === '') {
             this.props.history.push('/dashboard');
         }
 
-        this.setState({ availableCars: availableCars, pickupTime: pickupTime, returnTime: returnTime });
+        this.setState({
+            availableCars: availableCars,
+            pickupTime: pickupTime,
+            returnTime: returnTime
+        });
 
+        // obtain all locations
         let locationArray = this.state.locations;
         LocationServiceApi.getAllLocations().then(res => {
             res.data.forEach(location => {
@@ -83,12 +92,11 @@ class FilterCarsPage extends Component {
                 }
                 locationArray.push(locationObject);
                 this.setState({ locations: locationArray });
-            })
+            });
         });
     }
 
     render() {
-
         return (
             <Container>
                 {this.state.popUp && <BookingConfirmDetailsPopUp locations={this.state.locations} car={this.state.selectedCar} pickupTime={this.state.pickupTime} returnTime={this.state.returnTime} togglePopUp={this.togglePopUp} />}

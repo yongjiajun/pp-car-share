@@ -1,27 +1,28 @@
-import React, { Component } from 'react'
-import { Container, Table, Alert, Button} from 'react-bootstrap'
+/* View all locations page */
+import React, { Component } from 'react';
+import { Container, Table, Alert, Button } from 'react-bootstrap';
 import LocationServiceApi from '../../api/LocationServiceApi';
 
-export default class viewAllLocation extends Component {
-
+export default class ViewAllLocations extends Component {
     constructor(props) {
         super(props);
         this.state = {
             locations: [],
             errorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // get all locations
         LocationServiceApi.getAllLocations().then(res => {
             this.setState({
                 locations: res.data
-            })
+            });
         }).catch(error => {
             this.setState({
-                errorMessage: error.response 
-            })
-        })
+                errorMessage: error.response
+            });
+        });
     }
 
     render() {
@@ -46,8 +47,8 @@ export default class viewAllLocation extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.locations.map(location => 
-                                <tr style={{'cursor': 'pointer'}} key={location._id}>
+                            this.state.locations.map(location =>
+                                <tr style={{ 'cursor': 'pointer' }} key={location._id}>
                                     <td>{location._id}</td>
                                     <td>{location.name}</td>
                                     <td>{location.address}</td>

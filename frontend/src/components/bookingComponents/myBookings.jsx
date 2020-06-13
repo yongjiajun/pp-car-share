@@ -1,3 +1,4 @@
+/* My bookings page */
 import React, { Component } from 'react';
 import { Alert, Button, Container, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
@@ -13,7 +14,7 @@ class MyBookingPage extends Component {
             locations: [],
             cars: [],
             errorMessage: ''
-        }
+        };
         this.handleCancelButton = this.handleCancelButton.bind(this);
         this.getUsersBookings = this.getUsersBookings.bind(this);
         this.checkBookingPast = this.checkBookingPast.bind(this);
@@ -21,6 +22,7 @@ class MyBookingPage extends Component {
 
     componentDidMount() {
         this.getUsersBookings();
+        // obtain all locations
         LocationServiceApi.getAllLocations()
             .then(res => {
                 let locationArray = this.state.locations;
@@ -29,21 +31,22 @@ class MyBookingPage extends Component {
                         id: location._id,
                         address: location.address,
                         name: location.name
-                    }
+                    };
                     locationArray.push(locationObject);
                     this.setState({ locations: locationArray });
-                })
+                });
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
+        // obtain all cars
         CarServiceApi.getAllCars()
             .then(res => {
                 this.setState({
                     cars: res.data.cars
-                })
+                });
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
-            })
+            });
     }
 
     getUsersBookings() {
@@ -51,16 +54,18 @@ class MyBookingPage extends Component {
         BookingServiceApi.getUserBookings(userDetails.id)
             .then(res => {
                 this.setState({
+                    // sort bookings by latest
                     bookings: res.data.bookings.reverse()
-                })
+                });
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
-            })
+            });
     }
 
     checkBookingPast(pickupTime) {
+        // check if booking pickup time hjas passed current time
         let currentTime = new Date();
-        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset())
+        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset());
         return new Date(pickupTime) > currentTime;
     }
 
@@ -69,7 +74,9 @@ class MyBookingPage extends Component {
         BookingServiceApi.modifyBooking(booking)
             .then(() => {
                 this.getUsersBookings();
-            })
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
+            });
     }
 
     render() {

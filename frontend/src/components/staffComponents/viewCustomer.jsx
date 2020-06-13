@@ -1,6 +1,7 @@
-import React , { Component } from 'react';
+/* View customer page */
+import React, { Component } from 'react';
 import { Alert, Button, Container, ButtonGroup } from 'react-bootstrap';
-const { default: UserServiceApi } = require("../../api/UserServiceApi")
+const { default: UserServiceApi } = require("../../api/UserServiceApi");
 
 export default class ViewCustomerPage extends Component {
     constructor(props) {
@@ -8,17 +9,18 @@ export default class ViewCustomerPage extends Component {
         this.state = {
             customer: {},
             errorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // fetch customer by id
         UserServiceApi.getUserFromId(this.props.match.params.id).then(res => {
             this.setState({
                 customer: res.data.user
-            })
+            });
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
-        })
+        });
     }
 
     render() {
@@ -35,7 +37,7 @@ export default class ViewCustomerPage extends Component {
                 <strong>First name:</strong> {this.state.customer.firstname} <br></br>
                 <strong>Last name:</strong> {this.state.customer.lastname} <br></br>
                 <strong>Email:</strong> {this.state.customer.email} <br></br>
-                <ButtonGroup style={{marginTop: '3vh'}}>
+                <ButtonGroup style={{ marginTop: '3vh' }}>
                     <Button href={`/admin/view/customers/${this.state.customer._id}/bookings`}>View Customer's Bookings</Button>
                     <Button href={`/admin/modify/customers/${this.state.customer._id}`}>Modify Customer Details</Button>
                 </ButtonGroup>

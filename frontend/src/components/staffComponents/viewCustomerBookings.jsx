@@ -1,8 +1,9 @@
+/* View customer bookings page */
 import React, { Component } from 'react';
 import { Alert, Button, Table } from 'react-bootstrap';
 import BookingServiceApi from '../../api/BookingServiceApi';
-const { default: LocationServiceApi } = require("../../api/LocationServiceApi")
-const { default: CarServiceApi } = require("../../api/CarServiceApi")
+const { default: LocationServiceApi } = require("../../api/LocationServiceApi");
+const { default: CarServiceApi } = require("../../api/CarServiceApi");
 
 export default class ViewCustomerBookingsPage extends Component {
     constructor(props) {
@@ -12,12 +13,14 @@ export default class ViewCustomerBookingsPage extends Component {
             locations: [],
             cars: [],
             errorMessage: ''
-        }
+        };
     }
 
     componentDidMount() {
+        // get all of customer's bookings details by user id and also required elements
         BookingServiceApi.getUserBookings(this.props.match.params.id).then(res => {
             this.setState({
+                // sort bookings by latest
                 bookings: res.data.bookings.reverse()
             })
         }).catch((error) => {
@@ -31,21 +34,21 @@ export default class ViewCustomerBookingsPage extends Component {
                         id: location._id,
                         address: location.address,
                         name: location.name
-                    }
+                    };
                     locationArray.push(locationObject);
                     this.setState({ locations: locationArray });
                 })
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
-            })
+            });
         CarServiceApi.getAllCars()
             .then(res => {
                 this.setState({
                     cars: res.data.cars
-                })
+                });
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
-            })
+            });
     }
 
     render() {
