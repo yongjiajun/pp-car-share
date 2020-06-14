@@ -3,3 +3,4 @@ export const CAR_COLOURS = ["Black", "Yellow", "Blue", "White", "Green", "Red", 
 export const CAR_BODY_TYPES = ["Sedan", "MPV", "Sports", "Hatchback", "Ute"];
 export const CAR_SEATS = [2, 4, 5, 6, 7];
 export const CAR_FUEL_TYPES = ["Petrol", "Diesel"];
+export const FILE_UPLOAD_LIMIT = 4000000 // 4mb
