@@ -1,3 +1,4 @@
+/* backend main app file with config */
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const passport = require("passport");
 const users_routes = require('./api/routes/users');
 const locations_routes = require('./api/routes/locations');
 const bookings_routes = require('./api/routes/bookings');
-const cars_routes= require('./api/routes/cars');
+const cars_routes = require('./api/routes/cars');
 dotenv.config();
 
 const db_uri = process.env.MONGO_URI || "mongodb://localhost:27017"
@@ -24,9 +25,9 @@ mongoose.Promise = global.Promise;
 // Logger
 app.use(logger('dev'));
 
-// Parser
-app.use(parser.urlencoded({ extended: true }));
-app.use(parser.json());
+// Parser and set file upload limit
+app.use(parser.urlencoded({ limit: '4mb', extended: true }));
+app.use(parser.json({limit: '4mb'}));
 
 // CORS Handling
 app.use((req, res, next) => {

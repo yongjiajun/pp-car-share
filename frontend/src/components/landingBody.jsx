@@ -1,34 +1,32 @@
-import React, { Component } from 'react'
+/* landing page body component */
+import React, { Component } from 'react';
 import { Nav } from 'react-bootstrap';
+import '../styles/landingBody.css';
+import Overview from './landingBodyComponents/overview';
+import Cars from './landingBodyComponents/cars';
+import Faqs from './landingBodyComponents/faqs';
 
-import '../styles/landingBody.css'
-import Overview from './landingBodyComponents/overview'
-import Cars from './landingBodyComponents/cars'
-import Faqs from './landingBodyComponents/faqs'
-
+// define styles
 const navWhenSelectedStyle = {
     borderBottom: "4px solid #009bde"
-}
+};
 
 export default class landingBody extends Component {
-
     constructor(props){
         super(props);
-
         this.state = {
             component: 'Overview'
-        }
+        };
     }
 
     handleClick(event) {
         this.setState({
             component: event.target.innerHTML
-        })
+        });
     }
 
     render() {
         const { component } = this.state;
-
         return (
             <div id="landing-body">
                 <Nav id="landing-body-nav" className="justify-content-center" activeKey="/home">
@@ -49,7 +47,6 @@ export default class landingBody extends Component {
 }
 
 /* Function components */
-
 function RenderCorrectComponents(props) {
     const { component } = props
     switch(component) {

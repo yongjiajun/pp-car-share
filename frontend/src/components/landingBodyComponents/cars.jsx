@@ -1,21 +1,20 @@
+/* Cars component in landing page */
 import React, { Component } from 'react'
 import CarServiceApi from '../../api/CarServiceApi.js';
-import LocationServiceApi from '../../api/LocationServiceApi.js'
-
-import { Container, Row, Col, Button } from 'react-bootstrap'
-
-import '../../styles/cars.css'
+import LocationServiceApi from '../../api/LocationServiceApi.js';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import '../../styles/cars.css';
 
 export default class Cars extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             cars: []
-        }
+        };
     }
 
     componentDidMount() {
+        // obtain all cars
         CarServiceApi.getAllCars().then(res => {
             res.data.cars.forEach(car => {
                 LocationServiceApi.getLocationFromId(car.location).then(res => {
@@ -27,7 +26,7 @@ export default class Cars extends Component {
                     });
                 });
             });
-        })
+        });
     }
 
     render() {
@@ -57,6 +56,7 @@ export default class Cars extends Component {
 }
 
 function CarDescriptionComponent(props) {
+    // car description component card
     const { car } = props
     return (
         <Col sm={4}>

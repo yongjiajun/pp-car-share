@@ -1,7 +1,8 @@
+/* Location/Map page */
 import React from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import LocationServiceApi from '../api/LocationServiceApi.js';
-import "../styles/map.css"
+import "../styles/map.css";
 
 export class MapContainer extends React.Component {
   constructor(props) {
@@ -11,10 +12,11 @@ export class MapContainer extends React.Component {
       activeMarker: {},
       showingInfoWindow: false,
       selectedPlace: {}
-    }
+    };
   }
 
   componentDidMount() {
+    // obtain all locations
     let location_array = this.state.locations;
     // Get all locations from backend
     LocationServiceApi.getAllLocations().then(res => {
@@ -31,64 +33,62 @@ export class MapContainer extends React.Component {
               lat: res.data.results[0].geometry.location.lat,
               lng: res.data.results[0].geometry.location.lng,
               cars: element.cars
-            }
+            };
             // Push address, lat, long as object to react state array
             location_array.push(object);
             this.setState({
               locations: location_array
-            })
-          }); 
+            });
+          });
       });
     });
   }
 
-  onMarkerClick = (props, marker) =>
+  mapOnMarkerClick = (props, marker) =>
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
-    })
+    });
 
-  onMapClick= () =>
+  mapOnMapClick = () =>
     this.setState({
       showingInfoWindow: false,
       selectedPlace: {},
       activeMarker: {}
-    })
-  
-
+    });
 
   render() {
     return (
-      <div style={{height: "100vh"}}>
-        <Map google={this.props.google} 
-            initialCenter={{
-              lat:-37.815198,
-              lng:144.957045
-            }}
-            zoom={14}
-            onClick={this.onMapClick}>
-          
+      <div style={{ height: "100vh" }}>
+        <Map google={this.props.google}
+          initialCenter={{
+            lat: -37.815198,
+            lng: 144.957045
+          }}
+          zoom={14}
+          onClick={this.mapOnMapClick}>
+
           {this.state.locations.map(marker => {
             return (
-              <Marker 
+              <Marker
                 id={marker.id}
                 name={marker.name}
                 address={marker.address}
-                onClick= {this.onMarkerClick}
-                position = {{lat: marker.lat, lng: marker.lng}}
+                onClick={this.mapOnMarkerClick}
+                position={{ lat: marker.lat, lng: marker.lng }}
               />)
           })}
-  
-          <InfoWindow 
+
+          <InfoWindow
             onClose={this.onInfoWindowClose}
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}>
-              <div id="info-window">
-                <h2>{this.state.selectedPlace.name}</h2>
-                <p>{this.state.selectedPlace.address}</p>
-                <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
-              </div>
+            <div id="info-window">
+              <h2>{this.state.selectedPlace.name}</h2>
+              <p>{this.state.selectedPlace.address}</p>
+              <a href={"/locations/" + this.state.selectedPlace.id}>Check out this location</a>
+            </div>
           </InfoWindow>
         </Map>
       </div>
@@ -98,4 +98,4 @@ export class MapContainer extends React.Component {
 
 export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_API_KEY
-})(MapContainer)
+})(MapContainer);

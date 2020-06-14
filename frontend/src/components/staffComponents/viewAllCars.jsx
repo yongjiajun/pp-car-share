@@ -1,31 +1,32 @@
-import React, { Component } from 'react'
-import { Container, Table, Alert} from 'react-bootstrap'
+/* View all cars page */
+import React, { Component } from 'react';
+import { Container, Table, Alert } from 'react-bootstrap';
 import CarServiceApi from '../../api/CarServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import { withRouter } from 'react-router-dom';
 
 class ViewAllCars extends Component {
-    
     constructor(props) {
         super(props);
         this.state = {
             cars: [],
             errorMessage: ''
-        }
-        
-        this.viewCarDetails = this.viewCarDetails.bind(this)
+        };
+        this.viewCarDetails = this.viewCarDetails.bind(this);
     }
 
     viewCarDetails(id) {
-        this.props.history.push(`/admin/view/cars/${id}`)
+        this.props.history.push(`/admin/view/cars/${id}`);
     }
 
     componentDidMount() {
+        // fetch all cars
         CarServiceApi.getAllCars().then(res => {
             res.data.cars.forEach(car => {
+                // fetch location details for each car
                 LocationServiceApi.getLocationFromId(car.location).then(res => {
-                    car.location = res.data.name
-                    car.locationId = res.data._id
+                    car.location = res.data.name;
+                    car.locationId = res.data._id;
                     this.state.cars.push(car);
                     this.setState({
                         cars: this.state.cars
@@ -34,7 +35,7 @@ class ViewAllCars extends Component {
             });
         }).catch((error) => {
             this.setState({ errorMessage: error.response.data.message });
-        })
+        });
     }
 
     render() {
@@ -65,8 +66,8 @@ class ViewAllCars extends Component {
                     </thead>
                     <tbody>
                         {
-                            this.state.cars.map(car => 
-                                <tr style={{'cursor': 'pointer'}} key={car.id} onClick={() => this.viewCarDetails(car.id)}>
+                            this.state.cars.map(car =>
+                                <tr style={{ 'cursor': 'pointer' }} key={car.id} onClick={() => this.viewCarDetails(car.id)}>
                                     <td>{car.id}</td>
                                     <td>{car.make}</td>
                                     <td>{car.seats}</td>
@@ -76,7 +77,7 @@ class ViewAllCars extends Component {
                                     <td>{car.costperhour}</td>
                                     <td>{car.fueltype}</td>
                                     <td>{car.location}</td>
-                                    <td><img alt="car" src={car.image} width={50}/></td>
+                                    <td><img alt="car" src={car.image} width={50} /></td>
                                     <td>{(car.currentbooking === null) ? "No booking" : car.currentbooking}</td>
                                 </tr>
                             )
@@ -88,4 +89,4 @@ class ViewAllCars extends Component {
     }
 }
 
-export default withRouter(ViewAllCars)
+export default withRouter(ViewAllCars);

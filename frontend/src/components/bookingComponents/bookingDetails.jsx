@@ -1,3 +1,4 @@
+/* Bookings details page */
 import React, { Component } from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { Alert, Button, Col } from 'react-bootstrap';
@@ -17,24 +18,25 @@ class BookingDetailsPage extends Component {
             showingInfoWindow: false,
             selectedPlace: {},
             isLoading: false
-        }
+        };
         this.handleCancelButton = this.handleCancelButton.bind(this);
         this.getBookingDetails = this.getBookingDetails.bind(this);
         this.checkBookingPast = this.checkBookingPast.bind(this);
     }
 
     getBookingDetails() {
+        // obtain a user's booking by booking id and also car and location associated
         BookingServiceApi.getUserBooking(this.props.match.params.id)
             .then(res => {
                 this.setState({
                     booking: res.data.booking
-                })
+                });
                 CarServiceApi.getCar(this.state.booking.car)
                     .then(res => {
                         this.setState({
                             car: res.data.car
                         })
-                    })
+                    });
                 LocationServiceApi.getLocationFromId(this.state.booking.location)
                     .then(res => {
                         LocationServiceApi.getGeocodeFromAddress(res.data.address)
@@ -47,38 +49,39 @@ class BookingDetailsPage extends Component {
                                     lat: newRes.data.results[0].geometry.location.lat,
                                     lng: newRes.data.results[0].geometry.location.lng,
                                     cars: res.data.cars
-                                }
+                                };
                                 // set new location object to react state array
                                 this.setState({
                                     location: locationObject,
                                     isLoading: true
-                                })
+                                });
                             });
-                    })
+                    });
             }).catch((error) => {
                 this.setState({ errorMessage: error.response.data.message });
             })
     }
 
-    onMarkerClick = (props, marker) =>
+    mapOnMarkerClick = (props, marker) =>
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
             showingInfoWindow: true,
-        })
+        });
 
-    onMapClick = () =>
+    mapOnMapClick = () =>
         this.setState({
             showingInfoWindow: false,
             selectedPlace: {},
             activeMarker: {}
-        })
+        });
 
     componentDidMount() {
-        this.getBookingDetails()
+        this.getBookingDetails();
     }
 
     handleCancelButton() {
+        // modify booking status to cancelled
         let booking = this.state.booking;
         booking.status = 'Cancelled';
         booking.id = booking._id;
@@ -88,12 +91,15 @@ class BookingDetailsPage extends Component {
         BookingServiceApi.modifyBooking(this.state.booking)
             .then(() => {
                 this.getBookingDetails()
-            })
+            }).catch((error) => {
+                this.setState({ errorMessage: error.response.data.message });
+            });
     }
 
     checkBookingPast(pickupTime) {
+        // check if booking pickup time has past current time
         let currentTime = new Date();
-        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset())
+        currentTime.setMinutes(currentTime.getMinutes() - currentTime.getTimezoneOffset());
         return new Date(pickupTime) > currentTime;
     }
 
@@ -117,13 +123,13 @@ class BookingDetailsPage extends Component {
                                 }}
                                 style={{ height: '400px', width: '400px' }}
                                 zoom={14}
-                                onClick={this.onMapClick}>
+                                onClick={this.mapOnMapClick}>
 
                                 <Marker
                                     id={this.state.location.id}
                                     name={this.state.location.name}
                                     address={this.state.location.address}
-                                    onClick={this.onMarkerClick}
+                                    onClick={this.mapOnMarkerClick}
                                     position={{ lat: this.state.location.lat, lng: this.state.location.lng }}
                                 />
 
@@ -168,4 +174,4 @@ class BookingDetailsPage extends Component {
 
 export default GoogleApiWrapper({
     apiKey: process.env.REACT_APP_API_KEY
-})(BookingDetailsPage)
+})(BookingDetailsPage);

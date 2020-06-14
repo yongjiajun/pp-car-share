@@ -1,7 +1,7 @@
+/* Create location page */
 import React, { Component } from 'react'
 import LocationServiceApi from '../../api/LocationServiceApi'
 import { Form, Col, Button, Row, Alert } from 'react-bootstrap';
-
 import PlacesAutocomplete from 'react-places-autocomplete';
 
 export default class CreateLocation extends Component {
@@ -13,17 +13,17 @@ export default class CreateLocation extends Component {
             errMsg: '',
             gmapsLoaded: false,
             disableSubmit: false,
-        }
+        };
 
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleAutocomplete = this.handleAutocomplete.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleAutocomplete = this.handleAutocomplete.bind(this);
     }
 
     initMap = () => {
         this.setState({
-          gmapsLoaded: true,
-        })
+            gmapsLoaded: true,
+        });
     }
 
     handleAutocomplete = address => {
@@ -31,29 +31,33 @@ export default class CreateLocation extends Component {
     }
 
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit = event => {
+        // create new location handler
         const { name, address } = this.state;
-        event.preventDefault()
+        event.preventDefault();
 
         this.setState({
             successMsg: "",
             errMsg: "",
             disableSubmit: true
-        })
+        });
 
-        if( name === '' || address === '') {
+        // input validation
+        if (name === '' || address === '') {
             this.setState({
                 errMsg: "name and address cannot be empty",
                 disableSubmit: false
             });
         } else {
+            // create new location object
             let newLoc = {
                 name: name.trim(),
                 address: address
-            }
+            };
+            // publish location object to backend
             LocationServiceApi.createNewLocation(newLoc).then(res => {
                 console.log(res.data)
                 this.setState({
@@ -72,17 +76,18 @@ export default class CreateLocation extends Component {
     }
 
     componentDidMount() {
-        window.initMap = this.initMap
-        const gmapScriptEl = document.createElement(`script`)
-        gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places&callback=initMap`
-        document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
+        // initialise address autocomplete api
+        window.initMap = this.initMap;
+        const gmapScriptEl = document.createElement(`script`);
+        gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places&callback=initMap`;
+        document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl);
     }
 
     render() {
         return (
             <div className="container">
                 <h2>Create Location</h2>
-                {this.state.errMsg && 
+                {this.state.errMsg &&
                     <Alert variant="danger">
                         <Alert.Heading>Add location failed!</Alert.Heading>
                         <p>
@@ -91,7 +96,7 @@ export default class CreateLocation extends Component {
                     </Alert>
                 }
 
-                {this.state.successMsg && 
+                {this.state.successMsg &&
                     <Alert variant="success">
                         <Alert.Heading>Add location succeed!</Alert.Heading>
                         <p>
@@ -105,7 +110,7 @@ export default class CreateLocation extends Component {
                             Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} required/>
+                            <Form.Control name="name" type="name" placeholder="Location Name" onChange={this.handleChange} required />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="formHorizontalName">
@@ -113,47 +118,47 @@ export default class CreateLocation extends Component {
                             Enter Address
                         </Form.Label>
                         <Col sm={10}>
-                        { this.state.gmapsLoaded &&
-                            <PlacesAutocomplete
-                                value={this.state.address}
-                                onChange={this.handleAutocomplete}
-                                onSelect={this.handleSelect}
-                            >
-                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                                <div>
-                                    <Form.Control
-                                    {...getInputProps({
-                                        placeholder: 'Search Places ...',
-                                        className: 'location-search-input',
-                                        required: true
-                                    })}
-                                    />
-                                    <div className="autocomplete-dropdown-container">
-                                    {loading && <div>Loading...</div>}
-                                    {suggestions.map(suggestion => {
-                                        const className = suggestion.active
-                                        ? 'suggestion-item--active'
-                                        : 'suggestion-item';
-                                        // inline style for demonstration purpose
-                                        const style = suggestion.active
-                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                        return (
-                                        <div
-                                            {...getSuggestionItemProps(suggestion, {
-                                            className,
-                                            style,
-                                            })}
-                                        >
-                                            <span>{suggestion.description}</span>
+                            {this.state.gmapsLoaded &&
+                                <PlacesAutocomplete
+                                    value={this.state.address}
+                                    onChange={this.handleAutocomplete}
+                                    onSelect={this.handleSelect}
+                                >
+                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                        <div>
+                                            <Form.Control
+                                                {...getInputProps({
+                                                    placeholder: 'Search Places ...',
+                                                    className: 'location-search-input',
+                                                    required: true
+                                                })}
+                                            />
+                                            <div className="autocomplete-dropdown-container">
+                                                {loading && <div>Loading...</div>}
+                                                {suggestions.map(suggestion => {
+                                                    const className = suggestion.active
+                                                        ? 'suggestion-item--active'
+                                                        : 'suggestion-item';
+                                                    // inline style for demonstration purpose
+                                                    const style = suggestion.active
+                                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                    return (
+                                                        <div
+                                                            {...getSuggestionItemProps(suggestion, {
+                                                                className,
+                                                                style,
+                                                            })}
+                                                        >
+                                                            <span>{suggestion.description}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                        );
-                                    })}
-                                    </div>
-                                </div>
-                                )}
-                            </PlacesAutocomplete>
-                        }
+                                    )}
+                                </PlacesAutocomplete>
+                            }
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>

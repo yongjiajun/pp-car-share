@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+/* Modify location page */
+import React, { Component } from 'react';
 import { Alert, Button, Form, Container, Col, Row } from 'react-bootstrap';
 import LocationServiceApi from '../../api/LocationServiceApi';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import { withRouter } from 'react-router-dom';
+
 class modifyLocationPage extends Component {
     constructor(props) {
         super(props);
@@ -14,17 +16,16 @@ class modifyLocationPage extends Component {
             gmapsLoaded: false,
             successMsg: '',
             disableSubmit: false
-        }
-
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleAutocomplete = this.handleAutocomplete.bind(this)
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAutocomplete = this.handleAutocomplete.bind(this);
     }
 
     initMap = () => {
         this.setState({
           gmapsLoaded: true,
-        })
+        });
     }
 
     handleAutocomplete = address => {
@@ -32,11 +33,11 @@ class modifyLocationPage extends Component {
     }
 
     componentDidMount() {
-        window.initMap = this.initMap
-        const gmapScriptEl = document.createElement(`script`)
-        gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places&callback=initMap`
-        document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
-
+        // initialise address autocomplete api
+        window.initMap = this.initMap;
+        const gmapScriptEl = document.createElement(`script`);
+        gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places&callback=initMap`;
+        document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl);
         LocationServiceApi.getLocationFromId(this.props.match.params.id).then(res => {
             this.setState({
                 address: res.data.address,
@@ -51,37 +52,41 @@ class modifyLocationPage extends Component {
     }
 
     handleSubmit() {
+        // modify location object handler
+        // input validation
         if(this.state.name === '') {
             this.setState({
                 errMsg: "name can't be empty"
-            })
-            return
+            });
+            return;
         }
 
         this.setState({
             disableSubmit: true
-        })
-
+        });
+        
+        // create modified location object
         let location = {
             _id: this.state.location._id,
             name: this.state.name,
             address: this.state.address,
             cars: this.state.location.cars
-        }
+        };
 
+        // publish modified location object to backend
         LocationServiceApi.updateLocation(location).then(res => {
-            this.props.history.push(`/admin/view/location/${location._id}`, {success: "Successfully updated location"})
+            this.props.history.push(`/admin/view/location/${location._id}`, {success: "Successfully updated location"});
         }).catch(err => {
             this.setState({
                 errMsg: err.response.data.message,
                 disableSubmit: false,
                 successMsg: ""
-            })
-        })
+            });
+        });
     }
 
     handleChange = event => {
-        this.setState({[event.target.name] : event.target.value})
+        this.setState({[event.target.name] : event.target.value});
     }
 
     render() {
@@ -167,5 +172,4 @@ class modifyLocationPage extends Component {
     }
 }
 
-
-export default withRouter(modifyLocationPage)
+export default withRouter(modifyLocationPage);

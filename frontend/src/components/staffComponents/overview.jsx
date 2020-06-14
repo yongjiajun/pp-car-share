@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-const { default: UserServiceApi } = require("../../api/UserServiceApi")
+/* Staff overview page */
+import React, { Component } from 'react';
+const { default: UserServiceApi } = require("../../api/UserServiceApi");
 
 export default class overview extends Component {
     render() {

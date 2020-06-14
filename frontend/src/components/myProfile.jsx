@@ -1,9 +1,9 @@
+/* My profile page for customers */
 import React, { Component } from 'react';
 import { Button, Container } from 'react-bootstrap';
-const { default: UserServiceApi } = require("../api/UserServiceApi")
+const { default: UserServiceApi } = require("../api/UserServiceApi");
 
 class MyProfilePage extends Component {
-    
     render() {
         const userData = UserServiceApi.getLoggedInUserDetails();
         return (

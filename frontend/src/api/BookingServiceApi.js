@@ -1,10 +1,10 @@
-import axios from 'axios'
+/* Booking service APIs */
+import axios from 'axios';
 import UserServiceApi from './UserServiceApi';
 require('dotenv').config();
-const api_url = "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/bookings"
+const api_url = "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/bookings";
 
 class BookingServiceApi {
-
     getNextBooking() {
         return axios.get(`${api_url}/customers/next`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
@@ -12,13 +12,13 @@ class BookingServiceApi {
     createBooking(booking) {
         return axios.post(api_url, booking);
     }
-    
+
     getUserBookings(userId) {
         return axios.get(`${api_url}/customers/all/${userId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
     getUserBooking(bookingId) {
-        return axios.get(`${api_url}/customers/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } })
+        return axios.get(`${api_url}/customers/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 
     modifyBooking(booking) {
@@ -30,8 +30,8 @@ class BookingServiceApi {
     }
 
     getBooking(bookingId) {
-        return axios.get(`${api_url}/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } })
+        return axios.get(`${api_url}/${bookingId}`, { headers: { authorization: UserServiceApi.getUserToken() } });
     }
 }
 
-export default new BookingServiceApi()
+export default new BookingServiceApi();

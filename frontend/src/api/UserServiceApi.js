@@ -1,22 +1,23 @@
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+/* User service APIs */
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+const api_url = process.env.REACT_APP_SERVER_URL_USERS || "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/users";
 
-const api_url = process.env.REACT_APP_SERVER_URL_USERS || "http://ec2-54-157-190-188.compute-1.amazonaws.com:3001/api/users"
-
-export const TOKEN_SESSION_ATTRIBUTE_NAME = 'token'
-export const TOKEN_HEADER_LENGTH = 7
+// for user JWT storage
+export const TOKEN_SESSION_ATTRIBUTE_NAME = 'token';
+export const TOKEN_HEADER_LENGTH = 7;
 
 class UserServiceApi {
     getAllUsers() {
-        return axios.get(api_url)
+        return axios.get(api_url);
     }
 
     getAllCustomers() {
-        return axios.get(api_url+'/customers', { headers: { authorization: this.getUserToken() } })
+        return axios.get(api_url + '/customers', { headers: { authorization: this.getUserToken() } });
     }
 
     getUserFromId(id) {
-        return axios.get(`${api_url}/${id}`, { headers: { authorization: this.getUserToken() } })
+        return axios.get(`${api_url}/${id}`, { headers: { authorization: this.getUserToken() } });
     }
 
     checkEmailExists(email) {
@@ -24,11 +25,11 @@ class UserServiceApi {
     }
 
     createNewUser(newUser) {
-        return axios.post(api_url, newUser)
+        return axios.post(api_url, newUser);
     }
 
     loginUser(creds) {
-        return axios.post(`${api_url}/login`, creds)
+        return axios.post(`${api_url}/login`, creds);
     }
 
     updateUser(user) {
@@ -36,67 +37,67 @@ class UserServiceApi {
     }
 
     registerSuccessfulLoginForJwt(token) {
-        sessionStorage.setItem(TOKEN_SESSION_ATTRIBUTE_NAME, token)
-        this.setupAxiosInterceptors(token)
+        localStorage.setItem(TOKEN_SESSION_ATTRIBUTE_NAME, token);
+        this.setupAxiosInterceptors(token);
     }
 
     getLoggedInUserID() {
-        let token = sessionStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME)
-        if (token === null) return ''
-        return jwt_decode(token.slice(TOKEN_HEADER_LENGTH)).id
+        let token = localStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        if (token === null) return '';
+        return jwt_decode(token.slice(TOKEN_HEADER_LENGTH)).id;
     }
 
     getLoggedInUserDetails() {
-        let token = sessionStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME)
-        if (token === null) return ''
-        return jwt_decode(token.slice(TOKEN_HEADER_LENGTH))
+        let token = localStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        if (token === null) return '';
+        return jwt_decode(token.slice(TOKEN_HEADER_LENGTH));
     }
 
     getUserToken() {
-        let token = sessionStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME)
-        if (token === null) return ''
-        return token.slice(TOKEN_HEADER_LENGTH)
+        let token = localStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        if (token === null) return '';
+        return token.slice(TOKEN_HEADER_LENGTH);
     }
 
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             (config) => {
                 if (this.isUserLoggedIn()) {
-                    config.headers.authorization = token
+                    config.headers.authorization = token;
                 }
-                return config
+                return config;
             }
         )
     }
 
     isUserLoggedIn() {
-        let user = sessionStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME)
-        if (user === null){
-            return false
-        } 
-        return true
+        let user = localStorage.getItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        if (user === null) {
+            return false;
+        }
+        return true;
     }
 
     isUserStaff() {
-        let user = this.getLoggedInUserDetails()
-        if(user.usertype === "admin" || user.usertype === "staff") {
-            return true
+        let user = this.getLoggedInUserDetails();
+        if (user.usertype === "admin" || user.usertype === "staff") {
+            return true;
         }
-        return false
+        return false;
     }
 
     isUserAdmin() {
-        let user = this.getLoggedInUserDetails()
-        if(user.usertype === "admin") {
-            return true
+        let user = this.getLoggedInUserDetails();
+        if (user.usertype === "admin") {
+            return true;
         }
-        return false
+        return false;
     }
 
     logout() {
-        sessionStorage.removeItem(TOKEN_SESSION_ATTRIBUTE_NAME);
+        localStorage.removeItem(TOKEN_SESSION_ATTRIBUTE_NAME);
         window.location.href = `/`;
     }
 }
 
-export default new UserServiceApi()
+export default new UserServiceApi();
