@@ -201,7 +201,7 @@ export default class ModifyCarDetails extends Component {
                 <h2>Modify details</h2>
                 {this.state.errMsg &&
                     <Alert variant="danger">
-                        <Alert.Heading>Add car failed!</Alert.Heading>
+                        <Alert.Heading>Modify car failed!</Alert.Heading>
                         <p>
                             {this.state.errMsg}
                         </p>
@@ -210,7 +210,7 @@ export default class ModifyCarDetails extends Component {
 
                 {this.state.successMsg &&
                     <Alert variant="success">
-                        <Alert.Heading>Add car succeed!</Alert.Heading>
+                        <Alert.Heading>Modify car succeed!</Alert.Heading>
                         <p>
                             {this.state.successMsg}
                         </p>

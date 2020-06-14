@@ -140,7 +140,6 @@ class ViewLocation extends Component {
                 </Table>
                 <h2>Cars here:</h2>
                 <Row>
-                    {}
                     {this.state.cars.length !== 0 ? this.state.cars.map(car =>
                         <CarDescriptionComponent car={car} />
                     ) : <Col>Garage empty</Col>}
