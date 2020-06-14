@@ -88,6 +88,24 @@ class ViewLocation extends Component {
                     </Alert>
                 }
                 <h2>Location details:</h2>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>address</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{location.id}</td>
+                            <td>{location.name}</td>
+                            <td>{location.address}</td>
+                            <td><Button href={`/admin/modify/location/${location.id}`}>Modify</Button></td>
+                        </tr>
+                    </tbody>
+                </Table>
                 <Container>
                     {this.state.isLoading && <div style={{ height: '400px' }}>
                         <Map google={this.props.google}
@@ -120,24 +138,6 @@ class ViewLocation extends Component {
                         </Map>
                     </div>}
                 </Container>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>address</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{location.id}</td>
-                            <td>{location.name}</td>
-                            <td>{location.address}</td>
-                            <td><Button href={`/admin/modify/location/${location._id}`}>Modify</Button></td>
-                        </tr>
-                    </tbody>
-                </Table>
                 <h2>Cars here:</h2>
                 <Row>
                     {this.state.cars.length !== 0 ? this.state.cars.map(car =>
