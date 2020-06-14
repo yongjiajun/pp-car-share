@@ -97,7 +97,7 @@ class modifyLocationPage extends Component {
                 
                 {this.state.errMsg && 
                     <Alert variant="danger">
-                        <Alert.Heading>Add car failed!</Alert.Heading>
+                        <Alert.Heading>Modify location failed!</Alert.Heading>
                         <p>
                             {this.state.errMsg}
                         </p>

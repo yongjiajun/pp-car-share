@@ -17,6 +17,7 @@ class BookingDashboard extends Component {
             nextBookingExists: false,
             car: '',
             location: '',
+            successHeader: '',
             successMsg: '',
             availablePickup: false,
             avaialbleReturn: false,
@@ -65,6 +66,7 @@ class BookingDashboard extends Component {
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
+                    successHeader: 'Pickup success!',
                     successMsg: "Car has been picked up! Please return it before your specified return time.",
                     availablePickup: false,
                     avaialbleReturn: true
@@ -98,6 +100,7 @@ class BookingDashboard extends Component {
         BookingServiceApi.modifyBooking(this.state.nextBooking)
             .then(() => {
                 this.setState({
+                    successHeader: 'Return success!',
                     successMsg: "Car has been returned! Thanks for using MZA Car Share!",
                     avaialbleReturn: false
                 })
@@ -154,7 +157,7 @@ class BookingDashboard extends Component {
             <Container>
                 {this.state.successMsg &&
                     <Alert variant="success">
-                        <Alert.Heading>Pick up succeed!</Alert.Heading>
+                        <Alert.Heading>{this.state.successHeader}</Alert.Heading>
                         <p>
                             {this.state.successMsg}
                         </p>
