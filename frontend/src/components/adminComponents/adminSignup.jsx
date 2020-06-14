@@ -66,7 +66,7 @@ class AdminSignUpPage extends Component {
                         {this.state.errorMessage}
                     </p>
                 </Alert>}
-                {this.state.successMessage && <Alert variant="danger">
+                {this.state.successMessage && <Alert variant="success">
                     <Alert.Heading>Account created!</Alert.Heading>
                     <p>
                         {this.state.successMessage}
