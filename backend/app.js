@@ -25,9 +25,9 @@ mongoose.Promise = global.Promise;
 // Logger
 app.use(logger('dev'));
 
-// Parser
-app.use(parser.urlencoded({ extended: true }));
-app.use(parser.json());
+// Parser and set file upload limit
+app.use(parser.urlencoded({ limit: '4mb', extended: true }));
+app.use(parser.json({limit: '4mb'}));
 
 // CORS Handling
 app.use((req, res, next) => {
