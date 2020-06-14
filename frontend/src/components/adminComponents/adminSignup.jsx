@@ -12,7 +12,8 @@ class AdminSignUpPage extends Component {
             email: '',
             password: '',
             usertype: '',
-            errorMessage: ''
+            errorMessage: '',
+            successMessage: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -45,11 +46,10 @@ class AdminSignUpPage extends Component {
         }
         // publish create user request to backend
         UserServiceApi.createNewUser(newUser).then(() => {
-            // login newly created user
-            UserServiceApi.loginUser({ email: this.state.email, password: this.state.password }).then(res => {
-                UserServiceApi.registerSuccessfulLoginForJwt(res.data.token);
-                window.location.href = `/staff`;
-            })
+            this.setState({
+                successMessage: 'User has been created!',
+                errorMessage: ''
+            });
         }).catch((error) => {
             // display error if there's any
             this.setState({ errorMessage: error.response.data.message });
@@ -64,6 +64,12 @@ class AdminSignUpPage extends Component {
                     <Alert.Heading>Sign up failed!</Alert.Heading>
                     <p>
                         {this.state.errorMessage}
+                    </p>
+                </Alert>}
+                {this.state.successMessage && <Alert variant="danger">
+                    <Alert.Heading>Account created!</Alert.Heading>
+                    <p>
+                        {this.state.successMessage}
                     </p>
                 </Alert>}
                 <Form>
