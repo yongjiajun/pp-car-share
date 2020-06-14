@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Container, Button, Alert, Table, Form, Col, Row } from 'react-bootstrap'
 import CarServiceApi from '../../api/CarServiceApi';
 import LocationServiceApi from '../../api/LocationServiceApi';
-import { CAR_COLOURS, CAR_BODY_TYPES, CAR_FUEL_TYPES, CAR_SEATS } from '../../Constants.js';
+import { CAR_COLOURS, CAR_BODY_TYPES, CAR_FUEL_TYPES, CAR_SEATS, FILE_UPLOAD_LIMIT } from '../../Constants.js';
 
 export default class ModifyCarDetails extends Component {
     constructor(props) {
@@ -32,12 +32,18 @@ export default class ModifyCarDetails extends Component {
         // handle file upload for car image
         let files = event.target.files;
         if (files !== null) {
+            // file size validation
+            if (event.target.files[0].size > FILE_UPLOAD_LIMIT) {
+                return this.setState({
+                    errMsg: 'Image exceeded upload size limit! Please try again with another image.'
+                });
+            }
             let reader = new FileReader();
             reader.readAsDataURL(files[0]);
-
             reader.onload = (event) => {
                 this.setState({
-                    b64photo: event.target.result
+                    b64photo: event.target.result,
+                    errMsg: ''
                 });
             };
         }
@@ -45,10 +51,10 @@ export default class ModifyCarDetails extends Component {
 
     inputValidation = () => {
         const { make, seats, bodytype, numberplate,
-            colour, costperhour, fueltype, location } = this.state;
+            colour, costperhour, fueltype, location, b64photo } = this.state;
 
         if (make === '' || seats === '' || bodytype === '' || numberplate === ''
-            || colour === '' || costperhour === '' || fueltype === '' || location === '') {
+            || colour === '' || costperhour === '' || fueltype === '' || location === '' || b64photo === '') {
             this.setState({
                 errMsg: "Please fill in everything"
             });
@@ -334,8 +340,9 @@ export default class ModifyCarDetails extends Component {
                         <Col sm={10}>
                             <Form.File
                                 id="custom-file"
-                                label="Car picture"
+                                label="Car Image (4MB max)"
                                 name="b64photo"
+                                accept="image/*"
                                 onChange={this.handleFile}
                             />
                         </Col>
