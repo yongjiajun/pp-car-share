@@ -21,7 +21,7 @@
     - View all of customer's bookings
     - Ability to cancel upcoming bookings
     - Pickup and return car on booking dashboard when it's time, changing booking status
-- **Car Share Booking System** for staff members:
+- **Car Share Admin System** for staff members:
   - Create/modify locations/garages/car pickup/return spots with address using **Google Maps Places API Autocomplete feature**
   - Create/modify user accounts
   - Create/modify cars
